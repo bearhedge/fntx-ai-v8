@@ -51,6 +51,6 @@ export const Sidebar = () => {
           </div>
         </div>
       </div>
-    </nav>
+    </div>
   );
 };
