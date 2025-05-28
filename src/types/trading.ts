@@ -1,13 +1,29 @@
 
+export interface Message {
+  id: string;
+  content: string;
+  sender: 'user' | 'ai' | 'system';
+  timestamp: Date;
+  type: 'text' | 'trade-options' | 'waiting-period';
+  tradeOptions?: TradeOption[];
+  waitingPeriod?: WaitingPeriod;
+}
+
+export interface WaitingPeriod {
+  totalMinutes: number;
+  remainingMinutes: number;
+  reason: string;
+}
+
 export interface TradeOption {
   id: string;
-  type: 'PUT' | 'CALL';
   symbol: string;
   strike: number;
+  type: 'call' | 'put';
+  expiration: Date;
   premium: number;
   contracts: number;
-  expiration: Date;
-  riskLevel: 'CONSERVATIVE' | 'MODERATE' | 'AGGRESSIVE';
+  riskLevel: 'conservative' | 'moderate' | 'aggressive';
   probability: number;
   totalPremium: number;
   riskReward: string;
@@ -19,8 +35,8 @@ export interface TradeOption {
 export interface Position {
   id: string;
   symbol: string;
-  type: 'PUT' | 'CALL';
   strike: number;
+  type: 'call' | 'put';
   contracts: number;
   entryPrice: number;
   currentPrice: number;
@@ -29,7 +45,7 @@ export interface Position {
   stopLoss: number;
   takeProfit: number;
   expiration: Date;
-  riskMeterPosition: number; // 0-100, position on risk meter
+  status: 'open' | 'closed' | 'expired';
 }
 
 export interface AccountSummary {
@@ -37,29 +53,13 @@ export interface AccountSummary {
   available: number;
   marginUsed: number;
   dailyPnl: number;
-  tradesCompleted: number;
+  totalTrades: number;
   winRate: number;
 }
 
-export interface MarketConditions {
+export interface MarketData {
   spyPrice: number;
   vix: number;
   marketTrend: string;
-}
-
-export interface WaitingPeriod {
-  isActive: boolean;
-  remainingTime: number; // in minutes
-  totalTime: number; // in minutes
-  progress: number; // 0-100
-  rationale: string;
-}
-
-export interface ChatMessage {
-  id: string;
-  content: string;
-  sender: 'user' | 'ai' | 'system';
-  timestamp: Date;
-  type?: 'text' | 'trade-options' | 'waiting-period' | 'position-update';
-  data?: any; // For embedded components like trade cards, timers, etc.
+  marketStatus: 'open' | 'closed' | 'pre-market' | 'after-hours';
 }

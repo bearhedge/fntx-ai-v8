@@ -1,85 +1,60 @@
 
 import React, { useState, useEffect } from 'react';
-import { Clock, TrendingUp } from 'lucide-react';
-import { WaitingPeriod } from '../../types/trading';
+import { Clock } from 'lucide-react';
 
 interface WaitingPeriodTimerProps {
-  waitingPeriod: WaitingPeriod;
+  totalMinutes: number;
+  remainingMinutes: number;
+  reason: string;
 }
 
-export const WaitingPeriodTimer = ({ waitingPeriod }: WaitingPeriodTimerProps) => {
-  const [timeRemaining, setTimeRemaining] = useState(waitingPeriod.remainingTime);
-  const [progress, setProgress] = useState(waitingPeriod.progress);
+export const WaitingPeriodTimer = ({ totalMinutes, remainingMinutes: initialRemaining, reason }: WaitingPeriodTimerProps) => {
+  const [remainingMinutes, setRemainingMinutes] = useState(initialRemaining);
 
   useEffect(() => {
-    if (!waitingPeriod.isActive) return;
+    if (remainingMinutes > 0) {
+      const timer = setInterval(() => {
+        setRemainingMinutes(prev => Math.max(0, prev - 1));
+      }, 60000); // Update every minute
 
-    const interval = setInterval(() => {
-      setTimeRemaining(prev => {
-        if (prev <= 0) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-      
-      setProgress(prev => {
-        const newProgress = ((waitingPeriod.totalTime - timeRemaining) / waitingPeriod.totalTime) * 100;
-        return Math.min(100, newProgress);
-      });
-    }, 60000); // Update every minute
-
-    return () => clearInterval(interval);
-  }, [waitingPeriod.isActive, waitingPeriod.totalTime, timeRemaining]);
-
-  const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    
-    if (hours === 0) {
-      return `${mins}m`;
+      return () => clearInterval(timer);
     }
-    return `${hours}h ${mins}m`;
-  };
+  }, [remainingMinutes]);
 
-  if (!waitingPeriod.isActive) {
-    return (
-      <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-        <div className="flex items-center text-green-700">
-          <TrendingUp className="w-4 h-4 mr-2" />
-          <span className="font-semibold">Waiting period complete - Ready to trade!</span>
-        </div>
-      </div>
-    );
-  }
+  const progress = ((totalMinutes - remainingMinutes) / totalMinutes) * 100;
+  const hours = Math.floor(remainingMinutes / 60);
+  const minutes = remainingMinutes % 60;
 
   return (
-    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center text-blue-700">
-          <Clock className="w-4 h-4 mr-2" />
-          <span className="font-semibold">Waiting Period</span>
-        </div>
-        <span className="text-sm font-semibold text-blue-700">
-          {formatTime(timeRemaining)} remaining
-        </span>
+    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+      <div className="flex items-center space-x-2 mb-3">
+        <Clock className="w-4 h-4 text-blue-600" />
+        <h4 className="font-semibold text-gray-800">Waiting Period</h4>
       </div>
       
-      <div className="mb-2">
-        <div className="bg-blue-200 rounded-full h-2">
-          <div 
-            className="bg-blue-600 h-2 rounded-full transition-all duration-1000"
+      <div className="mb-3">
+        <div className="flex justify-between text-sm text-gray-600 mb-1">
+          <span>Progress</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div
+            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="text-xs text-blue-600 mt-1">
-          {Math.round(progress)}% complete
-        </div>
       </div>
       
-      <p className="text-xs text-blue-700">
-        {waitingPeriod.rationale}
-      </p>
+      <div className="text-center mb-3">
+        <div className="text-2xl font-bold text-gray-800">
+          {hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`}
+        </div>
+        <div className="text-sm text-gray-600">remaining</div>
+      </div>
+      
+      <div className="text-xs text-gray-600 bg-white rounded p-2 border">
+        <strong>Reason:</strong> {reason}
+      </div>
     </div>
   );
 };
