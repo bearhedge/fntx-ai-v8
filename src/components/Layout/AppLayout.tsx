@@ -3,6 +3,7 @@ import React from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { ContextPanel } from './ContextPanel';
+import { EnhancedChatBot } from '../Chat/EnhancedChatBot';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -15,8 +16,8 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         <main className="flex-1 flex overflow-hidden">
-          <div className="flex-1 p-6 overflow-auto">
-            {children}
+          <div className="flex-1 flex flex-col">
+            <EnhancedChatBot />
           </div>
           <ContextPanel />
         </main>
