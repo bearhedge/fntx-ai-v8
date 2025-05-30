@@ -61,12 +61,8 @@ export const EnhancedChatBot = () => {
             </div>}
         </div>
         
-        {/* Message input */}
-        <div className="border-t border-gray-200 bg-white">
-          <div className="max-w-4xl mx-auto">
-            <EnhancedMessageInput onSendMessage={handleSendMessage} />
-          </div>
-        </div>
+        {/* Message input - removed border-t */}
+        <EnhancedMessageInput onSendMessage={handleSendMessage} />
       </div>
     </div>;
 };
