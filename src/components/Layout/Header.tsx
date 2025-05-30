@@ -1,14 +1,11 @@
-
 import React from 'react';
 import { Bot, Settings, User } from 'lucide-react';
-
 export const Header = () => {
-  return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
+  return <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
           <Bot className="w-8 h-8 text-blue-600" />
-          <h1 className="text-xl font-semibold text-gray-800">Trading Assistant</h1>
+          <h1 className="text-xl font-semibold text-gray-800"></h1>
         </div>
       </div>
 
@@ -24,6 +21,5 @@ export const Header = () => {
           <User className="w-5 h-5" />
         </button>
       </div>
-    </header>
-  );
+    </header>;
 };
