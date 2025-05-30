@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import { MessageSquare, Plus, User, ChevronUp, BookOpen, Settings, Home, Mail, LogOut } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 const previousChats = [{
   id: 1,
   title: 'Wednesday, 28 May 2025',
@@ -25,7 +18,6 @@ const previousChats = [{
   date: 'Fri',
   active: false
 }];
-
 export const Sidebar = () => {
   return <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
       {/* Header with New task button */}
@@ -76,7 +68,7 @@ export const Sidebar = () => {
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900">Bear Hedge</p>
+                <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
                 <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
               </div>
               <ChevronUp className="w-4 h-4 text-gray-400" />
