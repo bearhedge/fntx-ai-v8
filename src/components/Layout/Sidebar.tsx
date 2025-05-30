@@ -28,7 +28,7 @@ export const Sidebar = () => {
 
       {/* Logo positioned further right, cleanly in the chat area */}
       <div className="absolute top-4 -right-[160px] z-10">
-        <svg width="120" height="65" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="140" height="75" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M205.848 115.154H282.121V141.048H256.978V253.159H230.334V141.048H205.848V115.154Z" fill="#374151" />
           <path d="M85.0049 115.154H110.148L169.346 205.969V115.154H195.615V253.159H170.378L111.274 162.626V253.159H85.0049V115.154Z" fill="#374151" />
           <path d="M0.656494 115.154H69.1427V140.766H26.6437V165.815H69.1427V191.052H26.6437V253.159H0.656494V115.154Z" fill="#374151" />
