@@ -9,9 +9,9 @@ interface AppLayoutProps {
 
 export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-white flex w-full">
       <Sidebar />
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col min-w-0">
         <EnhancedChatBot />
       </main>
     </div>
