@@ -4,7 +4,7 @@ export const Header = () => {
   return <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
-          <svg width="32" height="17" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-back-600">
+          <svg width="32" height="17" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-black-1500">
             <path d="M205.848 115.154H282.121V141.048H256.978V253.159H230.334V141.048H205.848V115.154Z" fill="currentColor" />
             <path d="M85.0049 115.154H110.148L169.346 205.969V115.154H195.615V253.159H170.378L111.274 162.626V253.159H85.0049V115.154Z" fill="currentColor" />
             <path d="M0.656494 115.154H69.1427V140.766H26.6437V165.815H69.1427V191.052H26.6437V253.159H0.656494V115.154Z" fill="currentColor" />
