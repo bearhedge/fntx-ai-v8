@@ -18,11 +18,11 @@ export const EnhancedMessage = ({ message }: EnhancedMessageProps) => {
           isSystem
             ? 'bg-gray-50 text-gray-600 w-full text-sm'
             : isAI
-            ? 'bg-white border border-gray-200 border-l-4 border-l-blue-600'
-            : 'bg-blue-50 text-blue-900'
+            ? 'bg-gray-50 text-gray-800'
+            : 'bg-gray-800 text-white'
         }`}
       >
-        <div className="text-sm font-medium text-gray-800 mb-2">
+        <div className="text-sm whitespace-pre-line">
           {message.content}
         </div>
         
@@ -36,7 +36,7 @@ export const EnhancedMessage = ({ message }: EnhancedMessageProps) => {
           </div>
         )}
         
-        <div className="text-xs text-gray-500 mt-2">
+        <div className="text-xs text-gray-400 mt-2">
           {message.timestamp.toLocaleTimeString()}
         </div>
       </div>

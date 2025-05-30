@@ -8,22 +8,10 @@ export const EnhancedChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Welcome to Trading Assistant! I\'m here to help you optimize your trading strategies.',
+      content: 'Hello Jimmy Hou\nWhat can I do for you?',
       sender: 'ai',
       timestamp: new Date(),
       type: 'text'
-    },
-    {
-      id: '2',
-      content: 'Based on current market conditions, I recommend waiting 1 hour 21 minutes before considering new positions.',
-      sender: 'ai',
-      timestamp: new Date(),
-      type: 'waiting-period',
-      waitingPeriod: {
-        totalMinutes: 81,
-        remainingMinutes: 81,
-        reason: 'Market volatility is elevated due to upcoming economic data release.'
-      }
     }
   ]);
 
@@ -38,26 +26,11 @@ export const EnhancedChatBot = () => {
 
     setMessages(prev => [...prev, userMessage]);
 
-    // Handle special commands
-    if (content.toLowerCase().includes('show status') || content.toLowerCase().includes('context panel')) {
-      const systemMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: 'Context panel visibility toggled. You can see your current status and account information on the right side.',
-        sender: 'system',
-        timestamp: new Date(),
-        type: 'text'
-      };
-      setTimeout(() => {
-        setMessages(prev => [...prev, systemMessage]);
-      }, 500);
-      return;
-    }
-
     // Simulate AI response
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'I understand your request. Let me analyze the current market conditions and provide recommendations.',
+        content: 'I understand your request. Let me analyze and provide recommendations.',
         sender: 'ai',
         timestamp: new Date(),
         type: 'text'
@@ -67,20 +40,49 @@ export const EnhancedChatBot = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white border-r border-gray-200">
-      <div className="p-4 border-b border-gray-200 bg-white">
-        <h2 className="text-lg font-semibold text-gray-800">Trading Assistant</h2>
-        <p className="text-sm text-gray-600">Your AI-powered trading companion</p>
-      </div>
-      
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <EnhancedMessage key={message.id} message={message} />
-        ))}
-      </div>
-      
-      <div className="border-t border-gray-200">
-        <EnhancedMessageInput onSendMessage={handleSendMessage} />
+    <div className="h-full flex flex-col bg-white">
+      {/* Main chat area */}
+      <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
+        <div className="flex-1 overflow-y-auto p-8">
+          {messages.length === 1 ? (
+            // Welcome state
+            <div className="h-full flex flex-col justify-center items-center text-center">
+              <h1 className="text-4xl font-medium text-gray-800 mb-4">
+                Hello Jimmy Hou
+              </h1>
+              <p className="text-xl text-gray-500 mb-8">
+                What can I do for you?
+              </p>
+              
+              {/* Suggestion buttons */}
+              <div className="flex flex-wrap gap-3 justify-center max-w-2xl">
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition-colors">
+                  Resume creation ↗
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition-colors">
+                  Interactive learning websites ↗
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition-colors">
+                  College savings planning ↗
+                </button>
+              </div>
+            </div>
+          ) : (
+            // Messages view
+            <div className="space-y-6">
+              {messages.map((message) => (
+                <EnhancedMessage key={message.id} message={message} />
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {/* Message input */}
+        <div className="border-t border-gray-200 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <EnhancedMessageInput onSendMessage={handleSendMessage} />
+          </div>
+        </div>
       </div>
     </div>
   );
