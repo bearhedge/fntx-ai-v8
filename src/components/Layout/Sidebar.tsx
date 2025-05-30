@@ -2,18 +2,18 @@ import React from 'react';
 import { MessageSquare, Plus } from 'lucide-react';
 const previousChats = [{
   id: 1,
-  title: 'Responding to SparkBrainz ...',
-  date: 'Thu',
+  title: 'Wednesday, 28 May 2025',
+  date: 'Wed',
   active: false
 }, {
   id: 2,
-  title: 'Hello',
-  date: 'Sat',
+  title: 'Thursday, 29 May 2025',
+  date: 'Thu',
   active: true
 }, {
   id: 3,
-  title: 'AI Chatbot for Blockchain-B...',
-  date: '5/21',
+  title: 'Friday, 30 May 2025',
+  date: 'Fri',
   active: false
 }];
 export const Sidebar = () => {
