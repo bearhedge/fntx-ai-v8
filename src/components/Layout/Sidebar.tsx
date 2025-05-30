@@ -28,7 +28,7 @@ const previousChats = [{
 }];
 
 export const Sidebar = () => {
-  return <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
+  return <div className="w-80 bg-gray-100 flex flex-col relative">
       {/* Header with New task button */}
       <div className="p-4 border-b border-gray-300 flex items-center justify-between">
         <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
@@ -67,13 +67,13 @@ export const Sidebar = () => {
       </div>
 
       {/* User Profile Section */}
-      <div className="border-t border-gray-300 p-4">
+      <div className="p-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-pink-600 text-white text-sm font-medium">
-                  IB
+                  BH
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
