@@ -1,5 +1,15 @@
-import React from 'react';
-import { MessageSquare, Plus } from 'lucide-react';
+
+import React, { useState } from 'react';
+import { MessageSquare, Plus, User, ChevronUp, BookOpen, Settings, Home, Mail, LogOut } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 const previousChats = [{
   id: 1,
   title: 'Wednesday, 28 May 2025',
@@ -16,6 +26,7 @@ const previousChats = [{
   date: 'Fri',
   active: false
 }];
+
 export const Sidebar = () => {
   return <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
       {/* Header with New task button */}
@@ -53,6 +64,82 @@ export const Sidebar = () => {
               </div>
             </button>)}
         </div>
+      </div>
+
+      {/* User Profile Section */}
+      <div className="border-t border-gray-300 p-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="bg-pink-600 text-white text-sm font-medium">
+                  IB
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900">Bear Hedge</p>
+                <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
+              </div>
+              <ChevronUp className="w-4 h-4 text-gray-400" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-64 mb-2 ml-4" align="start" side="top">
+            {/* Plan Section */}
+            <div className="p-3 bg-gray-50 rounded-lg mb-2">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">Free</span>
+                <button className="px-3 py-1 bg-black text-white text-xs rounded-full hover:bg-gray-800 transition-colors">
+                  Upgrade
+                </button>
+              </div>
+              <div className="flex items-center justify-between text-xs text-gray-600">
+                <span className="flex items-center space-x-1">
+                  <span>✨</span>
+                  <span>Credits</span>
+                </span>
+                <span>190 + 291 →</span>
+              </div>
+            </div>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+              <BookOpen className="w-4 h-4" />
+              <span>Knowledge</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+              <User className="w-4 h-4" />
+              <span>Account</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+              <Settings className="w-4 h-4" />
+              <span>Settings</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+              <Home className="w-4 h-4" />
+              <span>Homepage</span>
+              <span className="ml-auto">↗</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+              <Mail className="w-4 h-4" />
+              <span>Contact us</span>
+              <span className="ml-auto">↗</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2 text-red-600">
+              <LogOut className="w-4 h-4" />
+              <span>Sign out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>;
 };
