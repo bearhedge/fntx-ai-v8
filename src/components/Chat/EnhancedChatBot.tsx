@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import { EnhancedMessage } from './EnhancedMessage';
 import { EnhancedMessageInput } from './EnhancedMessageInput';
 import { Message } from '../../types/trading';
+
 export const EnhancedChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([{
     id: '1',
@@ -10,6 +12,7 @@ export const EnhancedChatBot = () => {
     timestamp: new Date(),
     type: 'text'
   }]);
+
   const handleSendMessage = (content: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -32,10 +35,11 @@ export const EnhancedChatBot = () => {
       setMessages(prev => [...prev, aiResponse]);
     }, 1000);
   };
+
   return <div className="h-full flex flex-col bg-white">
       {/* Main chat area */}
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-8 pt-24">
           {messages.length === 1 ?
         // Welcome state
         <div className="h-full flex flex-col justify-center items-center text-center">
