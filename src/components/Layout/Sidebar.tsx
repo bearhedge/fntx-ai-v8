@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { MessageSquare, Plus } from 'lucide-react';
-
 const previousChats = [{
   id: 1,
   title: 'Responding to SparkBrainz ...',
@@ -18,15 +16,13 @@ const previousChats = [{
   date: '5/21',
   active: false
 }];
-
 export const Sidebar = () => {
-  return (
-    <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
+  return <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
       {/* Header with New task button */}
       <div className="p-4 border-b border-gray-300 flex items-center justify-between">
         <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
           <Plus className="w-4 h-4" />
-          <span className="text-sm font-medium text-gray-700">New task</span>
+          <span className="text-sm font-medium text-gray-700">New day</span>
         </button>
       </div>
 
@@ -45,15 +41,7 @@ export const Sidebar = () => {
       {/* Previous chats list */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-2">
-          {previousChats.map(chat => (
-            <button 
-              key={chat.id} 
-              className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${
-                chat.active 
-                  ? 'bg-gray-200 border border-gray-400' 
-                  : 'hover:bg-gray-200'
-              }`}
-            >
+          {previousChats.map(chat => <button key={chat.id} className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
               <MessageSquare className="w-4 h-4 mt-0.5 text-gray-600 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-800 truncate">
@@ -63,10 +51,8 @@ export const Sidebar = () => {
                   {chat.date}
                 </p>
               </div>
-            </button>
-          ))}
+            </button>)}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
