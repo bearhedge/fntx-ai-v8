@@ -70,13 +70,13 @@ export const ContextPanel = ({
 
             {/* Computer Interface */}
             <div className="p-15 w-full max-w-sm bg-zinc-300 rounded-xl">
-              <div className="text-center">
-                <div className="w-200 h-100 mx-auto mb-6 flex items-center justify-center relative bg-gray-100 rounded-xl">
-                  <Monitor className="w-16 h-16 text-gray-400" />
+              <div className="text-center bg-zinc-300 px-0 py-0 my-[30px] mx-[30px]">
+                <div className="w-200 h-200 mb-6 flex items-center justify-center relative bg-gray-100 rounded-xl px-0 mx-0 my-0 py-[10px]">
+                  <Monitor className="w-40 h-40 text-gray-400" />
                   {/* Small power indicator */}
                   
                 </div>
-                <div className="text-gray-400 text-base">FNTX's Computer is inactive</div>
+                <div className="text-gray-500 text-base">FNTX's Computer is inactive</div>
               </div>
             </div>
           </div>
