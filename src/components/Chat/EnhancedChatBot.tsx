@@ -70,12 +70,12 @@ export const EnhancedChatBot = ({
     <div className="h-screen flex flex-col bg-white relative">
       {/* Main chat area with fixed height and scroll */}
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-h-0">
-        <div className="flex-1 overflow-y-auto p-8 pb-4">
+        <div className="flex-1 overflow-y-auto p-4 pb-4">
           {messages.length === 1 ? (
             // Welcome state - with FNTX logo positioned to the left
             <div className="h-full flex flex-col justify-center">
               {/* FNTX logo positioned to the left */}
-              <div className="flex justify-start mb-4 pl-8">
+              <div className="flex justify-start mb-4 pl-2">
                 <svg width="100" height="54" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M205.848 115.154H282.121V141.048H256.978V253.159H230.334V141.048H205.848V115.154Z" fill="#374151" />
                   <path d="M85.0049 115.154H110.148L169.346 205.969V115.154H195.615V253.159H170.378L111.274 162.626V253.159H85.0049V115.154Z" fill="#374151" />
@@ -87,7 +87,7 @@ export const EnhancedChatBot = ({
               </div>
               
               {/* Welcome text aligned to the left */}
-              <div className="text-left pl-8">
+              <div className="text-left pl-2">
                 <h1 className="text-4xl font-medium text-gray-800 mb-4">Hello Jimmy Hou</h1>
                 <p className="text-xl text-gray-500 mb-8">
                   What can I do for you?
@@ -103,7 +103,7 @@ export const EnhancedChatBot = ({
             </div>
           ) : (
             // Messages view - all messages and logos aligned to the far left
-            <div className="space-y-6 pl-8">
+            <div className="space-y-6 pl-2">
               {messages.map((message, index) => {
                 // Show FNTX logo above every AI message, aligned to the far left
                 const showLogo = message.sender === 'ai';
