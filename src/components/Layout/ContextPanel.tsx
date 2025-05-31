@@ -154,7 +154,7 @@ export const ContextPanel = ({
                       <div className="w-3 h-3 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
                         <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                       </div>
-                      <span className="text-xs font-thin text-slate-950">Waiting for user instructions</span>
+                      <span className="text-xs font-thin text-slate-50">Waiting for user instructions</span>
                     </div>}
                 </div>
               </div>
