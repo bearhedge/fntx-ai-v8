@@ -16,7 +16,7 @@ export const ContextPanel = ({
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-700">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg font-semibold">FNTX's Computer</h2>
+          <h2 className="text-lg font-thin">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
@@ -55,15 +55,15 @@ export const ContextPanel = ({
             {/* Manus Status */}
             <div className="mb-16">
               <div className="flex items-center space-x-4 mb-4">
-                <div className="w-12 h-12 bg-gray-700 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-zinc-200">
                   <Brain className="w-6 h-6 text-gray-400" />
                 </div>
                 <div>
-                  <div className="flex items-center space-x-2 mb-1">
+                  <div className="flex items-center space-x-2 mb-1 rounded-none">
                     <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                    <span className="text-gray-300 text-lg font-medium">FNTX is inactive</span>
+                    <span className="text-gray-300 font-medium text-xs">FNTX is inactive</span>
                   </div>
-                  <div className="text-gray-400 text-sm">Waiting for instructions</div>
+                  <div className="text-gray-200 text-sm rounded-none">Waiting for instructions</div>
                 </div>
               </div>
             </div>
