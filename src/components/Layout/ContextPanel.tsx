@@ -14,9 +14,9 @@ export const ContextPanel = ({
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
   return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-700 bg-gray-100">
+      <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-100">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg text-gray-950 font-medium">FNTX's Computer</h2>
+          <h2 className="text-lg text-gray-950 font-bold">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
