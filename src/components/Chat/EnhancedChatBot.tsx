@@ -127,7 +127,7 @@ export const EnhancedChatBot = ({
       {showContextPanel && !isContextPanelExpanded && <div className="absolute bottom-24 right-8 z-10">
           <div onClick={onToggleContextPanel} className="text-black rounded-lg flex items-center space-x-3 cursor-pointer transition-colors shadow-lg bg-gray-200 py-[12px] px-[20px] mx-0 my-0">
             <Monitor className="w-4 h-4" />
-            <span className="text-sm font-medium">FNTX's Computer</span>
+            <span className="text-sm font-light">FNTX's Computer</span>
             <Maximize2 className="w-4 h-4" />
           </div>
           {isProcessing && <div className="mt-2 text-xs text-gray-500 text-center">
