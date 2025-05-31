@@ -41,7 +41,7 @@ export const ContextPanel = ({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <button onClick={handleToggle} className="p-1 hover:bg-gray-700 rounded transition-colors">
+          <button onClick={handleToggle} className="p-1 rounded transition-colors bg-transparent">
             <Minimize2 className="w-4 h-4 text-slate-950" />
           </button>
         </div>
