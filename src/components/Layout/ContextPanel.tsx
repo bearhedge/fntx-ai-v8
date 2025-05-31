@@ -14,9 +14,9 @@ export const ContextPanel = ({
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
   return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-100">
+      <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-zinc-400">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg text-gray-950 font-bold">FNTX's Computer</h2>
+          <h2 className="text-lg font-bold text-slate-50">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
@@ -69,14 +69,14 @@ export const ContextPanel = ({
             </div>
 
             {/* Computer Interface */}
-            <div className="p-15 w-full max-w-sm bg-zinc-300 rounded-xl">
-              <div className="text-center bg-zinc-300 px-0 py-0 my-[30px] mx-[30px]">
+            <div className="p-15 w-full max-w-sm rounded-xl bg-zinc-400">
+              <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-zinc-400">
                 <div className="w-200 h-200 mb-6 flex items-center justify-center relative bg-gray-100 rounded-xl px-0 mx-0 my-0 py-[10px]">
                   <Monitor className="w-40 h-40 text-gray-400" />
                   {/* Small power indicator */}
                   
                 </div>
-                <div className="text-gray-500 text-base">FNTX's Computer is inactive</div>
+                <div className="text-slate-100 text-base">FNTX's Computer is inactive</div>
               </div>
             </div>
           </div>
@@ -84,11 +84,11 @@ export const ContextPanel = ({
 
         {/* Task Progress - Fixed at bottom */}
         <div className="mt-auto">
-          <div className="p-2 bg-slate-200 rounded-xl px-[12px]">
+          <div className="p-2 rounded-xl px-[12px] bg-zinc-400">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-thin text-zinc-950">Task progress</h3>
+              <h3 className="text-sm font-thin text-slate-50">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
-                <span className="text-xs text-slate-700">1 / 1</span>
+                <span className="text-xs font-bold text-slate-50">1 / 1</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
               </div>
             </div>
@@ -96,7 +96,7 @@ export const ContextPanel = ({
               <div className="w-3 h-3 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
               </div>
-              <span className="text-zinc-950 text-xs font-thin">Waiting for user instructions</span>
+              <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-50">Waiting for user instructions</span>
             </div>
           </div>
         </div>
