@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface ContextPanelProps {
   isOpen?: boolean;
@@ -123,51 +124,54 @@ export const ContextPanel = ({
         {/* Task Progress - Fixed at bottom */}
         <div className="mt-auto">
           <div className="p-2 rounded-xl bg-gray-200 py-[10px] my-[15px] px-[12px] mx-0">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
-              <div className="flex items-center text-sm text-gray-400">
-                <span className="text-slate-950 font-thin text-xs">
-                  {isActive ? '4 / 4' : '1 / 1'}
-                </span>
-                <button 
-                  onClick={() => setIsTasksExpanded(!isTasksExpanded)}
-                  className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors"
-                >
-                  {isTasksExpanded ? 
-                    <ChevronUp className="w-4 h-4" /> : 
-                    <ChevronDown className="w-4 h-4" />
-                  }
-                </button>
-              </div>
-            </div>
-            
-            {isTasksExpanded && isActive ? (
-              // Expanded view showing completed tasks
-              <div className="space-y-3 mb-4">
-                {completedTasks.map((task, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <div className="w-3 h-3 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <div className="w-1 h-1 bg-white rounded-full"></div>
-                    </div>
-                    <span className="text-xs font-thin text-slate-950">{task}</span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              // Collapsed view
-              <div className="flex items-center space-x-4">
-                <div className={`w-3 h-3 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  isActive ? 'bg-green-500' : 'bg-gray-600'
-                }`}>
-                  <div className={`w-1 h-1 rounded-full ${
-                    isActive ? 'bg-white' : 'bg-gray-400'
-                  }`}></div>
+            <Collapsible open={isTasksExpanded} onOpenChange={setIsTasksExpanded}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
+                <div className="flex items-center text-sm text-gray-400">
+                  <span className="text-slate-950 font-thin text-xs">
+                    {isActive ? '4 / 4' : '1 / 1'}
+                  </span>
+                  <CollapsibleTrigger asChild>
+                    <button className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors">
+                      {isTasksExpanded ? 
+                        <ChevronUp className="w-4 h-4" /> : 
+                        <ChevronDown className="w-4 h-4" />
+                      }
+                    </button>
+                  </CollapsibleTrigger>
                 </div>
-                <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-950">
-                  {isActive ? 'Validating and delivering enhanced front-end design...' : 'Waiting for user instructions'}
-                </span>
               </div>
-            )}
+              
+              <CollapsibleContent className="space-y-0">
+                {isTasksExpanded && isActive ? (
+                  // Expanded view showing completed tasks
+                  <div className="space-y-3 mb-4">
+                    {completedTasks.map((task, index) => (
+                      <div key={index} className="flex items-center space-x-4">
+                        <div className="w-3 h-3 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                        </div>
+                        <span className="text-xs font-thin text-slate-950">{task}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  // Collapsed view
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-3 h-3 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      isActive ? 'bg-green-500' : 'bg-gray-600'
+                    }`}>
+                      <div className={`w-1 h-1 rounded-full ${
+                        isActive ? 'bg-white' : 'bg-gray-400'
+                      }`}></div>
+                    </div>
+                    <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-950">
+                      {isActive ? 'Validating and delivering enhanced front-end design...' : 'Waiting for user instructions'}
+                    </span>
+                  </div>
+                )}
+              </CollapsibleContent>
+            </Collapsible>
           </div>
         </div>
       </div>
