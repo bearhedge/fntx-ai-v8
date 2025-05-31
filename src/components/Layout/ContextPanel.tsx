@@ -1,34 +1,28 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Monitor, Minimize2, Settings, Brain } from 'lucide-react';
-
 interface ContextPanelProps {
   isOpen?: boolean;
   onToggle?: () => void;
 }
-
-export const ContextPanel = ({ isOpen: externalIsOpen, onToggle }: ContextPanelProps) => {
+export const ContextPanel = ({
+  isOpen: externalIsOpen,
+  onToggle
+}: ContextPanelProps) => {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
-  
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
-
-  return (
-    <div className="bg-gray-900 text-white h-full flex flex-col">
+  return <div className="bg-gray-900 text-white h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-700">
         <div className="flex items-center space-x-2">
           <Monitor className="w-5 h-5" />
-          <h2 className="text-lg font-semibold">Manus's Computer</h2>
+          <h2 className="text-lg font-semibold">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <button className="p-1 hover:bg-gray-700 rounded transition-colors">
             <Settings className="w-4 h-4" />
           </button>
-          <button
-            onClick={handleToggle}
-            className="p-1 hover:bg-gray-700 rounded transition-colors"
-          >
+          <button onClick={handleToggle} className="p-1 hover:bg-gray-700 rounded transition-colors">
             <Minimize2 className="w-4 h-4" />
           </button>
         </div>
@@ -46,7 +40,7 @@ export const ContextPanel = ({ isOpen: externalIsOpen, onToggle }: ContextPanelP
               <div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                  <span className="text-gray-400 text-sm">Manus is inactive</span>
+                  <span className="text-gray-400 text-sm">FNTX is inactive</span>
                 </div>
                 <div className="text-gray-300 text-sm">Waiting for instructions</div>
               </div>
@@ -59,7 +53,7 @@ export const ContextPanel = ({ isOpen: externalIsOpen, onToggle }: ContextPanelP
               <div className="w-24 h-16 bg-gray-600 rounded-lg mx-auto mb-2 flex items-center justify-center">
                 <Monitor className="w-8 h-8 text-gray-400" />
               </div>
-              <div className="text-gray-400 text-sm">Manus's computer is inactive</div>
+              <div className="text-gray-400 text-sm">FNTX's computer is inactive</div>
             </div>
           </div>
 
@@ -100,6 +94,5 @@ export const ContextPanel = ({ isOpen: externalIsOpen, onToggle }: ContextPanelP
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
