@@ -23,7 +23,7 @@ export const ContextPanel = ({
             <DropdownMenuTrigger asChild>
               <button className="p-1 hover:bg-gray-700 rounded transition-colors flex items-center space-x-1">
                 <Monitor className="w-4 h-4" />
-                <ChevronDown className="w-3 h-3" />
+                <ChevronDown className="w-3 h-3 text-slate-950" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-25 border-gray-200 bg-gray-200">
