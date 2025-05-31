@@ -69,7 +69,7 @@ export const ContextPanel = ({
             </div>
 
             {/* Computer Interface */}
-            <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-0 my-[20px] mx-0 px-0">
+            <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-0 mx-0 px-0 my-0">
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-gray-200">
                 <div className="w-100 h-100 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 bg-gray-200 py-[30px]">
                   <Monitor className="w-40 h-40 text-gray-400" />
@@ -88,7 +88,7 @@ export const ContextPanel = ({
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
-                <span className="text-slate-50 font-thin text-sm">1 / 1</span>
+                <span className="text-slate-950 font-thin text-xs">1 / 1</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
               </div>
             </div>
