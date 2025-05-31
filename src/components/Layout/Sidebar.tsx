@@ -3,7 +3,6 @@ import { MessageSquare, Plus, User, ChevronUp, BookOpen, Settings, Home, Mail, L
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-
 const previousChats = [{
   id: 1,
   title: 'Wednesday, 28 May 2025',
@@ -20,50 +19,32 @@ const previousChats = [{
   date: 'Fri',
   active: false
 }];
-
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
   const openSearch = () => {
     setIsSearchOpen(true);
   };
-
   if (isCollapsed) {
-    return (
-      <div className="w-16 bg-gray-100 border-r border-gray-300 flex flex-col relative">
+    return <div className="w-16 bg-gray-100 border-r border-gray-300 flex flex-col relative">
         {/* Collapsed header */}
         <div className="p-4 border-b border-gray-300 flex flex-col items-center space-y-3">
-          <button 
-            onClick={toggleCollapse}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-          >
+          <button onClick={toggleCollapse} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
             <PanelLeftOpen className="w-4 h-4 text-gray-600" />
           </button>
-          <button 
-            onClick={openSearch}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-          >
+          <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
             <Search className="w-4 h-4 text-gray-600" />
           </button>
         </div>
 
         {/* Collapsed chat items */}
         <div className="flex-1 overflow-y-auto p-2">
-          {previousChats.map(chat => (
-            <button 
-              key={chat.id}
-              className={`w-full p-2 rounded-lg transition-colors mb-2 ${
-                chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'
-              }`}
-            >
+          {previousChats.map(chat => <button key={chat.id} className={`w-full p-2 rounded-lg transition-colors mb-2 ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
               <MessageSquare className="w-4 h-4 text-gray-600 mx-auto" />
-            </button>
-          ))}
+            </button>)}
         </div>
 
         {/* Collapsed user profile */}
@@ -143,34 +124,23 @@ export const Sidebar = () => {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Recent">
-              {previousChats.map(chat => (
-                <CommandItem key={chat.id}>
+              {previousChats.map(chat => <CommandItem key={chat.id}>
                   <MessageSquare className="mr-2 h-4 w-4" />
                   <span>{chat.title}</span>
-                </CommandItem>
-              ))}
+                </CommandItem>)}
             </CommandGroup>
           </CommandList>
         </CommandDialog>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
+  return <div className="w-80 bg-gray-100 border-r border-gray-300 flex flex-col relative">
       {/* Header with collapse, New task button, and search */}
       <div className="p-4 border-b border-gray-300">
         <div className="flex items-center justify-between mb-3">
-          <button 
-            onClick={toggleCollapse}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-          >
+          <button onClick={toggleCollapse} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
             <PanelLeftClose className="w-4 h-4 text-gray-600" />
           </button>
-          <button 
-            onClick={openSearch}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-          >
+          <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
             <Search className="w-4 h-4 text-gray-600" />
           </button>
         </div>
@@ -182,26 +152,13 @@ export const Sidebar = () => {
 
       {/* Logo positioned further right, cleanly in the chat area */}
       <div className="absolute top-4 -right-[165px] z-10">
-        <svg width="140" height="75" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M205.848 115.154H282.121V141.048H256.978V253.159H230.334V141.048H205.848V115.154Z" fill="#374151" />
-          <path d="M85.0049 115.154H110.148L169.346 205.969V115.154H195.615V253.159H170.378L111.274 162.626V253.159H85.0049V115.154Z" fill="#374151" />
-          <path d="M0.656494 115.154H69.1427V140.766H26.6437V165.815H69.1427V191.052H26.6437V253.159H0.656494V115.154Z" fill="#374151" />
-          <path d="M232.712 141.035V115.175H314.998L356.238 167.605C356.238 167.605 441.088 55.0648 639.478 0.53479C639.478 0.53479 477.868 51.5648 352.048 212.345C338.068 194.175 292.628 141.045 292.628 141.045H270.057H259.972H232.712V141.035Z" fill="#374151" />
-          <path d="M319.538 189.975L341.558 216.885L212.938 346.555L319.538 189.975Z" fill="#9CA3AF" />
-          <path d="M361.838 215.715L403.078 263.365H445.718L384.198 186.475L361.838 215.715Z" fill="#9CA3AF" />
-        </svg>
+        
       </div>
 
       {/* Previous chats list */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-2">
-          {previousChats.map(chat => (
-            <button 
-              key={chat.id} 
-              className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${
-                chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'
-              }`}
-            >
+          {previousChats.map(chat => <button key={chat.id} className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
               <MessageSquare className="w-4 h-4 mt-0.5 text-gray-600 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-800 truncate">
@@ -211,8 +168,7 @@ export const Sidebar = () => {
                   {chat.date}
                 </p>
               </div>
-            </button>
-          ))}
+            </button>)}
         </div>
       </div>
 
@@ -298,15 +254,12 @@ export const Sidebar = () => {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Recent">
-            {previousChats.map(chat => (
-              <CommandItem key={chat.id}>
+            {previousChats.map(chat => <CommandItem key={chat.id}>
                 <MessageSquare className="mr-2 h-4 w-4" />
                 <span>{chat.title}</span>
-              </CommandItem>
-            ))}
+              </CommandItem>)}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
-    </div>
-  );
+    </div>;
 };
