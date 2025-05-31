@@ -16,7 +16,12 @@ export const ContextPanel = ({
   const [isTasksExpanded, setIsTasksExpanded] = useState(false);
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
-  const completedTasks = ["Extract and review the front-end design section from the provided RTF d...", "Analyze and benchmark the design against the color theme used by bear...", "Draft highly detailed web application front-end design instructions with v...", "Validate and deliver the enhanced front-end design section to the user."];
+  const completedTasks = [
+    "Access IBKR API to analyse daily option chain of SPY",
+    "Analyse SPY option chain to identify viable option contracts",
+    "Conduct market assessment to evaluate intra-day volatility levels",
+    "Set-up bracket orders for trade execution and review risk levels"
+  ];
   return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl relative">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-200">
