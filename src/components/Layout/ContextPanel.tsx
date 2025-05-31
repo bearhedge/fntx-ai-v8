@@ -60,10 +60,10 @@ export const ContextPanel = ({
                 </div>
                 <div>
                   <div className="flex items-center space-x-2 mb-1 rounded-none">
-                    <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
-                    <span className="font-thin text-sm text-zinc-950">FNTX is inactive</span>
+                    
+                    <span className="font-thin text-zinc-950 text-left text-sm">FNTX is inactive</span>
                   </div>
-                  <div className="text-gray-200 text-sm rounded-none mx-0 px-0 my-0 py-0">Waiting for instructions</div>
+                  <div className="text-gray-200 text-sm rounded-none mx--1 px-3 my-0 py-0">Waiting for instructions</div>
                 </div>
               </div>
             </div>
