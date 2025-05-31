@@ -26,7 +26,7 @@ export const ContextPanel = ({
                 <ChevronDown className="w-3 h-3" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48 bg-gray-700 border-gray-600" align="end">
+            <DropdownMenuContent align="end" className="w-25 border-gray-200 bg-gray-200">
               <DropdownMenuItem className="flex items-center space-x-3 p-3 text-white hover:bg-gray-600">
                 <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
                   <span className="text-xs text-white font-medium">VS</span>
