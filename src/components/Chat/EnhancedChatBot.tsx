@@ -125,7 +125,7 @@ export const EnhancedChatBot = ({
 
       {/* Context Panel Collapsed State */}
       {showContextPanel && !isContextPanelExpanded && <div className="absolute bottom-24 right-8 z-10">
-          <div className="bg-gray-800 text-white rounded-lg px-4 py-3 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors shadow-lg" onClick={onToggleContextPanel}>
+          <div onClick={onToggleContextPanel} className="text-black rounded-lg flex items-center space-x-3 cursor-pointer transition-colors shadow-lg bg-gray-200 py-[12px] px-[20px] mx-0 my-0">
             <Monitor className="w-4 h-4" />
             <span className="text-sm font-medium">FNTX's Computer</span>
             <Maximize2 className="w-4 h-4" />
