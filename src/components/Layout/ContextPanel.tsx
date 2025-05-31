@@ -1,13 +1,10 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
 interface ContextPanelProps {
   isOpen?: boolean;
   onToggle?: () => void;
 }
-
 export const ContextPanel = ({
   isOpen: externalIsOpen,
   onToggle
@@ -15,13 +12,11 @@ export const ContextPanel = ({
   const [internalIsOpen, setInternalIsOpen] = useState(true);
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
-
-  return (
-    <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
+  return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-700">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg font-semibold">Manus's Computer</h2>
+          <h2 className="text-lg font-semibold">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
@@ -66,7 +61,7 @@ export const ContextPanel = ({
                 <div>
                   <div className="flex items-center space-x-2 mb-1">
                     <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                    <span className="text-gray-300 text-lg font-medium">Manus is inactive</span>
+                    <span className="text-gray-300 text-lg font-medium">FNTX is inactive</span>
                   </div>
                   <div className="text-gray-400 text-sm">Waiting for instructions</div>
                 </div>
@@ -81,7 +76,7 @@ export const ContextPanel = ({
                   {/* Small power indicator */}
                   <div className="absolute bottom-2 right-2 w-2 h-2 bg-gray-500 rounded-full"></div>
                 </div>
-                <div className="text-gray-400 text-base">Manus's computer is inactive</div>
+                <div className="text-gray-400 text-base">FNTX's computer is inactive</div>
               </div>
             </div>
           </div>
@@ -106,6 +101,5 @@ export const ContextPanel = ({
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
