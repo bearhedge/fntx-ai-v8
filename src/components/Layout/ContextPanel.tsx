@@ -63,7 +63,7 @@ export const ContextPanel = ({
                     
                     <span className="font-thin text-zinc-950 text-left text-sm">FNTX is inactive</span>
                   </div>
-                  <div className="text-gray-200 text-sm rounded-none mx--1 px-3 my-0 py-0">Waiting for instructions</div>
+                  <div className="text-gray-200 text-sm rounded-none mx-1 px-0 my-0 py-0">Waiting for instructions</div>
                 </div>
               </div>
             </div>
