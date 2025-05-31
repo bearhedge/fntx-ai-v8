@@ -14,9 +14,9 @@ export const ContextPanel = ({
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
   return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-zinc-400">
+      <div className="flex items-center justify-between p-6 border-b border-zinc-400 bg-zinc-400">
         <div className="flex items-center space-x-2">
-          <h2 className="text-slate-950 font-medium text-2xl">FNTX's Computer</h2>
+          <h2 className="font-medium text-2xl text-slate-800">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
@@ -55,15 +55,15 @@ export const ContextPanel = ({
             {/* Manus Status */}
             <div className="mb-16">
               <div className="flex items-center space-x-1 mb-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-300">
-                  <Brain className="w-6 h-6 text-gray-400" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-500">
+                  <Brain className="w-6 h-6 text-slate-50" />
                 </div>
                 <div className="px-[10px]">
                   <div className="flex items-center space-x-2 mb-1 rounded-none">
                     
                     <span className="font-thin text-zinc-950 text-left text-sm">FNTX is inactive</span>
                   </div>
-                  <div className="text-slate-950 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-300">Waiting for instructions</div>
+                  <div className="text-zinc-500 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-300">Waiting for instructions</div>
                 </div>
               </div>
             </div>
@@ -76,7 +76,7 @@ export const ContextPanel = ({
                   {/* Small power indicator */}
                   
                 </div>
-                <div className="text-slate-950 text-base">FNTX's Computer is inactive</div>
+                <div className="text-slate-800 text-base">FNTX's Computer is inactive</div>
               </div>
             </div>
           </div>
