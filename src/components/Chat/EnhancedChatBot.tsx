@@ -67,7 +67,7 @@ export const EnhancedChatBot = ({
     <div className="h-full flex flex-col bg-white relative">
       {/* Main chat area */}
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
-        <div className="flex-1 overflow-y-auto p-8 pt-24">
+        <div className="flex-1 overflow-y-auto p-8 pb-4">
           {messages.length === 1 ? (
             // Welcome state
             <div className="h-full flex flex-col justify-center items-center text-center">
@@ -95,7 +95,7 @@ export const EnhancedChatBot = ({
         
         {/* Context Panel Collapsed State */}
         {showContextPanel && !isContextPanelExpanded && (
-          <div className="absolute bottom-24 right-8 z-10">
+          <div className="absolute bottom-4 right-8 z-10">
             <div 
               className="bg-gray-800 text-white rounded-lg px-4 py-3 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors shadow-lg"
               onClick={onToggleContextPanel}
@@ -112,7 +112,7 @@ export const EnhancedChatBot = ({
           </div>
         )}
         
-        {/* Message input */}
+        {/* Message input at the bottom */}
         <EnhancedMessageInput onSendMessage={handleSendMessage} />
       </div>
     </div>
