@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Monitor, Minimize2 } from 'lucide-react';
 
 interface ContextPanelProps {
   isOpen?: boolean;
@@ -14,71 +14,78 @@ export const ContextPanel = ({ isOpen: externalIsOpen, onToggle }: ContextPanelP
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
 
   return (
-    <div className={`bg-white border-l border-gray-200 flex transition-all duration-300 ${
-      isOpen ? 'w-80' : 'w-12'
-    }`}>
-      <button
-        onClick={handleToggle}
-        className="w-12 flex items-center justify-center border-r border-gray-200 hover:bg-gray-50 transition-colors"
-      >
-        {isOpen ? (
-          <ChevronRight className="w-4 h-4 text-gray-600" />
-        ) : (
-          <ChevronLeft className="w-4 h-4 text-gray-600" />
-        )}
-      </button>
-      
-      {isOpen && (
-        <div className="flex-1 p-6 overflow-auto">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Current Status</h2>
-            <div className="bg-gray-50 rounded-lg p-4 shadow-sm border border-gray-200">
-              <div className="space-y-3 text-left">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Market Status:</span>
-                  <span className="font-semibold text-green-600">Open</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">SPY Price:</span>
-                  <span className="font-semibold">$452.75</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">VIX:</span>
-                  <span className="font-semibold">16.42</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Next Recommendation:</span>
-                  <span className="font-semibold text-blue-600">1h 21m</span>
-                </div>
-              </div>
+    <div className="bg-gray-900 text-white h-full flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-700">
+        <div className="flex items-center space-x-2">
+          <Monitor className="w-5 h-5" />
+          <h2 className="text-lg font-semibold">Manus's Computer</h2>
+        </div>
+        <button
+          onClick={handleToggle}
+          className="p-1 hover:bg-gray-700 rounded transition-colors"
+        >
+          <Minimize2 className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 p-4 overflow-auto">
+        <div className="space-y-4">
+          {/* Status */}
+          <div className="bg-gray-800 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+              <span className="text-gray-400 text-sm">Manus is inactive</span>
             </div>
-            
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Account Summary</h3>
-              <div className="bg-gray-50 rounded-lg p-4 shadow-sm border border-gray-200">
-                <div className="space-y-3 text-left">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Balance:</span>
-                    <span className="font-semibold">$25,000.00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Available:</span>
-                    <span className="font-semibold">$18,500.00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Daily P&L:</span>
-                    <span className="font-semibold text-green-600">+$245.50</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Win Rate:</span>
-                    <span className="font-semibold">68%</span>
-                  </div>
+            <div className="text-gray-300 text-sm">Waiting for instructions</div>
+          </div>
+
+          {/* Computer Interface */}
+          <div className="bg-gray-800 rounded-lg p-4">
+            <div className="text-center mb-4">
+              <div className="w-24 h-16 bg-gray-600 rounded-lg mx-auto mb-2 flex items-center justify-center">
+                <Monitor className="w-8 h-8 text-gray-400" />
+              </div>
+              <div className="text-gray-400 text-sm">Manus's computer is inactive</div>
+            </div>
+          </div>
+
+          {/* Task Progress */}
+          <div className="bg-gray-800 rounded-lg p-4">
+            <h3 className="text-sm font-medium mb-3">Task progress</h3>
+            <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+              <span>1 / 1</span>
+              <ChevronRight className="w-4 h-4" />
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-6 h-6 bg-gray-600 rounded flex items-center justify-center">
+                <div className="w-2 h-2 bg-gray-400 rounded"></div>
+              </div>
+              <span className="text-gray-300 text-sm">Wait for user instructions</span>
+            </div>
+          </div>
+
+          {/* Application Selection */}
+          <div className="bg-gray-800 rounded-lg p-4">
+            <h3 className="text-sm font-medium mb-3">Select an application to use</h3>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
+                <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
+                  <span className="text-xs text-white">VS</span>
                 </div>
+                <span className="text-gray-300 text-sm">VS Code</span>
+              </div>
+              <div className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
+                <div className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center">
+                  <span className="text-xs text-white">B</span>
+                </div>
+                <span className="text-gray-300 text-sm">Browser</span>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
