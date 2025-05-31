@@ -1,15 +1,12 @@
-
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
 interface ContextPanelProps {
   isOpen?: boolean;
   onToggle?: () => void;
   isActive?: boolean;
 }
-
 export const ContextPanel = ({
   isOpen: externalIsOpen,
   onToggle,
@@ -17,19 +14,10 @@ export const ContextPanel = ({
 }: ContextPanelProps) => {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
   const [isTasksExpanded, setIsTasksExpanded] = useState(false);
-  
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
-
-  const completedTasks = [
-    "Extract and review the front-end design section from the provided RTF d...",
-    "Analyze and benchmark the design against the color theme used by bear...",
-    "Draft highly detailed web application front-end design instructions with v...",
-    "Validate and deliver the enhanced front-end design section to the user."
-  ];
-
-  return (
-    <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl relative">
+  const completedTasks = ["Extract and review the front-end design section from the provided RTF d...", "Analyze and benchmark the design against the color theme used by bear...", "Draft highly detailed web application front-end design instructions with v...", "Validate and deliver the enhanced front-end design section to the user."];
+  return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl relative">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-200">
         <div className="flex items-center space-x-2">
@@ -92,24 +80,26 @@ export const ContextPanel = ({
             <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-[2px] my-0 px-0 mx-0">
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-gray-200">
                 <div className="w-100 h-100 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 bg-gray-200 py-[30px]">
-                  {isActive ? (
-                    // Active state - enhanced live video feed
-                    <div className="w-40 h-40 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
+                  {isActive ?
+                // Active state - enhanced live video feed
+                <div className="w-40 h-40 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
                       {/* Dark gradient background */}
                       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-black"></div>
                       
                       {/* Grid pattern overlay */}
                       <div className="absolute inset-0 opacity-20" style={{
-                        backgroundImage: `
+                    backgroundImage: `
                           linear-gradient(rgba(34, 197, 94, 0.3) 1px, transparent 1px),
                           linear-gradient(90deg, rgba(34, 197, 94, 0.3) 1px, transparent 1px)
                         `,
-                        backgroundSize: '20px 20px'
-                      }}></div>
+                    backgroundSize: '20px 20px'
+                  }}></div>
                       
                       {/* Animated scanning lines */}
                       <div className="absolute top-0 left-0 right-0 h-0.5 bg-green-400 animate-pulse"></div>
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400 animate-pulse" style={{
+                    animationDelay: '0.5s'
+                  }}></div>
                       
                       {/* Central content */}
                       <div className="relative z-10 text-center">
@@ -126,17 +116,20 @@ export const ContextPanel = ({
                       {/* Processing indicators */}
                       <div className="absolute bottom-3 left-3 right-3 space-y-0.5">
                         <div className="h-0.5 bg-green-400 w-3/4 animate-pulse"></div>
-                        <div className="h-0.5 bg-blue-400 w-1/2 animate-pulse" style={{ animationDelay: '0.3s' }}></div>
-                        <div className="h-0.5 bg-purple-400 w-2/3 animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+                        <div className="h-0.5 bg-blue-400 w-1/2 animate-pulse" style={{
+                      animationDelay: '0.3s'
+                    }}></div>
+                        <div className="h-0.5 bg-purple-400 w-2/3 animate-pulse" style={{
+                      animationDelay: '0.6s'
+                    }}></div>
                       </div>
                       
                       {/* Corner indicators */}
                       <div className="absolute top-2 left-2 w-1 h-1 bg-green-400 rounded-full animate-ping"></div>
-                      <div className="absolute top-2 right-2 w-1 h-1 bg-blue-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
-                    </div>
-                  ) : (
-                    <Monitor className="w-40 h-40 text-gray-400" />
-                  )}
+                      <div className="absolute top-2 right-2 w-1 h-1 bg-blue-400 rounded-full animate-ping" style={{
+                    animationDelay: '0.5s'
+                  }}></div>
+                    </div> : <Monitor className="w-40 h-40 text-gray-400" />}
                 </div>
                 <div className="text-slate-500 text-base">
                   {isActive ? 'FNTX\'s Computer is active' : 'FNTX\'s Computer is inactive'}
@@ -149,54 +142,39 @@ export const ContextPanel = ({
         {/* Task Progress - Fixed at bottom with upward expansion */}
         <div className="relative">
           {/* Expanded tasks - positioned absolutely above the collapsed view */}
-          {isTasksExpanded && (
-            <div className="absolute bottom-full left-0 right-0 mb-2">
-              <div className="p-2 rounded-xl bg-gray-200 py-[10px] px-[12px]">
+          {isTasksExpanded && <div className="absolute bottom-full left-0 right-0 mb-2">
+              <div className="p-2 rounded-xl py-[10px] px-[12px] bg-slate-500">
                 <div className="space-y-3">
-                  {isActive ? (
-                    completedTasks.map((task, index) => (
-                      <div key={index} className="flex items-center space-x-4">
+                  {isActive ? completedTasks.map((task, index) => <div key={index} className="flex items-center space-x-4">
                         <div className="w-3 h-3 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                           <div className="w-1 h-1 bg-white rounded-full"></div>
                         </div>
-                        <span className="text-xs font-thin text-slate-950">{task}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex items-center space-x-4">
+                        <span className="text-xs font-thin text-slate-50">{task}</span>
+                      </div>) : <div className="flex items-center space-x-4">
                       <div className="w-3 h-3 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
                         <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                       </div>
                       <span className="text-xs font-thin text-slate-950">Waiting for user instructions</span>
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
           
           {/* Always visible collapsed view */}
-          <div className="p-2 rounded-xl bg-gray-200 py-[10px] px-[12px]">
+          <div className="p-2 rounded-xl py-[10px] px-[12px] bg-slate-500">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
+              <h3 className="text-sm font-thin text-slate-50">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
-                <span className="text-slate-950 font-thin text-xs">
+                <span className="font-thin text-xs text-slate-50">
                   {isActive ? '4 / 4' : '1 / 1'}
                 </span>
-                <button 
-                  onClick={() => setIsTasksExpanded(!isTasksExpanded)}
-                  className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors"
-                >
-                  {isTasksExpanded ? 
-                    <ChevronDown className="w-4 h-4" /> : 
-                    <ChevronUp className="w-4 h-4" />
-                  }
+                <button onClick={() => setIsTasksExpanded(!isTasksExpanded)} className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors">
+                  {isTasksExpanded ? <ChevronDown className="w-4 h-4 text-white" /> : <ChevronUp className="w-4 h-4" />}
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
