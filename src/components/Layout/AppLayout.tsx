@@ -17,7 +17,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       <Sidebar />
       <div className="flex-1 flex min-w-0">
         {/* Main chat area */}
-        <div className={`flex-1 ${isContextPanelExpanded ? 'max-w-[70%]' : 'w-full'} transition-all duration-300 min-w-0`}>
+        <div className={`flex-1 ${isContextPanelExpanded ? 'max-w-[60%]' : 'w-full'} transition-all duration-300 min-w-0`}>
           <main className="h-full min-w-0">
             <EnhancedChatBot 
               onShowContextPanel={setShowContextPanel}
@@ -28,9 +28,9 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
           </main>
         </div>
         
-        {/* Context Panel */}
+        {/* Context Panel - enlarged to 40% */}
         {showContextPanel && isContextPanelExpanded && (
-          <div className="w-[30%] min-w-[300px] max-w-[500px] border-l border-gray-200 h-full">
+          <div className="w-[40%] min-w-[400px] max-w-[600px] border-l border-gray-200 h-full">
             <ContextPanel 
               isOpen={true}
               onToggle={() => setIsContextPanelExpanded(false)}
