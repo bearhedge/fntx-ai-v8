@@ -11,6 +11,7 @@ interface AppLayoutProps {
 export const AppLayout = ({ children }: AppLayoutProps) => {
   const [showContextPanel, setShowContextPanel] = useState(false);
   const [isContextPanelExpanded, setIsContextPanelExpanded] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   return (
     <div className="h-screen bg-white flex w-full overflow-hidden">
@@ -24,6 +25,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               onToggleContextPanel={() => setIsContextPanelExpanded(!isContextPanelExpanded)}
               showContextPanel={showContextPanel}
               isContextPanelExpanded={isContextPanelExpanded}
+              onActivateChange={setIsActive}
             />
           </main>
         </div>
@@ -34,9 +36,17 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
             <ContextPanel 
               isOpen={true}
               onToggle={() => setIsContextPanelExpanded(false)}
+              isActive={isActive}
             />
           </div>
         )}
+      </div>
+      
+      {/* Bottom left user indicator - changed from BH to JH */}
+      <div className="absolute bottom-4 left-4 z-20">
+        <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+          <span className="text-xs text-white font-medium">JH</span>
+        </div>
       </div>
     </div>
   );

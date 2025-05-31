@@ -1,18 +1,34 @@
+
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 interface ContextPanelProps {
   isOpen?: boolean;
   onToggle?: () => void;
+  isActive?: boolean;
 }
+
 export const ContextPanel = ({
   isOpen: externalIsOpen,
-  onToggle
+  onToggle,
+  isActive = false
 }: ContextPanelProps) => {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
+  const [isTasksExpanded, setIsTasksExpanded] = useState(false);
+  
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
-  return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
+
+  const completedTasks = [
+    "Extract and review the front-end design section from the provided RTF d...",
+    "Analyze and benchmark the design against the color theme used by bear...",
+    "Draft highly detailed web application front-end design instructions with v...",
+    "Validate and deliver the enhanced front-end design section to the user."
+  ];
+
+  return (
+    <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-200">
         <div className="flex items-center space-x-2">
@@ -55,15 +71,18 @@ export const ContextPanel = ({
             {/* Manus Status */}
             <div className="mb-16">
               <div className="flex items-center space-x-1 mb-2">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-500">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-green-500' : 'bg-gray-500'}`}>
                   <Brain className="w-6 h-6 text-slate-50" />
                 </div>
                 <div className="px-[10px]">
                   <div className="flex items-center space-x-2 mb-1 rounded-none">
-                    
-                    <span className="font-thin text-zinc-950 text-left text-sm">FNTX is inactive</span>
+                    <span className="font-thin text-zinc-950 text-left text-sm">
+                      {isActive ? 'FNTX is active' : 'FNTX is inactive'}
+                    </span>
                   </div>
-                  <div className="text-zinc-500 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-300">Waiting for instructions</div>
+                  <div className="text-zinc-500 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-300">
+                    {isActive ? 'Processing your request...' : 'Waiting for instructions'}
+                  </div>
                 </div>
               </div>
             </div>
@@ -72,11 +91,30 @@ export const ContextPanel = ({
             <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-[2px] my-0 px-0 mx-0">
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-gray-200">
                 <div className="w-100 h-100 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 bg-gray-200 py-[30px]">
-                  <Monitor className="w-40 h-40 text-gray-400" />
-                  {/* Small power indicator */}
-                  
+                  {isActive ? (
+                    // Active state - simulated live video feed
+                    <div className="w-40 h-40 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-black opacity-80"></div>
+                      <div className="relative z-10 text-center">
+                        <Play className="w-12 h-12 text-green-400 mx-auto mb-2" />
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse mx-auto"></div>
+                        <span className="text-xs text-green-400 block mt-1">LIVE</span>
+                      </div>
+                      {/* Simulated processing lines */}
+                      <div className="absolute top-2 left-2 right-2 h-1 bg-green-400 opacity-30 animate-pulse"></div>
+                      <div className="absolute bottom-4 left-4 right-4 space-y-1">
+                        <div className="h-0.5 bg-blue-400 w-3/4 animate-pulse"></div>
+                        <div className="h-0.5 bg-purple-400 w-1/2 animate-pulse"></div>
+                        <div className="h-0.5 bg-green-400 w-2/3 animate-pulse"></div>
+                      </div>
+                    </div>
+                  ) : (
+                    <Monitor className="w-40 h-40 text-gray-400" />
+                  )}
                 </div>
-                <div className="text-slate-500 text-base">FNTX's Computer is inactive</div>
+                <div className="text-slate-500 text-base">
+                  {isActive ? 'FNTX\'s Computer is active' : 'FNTX\'s Computer is inactive'}
+                </div>
               </div>
             </div>
           </div>
@@ -88,18 +126,51 @@ export const ContextPanel = ({
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
-                <span className="text-slate-950 font-thin text-xs">1 / 1</span>
-                <ChevronDown className="w-4 h-4 ml-1" />
+                <span className="text-slate-950 font-thin text-xs">
+                  {isActive ? '4 / 4' : '1 / 1'}
+                </span>
+                <button 
+                  onClick={() => setIsTasksExpanded(!isTasksExpanded)}
+                  className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors"
+                >
+                  {isTasksExpanded ? 
+                    <ChevronUp className="w-4 h-4" /> : 
+                    <ChevronDown className="w-4 h-4" />
+                  }
+                </button>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="w-3 h-3 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+            
+            {isTasksExpanded && isActive ? (
+              // Expanded view showing completed tasks
+              <div className="space-y-3 mb-4">
+                {completedTasks.map((task, index) => (
+                  <div key={index} className="flex items-center space-x-4">
+                    <div className="w-3 h-3 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-1 h-1 bg-white rounded-full"></div>
+                    </div>
+                    <span className="text-xs font-thin text-slate-950">{task}</span>
+                  </div>
+                ))}
               </div>
-              <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-950">Waiting for user instructions</span>
-            </div>
+            ) : (
+              // Collapsed view
+              <div className="flex items-center space-x-4">
+                <div className={`w-3 h-3 rounded-full flex items-center justify-center flex-shrink-0 ${
+                  isActive ? 'bg-green-500' : 'bg-gray-600'
+                }`}>
+                  <div className={`w-1 h-1 rounded-full ${
+                    isActive ? 'bg-white' : 'bg-gray-400'
+                  }`}></div>
+                </div>
+                <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-950">
+                  {isActive ? 'Validating and delivering enhanced front-end design...' : 'Waiting for user instructions'}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Send, Paperclip } from 'lucide-react';
+import { Paperclip, Mic } from 'lucide-react';
 
 interface EnhancedMessageInputProps {
   onSendMessage: (message: string) => void;
@@ -47,16 +47,11 @@ export const EnhancedMessageInput = ({
               />
               
               <div className="flex items-center space-x-2 flex-shrink-0">
-                <select className="text-sm bg-transparent border-0 focus:outline-none text-gray-600">
-                  <option>Standard</option>
-                </select>
-                
                 <button 
-                  type="submit" 
-                  disabled={!message.trim()} 
-                  className="p-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  type="button" 
+                  className="p-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors"
                 >
-                  <Send className="w-4 h-4" />
+                  <Mic className="w-4 h-4" />
                 </button>
               </div>
             </div>
