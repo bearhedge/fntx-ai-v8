@@ -99,8 +99,8 @@ export const EnhancedChatBot = ({
               </div>
             </div>
           ) : (
-            // Messages view
-            <div className="space-y-6">
+            // Messages view - moved to left to align with where the logo was
+            <div className="space-y-6 ml-0">
               {messages.map((message, index) => {
                 // Show FNTX logo above AI messages (except the first one)
                 const showLogo = message.sender === 'ai' && index > 0;
