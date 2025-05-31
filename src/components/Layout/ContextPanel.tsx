@@ -69,7 +69,7 @@ export const ContextPanel = ({
             </div>
 
             {/* Computer Interface */}
-            <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-[15px] mx-0 px-0 my-0">
+            <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-[2px] my-0 px-0 mx-0">
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-gray-200">
                 <div className="w-100 h-100 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 bg-gray-200 py-[30px]">
                   <Monitor className="w-40 h-40 text-gray-400" />
