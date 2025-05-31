@@ -88,7 +88,7 @@ export const ContextPanel = ({
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-thin text-slate-50">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
-                <span className="text-xs font-bold text-slate-50">1 / 1</span>
+                <span className="text-slate-50 font-thin text-sm">1 / 1</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
               </div>
             </div>
