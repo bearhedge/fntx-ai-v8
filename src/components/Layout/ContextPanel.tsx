@@ -65,7 +65,7 @@ export const ContextPanel = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-8 overflow-auto flex flex-col bg-gray-300">
+      <div className="flex-1 p-8 overflow-hidden flex flex-col bg-gray-300">
         <div className="flex-1 flex flex-col">
           {/* Status - Centered in the main area */}
           <div className="flex-1 flex flex-col justify-center items-center rounded-none bg-gray-300 py-0 my-0 mx-0 px-0">
@@ -93,20 +93,48 @@ export const ContextPanel = ({
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-gray-200">
                 <div className="w-100 h-100 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 bg-gray-200 py-[30px]">
                   {isActive ? (
-                    // Active state - simulated live video feed
-                    <div className="w-40 h-40 bg-black rounded-lg flex items-center justify-center relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-black opacity-80"></div>
-                      <div className="relative z-10 text-center">
-                        <Play className="w-12 h-12 text-green-400 mx-auto mb-2" />
-                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse mx-auto"></div>
-                        <span className="text-xs text-green-400 block mt-1">LIVE</span>
+                    // Active state - detailed design like the yellow box content
+                    <div className="w-40 h-40 bg-black rounded-lg flex flex-col relative overflow-hidden border border-gray-400">
+                      {/* Header section like in the yellow box */}
+                      <div className="bg-gray-800 px-3 py-2 border-b border-gray-600 flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                          <span className="text-xs text-gray-300">enhanced_frontend_design.md</span>
+                        </div>
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-1 bg-yellow-400 rounded-full"></div>
+                          <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+                          <div className="w-1 h-1 bg-red-400 rounded-full"></div>
+                        </div>
                       </div>
-                      {/* Simulated processing lines */}
-                      <div className="absolute top-2 left-2 right-2 h-1 bg-green-400 opacity-30 animate-pulse"></div>
-                      <div className="absolute bottom-4 left-4 right-4 space-y-1">
-                        <div className="h-0.5 bg-blue-400 w-3/4 animate-pulse"></div>
-                        <div className="h-0.5 bg-purple-400 w-1/2 animate-pulse"></div>
-                        <div className="h-0.5 bg-green-400 w-2/3 animate-pulse"></div>
+                      
+                      {/* Content section with code-like appearance */}
+                      <div className="flex-1 p-2 bg-gray-900 text-xs">
+                        <div className="text-blue-400 mb-1"># 13. Front-End Design</div>
+                        <div className="text-gray-400 mb-1">## 13.1 Design Principles</div>
+                        <div className="text-green-400 text-[8px] leading-tight space-y-1">
+                          <div>- **Professional Precision**:</div>
+                          <div>  Clean, precise interfaces</div>
+                          <div>- **Data-Forward**:</div>
+                          <div>  Clear visualization</div>
+                        </div>
+                      </div>
+                      
+                      {/* Bottom progress bar like in the yellow box */}
+                      <div className="bg-gray-700 px-2 py-1 flex items-center justify-between">
+                        <div className="flex items-center space-x-1">
+                          <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                          <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <div className="w-8 h-0.5 bg-blue-500 rounded"></div>
+                          <span className="text-xs text-blue-400">live</span>
+                        </div>
+                      </div>
+                      
+                      {/* Live indicator */}
+                      <div className="absolute top-1 right-1">
+                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
                       </div>
                     </div>
                   ) : (
@@ -121,31 +149,14 @@ export const ContextPanel = ({
           </div>
         </div>
 
-        {/* Task Progress - Fixed at bottom */}
-        <div className="mt-auto">
+        {/* Task Progress - Fixed at bottom with upward expansion */}
+        <div className="mt-auto relative">
           <div className="p-2 rounded-xl bg-gray-200 py-[10px] my-[15px] px-[12px] mx-0">
             <Collapsible open={isTasksExpanded} onOpenChange={setIsTasksExpanded}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
-                <div className="flex items-center text-sm text-gray-400">
-                  <span className="text-slate-950 font-thin text-xs">
-                    {isActive ? '4 / 4' : '1 / 1'}
-                  </span>
-                  <CollapsibleTrigger asChild>
-                    <button className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors">
-                      {isTasksExpanded ? 
-                        <ChevronUp className="w-4 h-4" /> : 
-                        <ChevronDown className="w-4 h-4" />
-                      }
-                    </button>
-                  </CollapsibleTrigger>
-                </div>
-              </div>
-              
-              <CollapsibleContent className="space-y-0">
-                {isTasksExpanded && isActive ? (
-                  // Expanded view showing completed tasks
-                  <div className="space-y-3 mb-4">
+              {/* Expanded content appears above the trigger */}
+              {isTasksExpanded && (
+                <CollapsibleContent className="mb-4">
+                  <div className="space-y-3">
                     {completedTasks.map((task, index) => (
                       <div key={index} className="flex items-center space-x-4">
                         <div className="w-3 h-3 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -155,22 +166,42 @@ export const ContextPanel = ({
                       </div>
                     ))}
                   </div>
-                ) : (
-                  // Collapsed view
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-3 h-3 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      isActive ? 'bg-green-500' : 'bg-gray-600'
-                    }`}>
-                      <div className={`w-1 h-1 rounded-full ${
-                        isActive ? 'bg-white' : 'bg-gray-400'
-                      }`}></div>
-                    </div>
-                    <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-950">
-                      {isActive ? 'Validating and delivering enhanced front-end design...' : 'Waiting for user instructions'}
-                    </span>
+                </CollapsibleContent>
+              )}
+              
+              {/* Trigger section */}
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
+                <div className="flex items-center text-sm text-gray-400">
+                  <span className="text-slate-950 font-thin text-xs">
+                    {isActive ? '4 / 4' : '1 / 1'}
+                  </span>
+                  <CollapsibleTrigger asChild>
+                    <button className="ml-1 hover:bg-gray-300 rounded p-1 transition-colors">
+                      {isTasksExpanded ? 
+                        <ChevronDown className="w-4 h-4" /> : 
+                        <ChevronUp className="w-4 h-4" />
+                      }
+                    </button>
+                  </CollapsibleTrigger>
+                </div>
+              </div>
+              
+              {/* Collapsed view - shown when not expanded */}
+              {!isTasksExpanded && (
+                <div className="flex items-center space-x-4 mt-2">
+                  <div className={`w-3 h-3 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    isActive ? 'bg-green-500' : 'bg-gray-600'
+                  }`}>
+                    <div className={`w-1 h-1 rounded-full ${
+                      isActive ? 'bg-white' : 'bg-gray-400'
+                    }`}></div>
                   </div>
-                )}
-              </CollapsibleContent>
+                  <span className="text-xs font-thin my-0 py-0 mx-[5px] px-[5px] text-slate-950">
+                    {isActive ? 'Validating and delivering enhanced front-end design...' : 'Waiting for user instructions'}
+                  </span>
+                </div>
+              )}
             </Collapsible>
           </div>
         </div>
