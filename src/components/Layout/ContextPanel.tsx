@@ -51,19 +51,19 @@ export const ContextPanel = ({
       <div className="flex-1 p-8 overflow-auto flex flex-col bg-gray-100">
         <div className="flex-1 flex flex-col">
           {/* Status - Centered in the main area */}
-          <div className="flex-1 flex flex-col justify-center items-center rounded-none">
+          <div className="flex-1 flex flex-col justify-center items-center rounded-none bg-gray-100">
             {/* Manus Status */}
             <div className="mb-16">
               <div className="flex items-center space-x-1 mb-2">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-300">
                   <Brain className="w-6 h-6 text-gray-400" />
                 </div>
-                <div>
+                <div className="px-[10px]">
                   <div className="flex items-center space-x-2 mb-1 rounded-none">
                     
                     <span className="font-thin text-zinc-950 text-left text-sm">FNTX is inactive</span>
                   </div>
-                  <div className="text-gray-200 text-sm rounded-none mx-0 px-0 my-0 py-0">Waiting for instructions</div>
+                  <div className="text-gray-200 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-100">Waiting for instructions</div>
                 </div>
               </div>
             </div>
@@ -94,7 +94,7 @@ export const ContextPanel = ({
             </div>
             <div className="flex items-center space-x-4">
               <div className="w-3 h-3 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+                <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
               </div>
               <span className="text-zinc-950 text-xs font-thin">Waiting for user instructions</span>
             </div>
