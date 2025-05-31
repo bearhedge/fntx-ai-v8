@@ -48,10 +48,10 @@ export const ContextPanel = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-8 overflow-auto flex flex-col bg-gray-100">
+      <div className="flex-1 p-8 overflow-auto flex flex-col bg-gray-300">
         <div className="flex-1 flex flex-col">
           {/* Status - Centered in the main area */}
-          <div className="flex-1 flex flex-col justify-center items-center rounded-none bg-gray-100">
+          <div className="flex-1 flex flex-col justify-center items-center rounded-none bg-gray-300">
             {/* Manus Status */}
             <div className="mb-16">
               <div className="flex items-center space-x-1 mb-2">
@@ -63,7 +63,7 @@ export const ContextPanel = ({
                     
                     <span className="font-thin text-zinc-950 text-left text-sm">FNTX is inactive</span>
                   </div>
-                  <div className="text-gray-200 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-100">Waiting for instructions</div>
+                  <div className="text-slate-950 text-sm rounded-none mx-0 px-0 my-0 py-0 bg-gray-300">Waiting for instructions</div>
                 </div>
               </div>
             </div>
@@ -71,7 +71,7 @@ export const ContextPanel = ({
             {/* Computer Interface */}
             <div className="p-15 w-full max-w-sm rounded-xl bg-zinc-400">
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-zinc-400">
-                <div className="w-200 h-200 mb-6 flex items-center justify-center relative bg-gray-100 rounded-xl px-0 mx-0 my-0 py-[10px]">
+                <div className="w-200 h-200 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 py-[10px] bg-gray-200">
                   <Monitor className="w-40 h-40 text-gray-400" />
                   {/* Small power indicator */}
                   
