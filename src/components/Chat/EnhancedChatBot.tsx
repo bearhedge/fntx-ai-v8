@@ -90,12 +90,12 @@ export const EnhancedChatBot = ({
             // Messages view - aligned to the left
             <div className="space-y-6 ml-0">
               {messages.map((message, index) => {
-                // Show FNTX logo above every AI message
+                // Show FNTX logo above every AI message, left-aligned
                 const showLogo = message.sender === 'ai';
                 return (
                   <div key={message.id}>
                     {showLogo && (
-                      <div className="flex justify-start mb-4">
+                      <div className="flex justify-start mb-4 ml-0">
                         <svg width="100" height="54" viewBox="0 0 640 347" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M205.848 115.154H282.121V141.048H256.978V253.159H230.334V141.048H205.848V115.154Z" fill="#374151" />
                           <path d="M85.0049 115.154H110.148L169.346 205.969V115.154H195.615V253.159H170.378L111.274 162.626V253.159H85.0049V115.154Z" fill="#374151" />
