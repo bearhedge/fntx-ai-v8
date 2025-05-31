@@ -31,13 +31,13 @@ export const ContextPanel = ({
                 <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
                   <span className="text-xs text-white font-medium">VS</span>
                 </div>
-                <span className="text-sm">VS Code</span>
+                <span className="text-sm text-zinc-950 font-normal">VS Code</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center space-x-3 p-3 text-white hover:bg-gray-600">
                 <div className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center">
                   <span className="text-xs text-white font-medium">B</span>
                 </div>
-                <span className="text-sm">Browser</span>
+                <span className="text-sm font-normal text-zinc-950">Browser</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
