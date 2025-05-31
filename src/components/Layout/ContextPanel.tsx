@@ -76,7 +76,7 @@ export const ContextPanel = ({
                   {/* Small power indicator */}
                   
                 </div>
-                <div className="text-slate-800 text-base">FNTX's Computer is inactive</div>
+                <div className="text-slate-500 text-base">FNTX's Computer is inactive</div>
               </div>
             </div>
           </div>
