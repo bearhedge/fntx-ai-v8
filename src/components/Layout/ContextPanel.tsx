@@ -27,7 +27,7 @@ export const ContextPanel = ({
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-25 border-gray-200 bg-gray-200">
-              <DropdownMenuItem className="flex items-center space-x-3 p-3 text-white hover:bg-gray-600">
+              <DropdownMenuItem className="flex items-center space-x-3 p-3 text-white hover:bg-gray-600 ">
                 <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
                   <span className="text-xs text-white font-medium">VS</span>
                 </div>
@@ -42,7 +42,7 @@ export const ContextPanel = ({
             </DropdownMenuContent>
           </DropdownMenu>
           <button onClick={handleToggle} className="p-1 hover:bg-gray-700 rounded transition-colors">
-            <Minimize2 className="w-4 h-4" />
+            <Minimize2 className="w-4 h-4 text-slate-950" />
           </button>
         </div>
       </div>
