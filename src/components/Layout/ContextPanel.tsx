@@ -16,7 +16,7 @@ export const ContextPanel = ({
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-700 bg-gray-100">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg font-thin text-gray-950">FNTX's Computer</h2>
+          <h2 className="text-lg text-gray-950 font-medium">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
