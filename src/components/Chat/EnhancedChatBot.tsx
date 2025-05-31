@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { EnhancedMessage } from './EnhancedMessage';
 import { EnhancedMessageInput } from './EnhancedMessageInput';
 import { Message } from '../../types/trading';
@@ -27,6 +27,15 @@ export const EnhancedChatBot = ({
   }]);
   
   const [isProcessing, setIsProcessing] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = (content: string) => {
     const userMessage: Message = {
@@ -38,16 +47,9 @@ export const EnhancedChatBot = ({
     };
     setMessages(prev => [...prev, userMessage]);
 
-    // Show context panel and start processing for computational tasks
-    const isComputationalTask = content.toLowerCase().includes('analyze') || 
-                               content.toLowerCase().includes('calculate') || 
-                               content.toLowerCase().includes('process') ||
-                               content.toLowerCase().includes('compute');
-    
-    if (isComputationalTask) {
-      setIsProcessing(true);
-      onShowContextPanel?.(true);
-    }
+    // Show context panel and start processing for any message
+    setIsProcessing(true);
+    onShowContextPanel?.(true);
 
     // Simulate AI response
     setTimeout(() => {
@@ -64,9 +66,9 @@ export const EnhancedChatBot = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white relative">
-      {/* Main chat area */}
-      <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
+    <div className="h-screen flex flex-col bg-white relative">
+      {/* Main chat area with fixed height and scroll */}
+      <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-h-0">
         <div className="flex-1 overflow-y-auto p-8 pb-4">
           {messages.length === 1 ? (
             // Welcome state
@@ -89,32 +91,35 @@ export const EnhancedChatBot = ({
               {messages.map(message => (
                 <EnhancedMessage key={message.id} message={message} />
               ))}
+              <div ref={messagesEndRef} />
             </div>
           )}
         </div>
         
-        {/* Context Panel Collapsed State */}
-        {showContextPanel && !isContextPanelExpanded && (
-          <div className="absolute bottom-4 right-8 z-10">
-            <div 
-              className="bg-gray-800 text-white rounded-lg px-4 py-3 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors shadow-lg"
-              onClick={onToggleContextPanel}
-            >
-              <Monitor className="w-4 h-4" />
-              <span className="text-sm font-medium">Manus's Computer</span>
-              <Maximize2 className="w-4 h-4" />
-            </div>
-            {isProcessing && (
-              <div className="mt-2 text-xs text-gray-500 text-center">
-                Processing...
-              </div>
-            )}
-          </div>
-        )}
-        
-        {/* Message input at the bottom */}
-        <EnhancedMessageInput onSendMessage={handleSendMessage} />
+        {/* Message input fixed at the bottom */}
+        <div className="flex-shrink-0">
+          <EnhancedMessageInput onSendMessage={handleSendMessage} />
+        </div>
       </div>
+
+      {/* Context Panel Collapsed State */}
+      {showContextPanel && !isContextPanelExpanded && (
+        <div className="absolute bottom-24 right-8 z-10">
+          <div 
+            className="bg-gray-800 text-white rounded-lg px-4 py-3 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors shadow-lg"
+            onClick={onToggleContextPanel}
+          >
+            <Monitor className="w-4 h-4" />
+            <span className="text-sm font-medium">Manus's Computer</span>
+            <Maximize2 className="w-4 h-4" />
+          </div>
+          {isProcessing && (
+            <div className="mt-2 text-xs text-gray-500 text-center">
+              Processing...
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
