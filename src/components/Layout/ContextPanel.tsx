@@ -14,9 +14,9 @@ export const ContextPanel = ({
   const handleToggle = onToggle || (() => setInternalIsOpen(!internalIsOpen));
   return <div className="bg-gray-800 text-white h-full flex flex-col rounded-l-3xl">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-700">
+      <div className="flex items-center justify-between p-6 border-b border-gray-700 bg-gray-100">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg font-thin">FNTX's Computer</h2>
+          <h2 className="text-lg font-thin text-gray-950">FNTX's Computer</h2>
         </div>
         <div className="flex items-center space-x-2">
           <DropdownMenu>
@@ -48,35 +48,35 @@ export const ContextPanel = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-8 overflow-auto flex flex-col">
+      <div className="flex-1 p-8 overflow-auto flex flex-col bg-gray-100">
         <div className="flex-1 flex flex-col">
           {/* Status - Centered in the main area */}
-          <div className="flex-1 flex flex-col justify-center items-center">
+          <div className="flex-1 flex flex-col justify-center items-center rounded-none">
             {/* Manus Status */}
             <div className="mb-16">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-zinc-200">
+              <div className="flex items-center space-x-1 mb-2">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-300">
                   <Brain className="w-6 h-6 text-gray-400" />
                 </div>
                 <div>
                   <div className="flex items-center space-x-2 mb-1 rounded-none">
                     <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
-                    <span className="text-gray-300 font-medium text-xs">FNTX is inactive</span>
+                    <span className="font-thin text-sm text-zinc-950">FNTX is inactive</span>
                   </div>
-                  <div className="text-gray-200 text-sm rounded-none">Waiting for instructions</div>
+                  <div className="text-gray-200 text-sm rounded-none mx-0 px-0 my-0 py-0">Waiting for instructions</div>
                 </div>
               </div>
             </div>
 
             {/* Computer Interface */}
-            <div className="bg-gray-700 rounded-3xl p-12 w-full max-w-sm">
+            <div className="p-15 w-full max-w-sm bg-zinc-300 rounded-xl">
               <div className="text-center">
-                <div className="w-40 h-28 bg-gray-600 rounded-2xl mx-auto mb-6 flex items-center justify-center relative">
+                <div className="w-200 h-100 mx-auto mb-6 flex items-center justify-center relative bg-gray-100 rounded-xl">
                   <Monitor className="w-16 h-16 text-gray-400" />
                   {/* Small power indicator */}
-                  <div className="absolute bottom-2 right-2 w-2 h-2 bg-gray-500 rounded-full"></div>
+                  
                 </div>
-                <div className="text-gray-400 text-base">FNTX's computer is inactive</div>
+                <div className="text-gray-400 text-base">FNTX's Computer is inactive</div>
               </div>
             </div>
           </div>
@@ -84,19 +84,19 @@ export const ContextPanel = ({
 
         {/* Task Progress - Fixed at bottom */}
         <div className="mt-auto">
-          <div className="bg-gray-700 rounded-2xl p-6">
+          <div className="p-2 bg-slate-200 rounded-xl px-[12px]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-white">Task progress</h3>
+              <h3 className="text-sm font-thin text-zinc-950">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
-                <span>1 / 1</span>
+                <span className="text-xs text-slate-700">1 / 1</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-3 h-3 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
               </div>
-              <span className="text-gray-300 text-base">Wait for user instructions</span>
+              <span className="text-zinc-950 text-xs font-thin">Waiting for user instructions</span>
             </div>
           </div>
         </div>
