@@ -51,7 +51,7 @@ export const ContextPanel = ({
       <div className="flex-1 p-8 overflow-auto flex flex-col bg-gray-300">
         <div className="flex-1 flex flex-col">
           {/* Status - Centered in the main area */}
-          <div className="flex-1 flex flex-col justify-center items-center rounded-none bg-gray-300">
+          <div className="flex-1 flex flex-col justify-center items-center rounded-none bg-gray-300 py-0 my-0 mx-0 px-0">
             {/* Manus Status */}
             <div className="mb-16">
               <div className="flex items-center space-x-1 mb-2">
@@ -69,7 +69,7 @@ export const ContextPanel = ({
             </div>
 
             {/* Computer Interface */}
-            <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-0 mx-0 px-0 my-0">
+            <div className="p-2 w-full max-w-sm rounded-xl bg-gray-200 py-[15px] mx-0 px-0 my-0">
               <div className="text-center px-0 py-0 my-[30px] mx-[30px] bg-gray-200">
                 <div className="w-100 h-100 mb-6 flex items-center justify-center relative rounded-xl px-0 mx-0 my-0 bg-gray-200 py-[30px]">
                   <Monitor className="w-40 h-40 text-gray-400" />
@@ -84,7 +84,7 @@ export const ContextPanel = ({
 
         {/* Task Progress - Fixed at bottom */}
         <div className="mt-auto">
-          <div className="p-2 rounded-xl px-[12px] bg-gray-200">
+          <div className="p-2 rounded-xl bg-gray-200 py-[10px] my-[15px] px-[12px] mx-0">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-thin text-slate-950">Task progress</h3>
               <div className="flex items-center text-sm text-gray-400">
