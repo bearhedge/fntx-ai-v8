@@ -244,7 +244,15 @@ export const Sidebar = () => {
           {/* User Profile Section with icons */}
           <div className="border-t border-gray-300 p-4">
             <div className="flex items-center space-x-3">
-              {/* Knowledge icon first */}
+              {/* Bell icon first */}
+              <button 
+                onClick={handleNotificationClick}
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <Bell className="w-4 h-4 text-gray-600" />
+              </button>
+              
+              {/* Knowledge icon second */}
               <button 
                 onClick={e => {
                   e.stopPropagation();
@@ -253,14 +261,6 @@ export const Sidebar = () => {
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 <SimpleLightbulb />
-              </button>
-              
-              {/* Bell icon second */}
-              <button 
-                onClick={handleNotificationClick}
-                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
               {/* Dropdown trigger for user profile */}
