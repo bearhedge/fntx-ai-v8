@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -86,19 +85,18 @@ export const Sidebar = () => {
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-80';
 
   const BrainIcon = ({ size = 'w-6 h-6' }: { size?: string }) => (
-    <img 
-      src="/lovable-uploads/36eba53a-5a74-47ad-afbf-62a1bb18d274.png" 
-      alt="Brain" 
-      className={`${size} object-contain filter grayscale`}
-    />
+    <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 3C8.68629 3 6 5.68629 6 9V11C6 11.5523 5.55228 12 5 12C4.44772 12 4 11.5523 4 11V9C4 4.58172 7.58172 1 12 1C16.4183 1 20 4.58172 20 9V11C20 11.5523 19.5523 12 19 12C18.4477 12 18 11.5523 18 11V9C18 5.68629 15.3137 3 12 3Z" fill="currentColor"/>
+      <path d="M7 14C7 12.8954 7.89543 12 9 12C10.1046 12 11 12.8954 11 14V18C11 19.1046 10.1046 20 9 20C7.89543 20 7 19.1046 7 18V14Z" fill="currentColor"/>
+      <path d="M13 14C13 12.8954 13.8954 12 15 12C16.1046 12 17 12.8954 17 14V18C17 19.1046 16.1046 20 15 20C13.8954 20 13 19.1046 13 18V14Z" fill="currentColor"/>
+    </svg>
   );
 
   const LightbulbIcon = ({ size = 'w-4 h-4' }: { size?: string }) => (
-    <img 
-      src="/lovable-uploads/becb3edb-5184-4dbe-943e-630073331215.png" 
-      alt="Lightbulb" 
-      className={`${size} object-contain`}
-    />
+    <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 21C9 21.5523 9.44772 22 10 22H14C14.5523 22 15 21.5523 15 21C15 20.4477 14.5523 20 14 20H10C9.44772 20 9 20.4477 9 21Z" fill="currentColor"/>
+      <path d="M12 2C8.13401 2 5 5.13401 5 9C5 11.3891 6.26156 13.4894 8.14061 14.7094C8.60827 15.0398 8.99022 15.4616 9.26773 15.9438C9.54525 16.426 9.71171 16.9564 9.75826 17.5H14.2417C14.2883 16.9564 14.4547 16.426 14.7323 15.9438C15.0098 15.4616 15.3917 15.0398 15.8594 14.7094C17.7384 13.4894 19 11.3891 19 9C19 5.13401 15.866 2 12 2Z" fill="currentColor"/>
+    </svg>
   );
 
   return (
@@ -158,14 +156,14 @@ export const Sidebar = () => {
                 key={chat.id} 
                 className={`w-full p-2 rounded-lg transition-colors mb-2 ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}
               >
-                <div className="w-6 h-6 rounded-full bg-gray-600 text-white text-xs flex items-center justify-center mx-auto">
+                <div className="w-6 h-6 rounded-lg bg-gray-200 text-gray-600 text-xs flex items-center justify-center mx-auto">
                   <BrainIcon size="w-4 h-4" />
                 </div>
               </button>
             ))}
           </div>
 
-          {/* Collapsed user profile with share and icons */}
+          {/* Collapsed user profile */}
           <div className="border-t border-gray-300 p-2 space-y-2">
             {/* Share section when collapsed */}
             <ShareSection isCollapsed={true} />
@@ -272,7 +270,7 @@ export const Sidebar = () => {
                   key={chat.id} 
                   className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}
                 >
-                  <div className="w-8 h-8 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5 bg-neutral-300">
+                  <div className="w-8 h-8 rounded-lg bg-gray-200 text-gray-600 text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                     <BrainIcon size="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
