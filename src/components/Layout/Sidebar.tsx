@@ -87,14 +87,11 @@ export const Sidebar = () => {
 
   // Simple SVG icons as components
   const PandaIcon = ({ size = "w-8 h-8" }: { size?: string }) => (
-    <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="8" fill="white" stroke="black" strokeWidth="1.5"/>
-      <circle cx="7" cy="7" r="2" fill="black"/>
-      <circle cx="17" cy="7" r="2" fill="black"/>
-      <circle cx="10" cy="10" r="1" fill="black"/>
-      <circle cx="14" cy="10" r="1" fill="black"/>
-      <path d="M10 14 Q12 16 14 14" stroke="black" strokeWidth="1.5" fill="none"/>
-    </svg>
+    <img 
+      src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" 
+      alt="Panda" 
+      className={size}
+    />
   );
 
   const SimpleLightbulb = ({ size = "w-4 h-4" }: { size?: string }) => (

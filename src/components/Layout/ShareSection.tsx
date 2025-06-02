@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, Mail, Hand, Heart } from 'lucide-react';
+import { Copy, Mail } from 'lucide-react';
 
 interface ShareSectionProps {
   isCollapsed: boolean;
@@ -55,50 +55,63 @@ export const ShareSection = ({
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-lg mx-auto bg-white rounded-2xl shadow-xl border-0 p-8">
-          <DialogHeader className="text-center pb-6">
-            <div className="flex justify-center mb-6">
-              <HandHeartIcon />
-            </div>
-            <div className="border-2 border-yellow-400 rounded-lg p-4 mb-4">
-              <DialogTitle className="text-2xl font-medium text-gray-900">
-                Share FNTX with a friend
-              </DialogTitle>
-            </div>
-            <p className="text-gray-600">Refer a friend, get 500 credits each</p>
-          </DialogHeader>
-          
-          <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-4 text-sm text-gray-600 font-medium">
-              <div className="text-left">Invitation code</div>
-              <div className="text-center">Friends invited</div>
-              <div className="text-right">Share</div>
+        <DialogContent className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl border-0 p-0">
+          <div className="flex flex-col">
+            {/* Header with FNTX logo */}
+            <div className="flex justify-center pt-12 pb-8">
+              <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="10" y="50" fontSize="48" fontWeight="bold" fill="#1a1a2e">FNTX</text>
+                <path d="M160 20 Q180 40 160 60 Q140 40 160 20" stroke="#9ca3af" strokeWidth="3" fill="none"/>
+              </svg>
             </div>
             
-            <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-4 items-center py-3 px-4 bg-gray-50 rounded-lg">
-                <span className="font-mono text-sm font-medium text-gray-900">FXBXHKSL8XR7</span>
-                <span className="text-sm text-gray-600 text-center">1 / 1</span>
-                <div className="flex justify-end space-x-2">
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Mail className="w-4 h-4" />
-                  </Button>
+            {/* Content */}
+            <div className="px-8 pb-8">
+              <div className="grid grid-cols-3 gap-8 text-center mb-8">
+                <div>
+                  <h3 className="text-gray-500 text-sm font-medium mb-4">Invitation code</h3>
+                </div>
+                <div>
+                  <h3 className="text-gray-500 text-sm font-medium mb-4">Friends invited</h3>
+                </div>
+                <div>
+                  <h3 className="text-gray-500 text-sm font-medium mb-4">Share</h3>
                 </div>
               </div>
               
-              <div className="grid grid-cols-3 gap-4 items-center py-3 px-4 bg-gray-50 rounded-lg">
-                <span className="font-mono text-sm font-medium text-gray-900">L05OUHWNAXE7W9</span>
-                <span className="text-sm text-gray-600 text-center">1 / 1</span>
-                <div className="flex justify-end space-x-2">
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <Mail className="w-4 h-4" />
-                  </Button>
+              <div className="space-y-4">
+                <div className="grid grid-cols-3 gap-8 items-center py-4 px-6 bg-gray-50 rounded-lg">
+                  <div className="text-left">
+                    <span className="font-mono text-sm font-bold text-gray-900">FXBXHKSL8XR7</span>
+                  </div>
+                  <div className="text-center">
+                    <span className="text-sm text-gray-600">1 / 1</span>
+                  </div>
+                  <div className="flex justify-center space-x-3">
+                    <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
+                      <Copy className="w-5 h-5 text-gray-600" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
+                      <Mail className="w-5 h-5 text-gray-600" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-3 gap-8 items-center py-4 px-6 bg-gray-50 rounded-lg">
+                  <div className="text-left">
+                    <span className="font-mono text-sm font-bold text-gray-900">L05OUHWNAXE7W9</span>
+                  </div>
+                  <div className="text-center">
+                    <span className="text-sm text-gray-600">1 / 1</span>
+                  </div>
+                  <div className="flex justify-center space-x-3">
+                    <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
+                      <Copy className="w-5 h-5 text-gray-600" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
+                      <Mail className="w-5 h-5 text-gray-600" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
