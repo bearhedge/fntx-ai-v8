@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
+
 const previousChats = [{
   id: 1,
   title: 'Daily trading day',
@@ -33,6 +34,7 @@ export const Sidebar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -79,7 +81,7 @@ export const Sidebar = () => {
     size = "w-4 h-4"
   }: {
     size?: string;
-  }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={size} />;
+  }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{ transform: 'translateY(1px)' }} />;
   const SimpleLightbulb = ({
     size = "w-4 h-4"
   }: {
@@ -89,6 +91,7 @@ export const Sidebar = () => {
       <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>;
+
   return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
@@ -134,27 +137,11 @@ export const Sidebar = () => {
 
           <ShareSection isCollapsed={true} />
 
-          {/* Collapsed user profile with icons */}
+          {/* Collapsed user profile without notification and knowledge icons */}
           <div className="border-t border-gray-300 p-2 space-y-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex flex-col items-center space-y-2">
-                  {/* Notification and Knowledge icons row */}
-                  <div className="flex space-x-1">
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  setShowNotifications(true);
-                }} className="p-1 rounded hover:bg-gray-300 transition-colors">
-                      <Bell className="w-3 h-3 text-gray-600" />
-                    </button>
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  handleKnowledgeClick();
-                }} className="p-1 rounded hover:bg-gray-300 transition-colors">
-                      <SimpleLightbulb size="w-3 h-3" />
-                    </button>
-                  </div>
-                  
+                <button className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
                   <Avatar className="w-8 h-8">
                     <AvatarFallback className="bg-white border border-gray-300">
                       <PandaIcon />

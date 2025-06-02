@@ -5,9 +5,7 @@ import { X } from 'lucide-react';
 interface NotificationItem {
   id: number;
   date: string;
-  title: string;
-  body: string;
-  visual?: string;
+  message: string;
 }
 
 interface NotificationsProps {
@@ -18,17 +16,8 @@ interface NotificationsProps {
 const mockNotifications: NotificationItem[] = [
   {
     id: 1,
-    date: 'May 29, 2025',
-    title: 'Introducing FNTX slides',
-    body: 'FNTX creates stunning, structured presentations—instantly. With a single prompt, FNTX generates entire slide decks tailored to your needs. Whether you\'re presenting in a boardroom, a classroom, or online, FNTX ensures your message lands. Want edits? Just click and adjust. Once you are done, export or share it with colleagues and peers.',
-    visual: '/api/placeholder/400/200'
-  },
-  {
-    id: 2,
-    date: 'May 27, 2025',
-    title: 'Edit text directly on FNTX-generated website!',
-    body: 'No more starting over for small changes. Customize wording instantly, perfect your messaging, and make your content truly yours with just a few clicks.',
-    visual: '/api/placeholder/400/200'
+    date: '2 June 2025',
+    message: 'Market timing restriction has lifted at 11:35 am EST'
   }
 ];
 
@@ -48,20 +37,15 @@ export const Notifications = ({ isOpen, onClose }: NotificationsProps) => {
           </button>
         </div>
         
-        <div className="p-6 space-y-8">
+        <div className="p-6 space-y-4">
           {mockNotifications.map((notification) => (
-            <div key={notification.id} className="space-y-4">
-              <div className="text-sm text-gray-500 font-medium">{notification.date}</div>
-              <h3 className="text-xl font-semibold text-gray-900">{notification.title}</h3>
-              <p className="text-gray-600 leading-relaxed text-base">{notification.body}</p>
-              {notification.visual && (
-                <div className="bg-gray-100 rounded-xl h-64 flex items-center justify-center">
-                  <span className="text-gray-500">Visual Content</span>
-                </div>
-              )}
-              {notification.id !== mockNotifications.length && (
-                <div className="border-b border-gray-100 pt-4"></div>
-              )}
+            <div key={notification.id} className="flex justify-between items-start">
+              <div className="text-sm text-gray-500 font-medium flex-shrink-0 mr-4">
+                {notification.date}
+              </div>
+              <div className="text-gray-900 text-base flex-1">
+                {notification.message}
+              </div>
             </div>
           ))}
         </div>
