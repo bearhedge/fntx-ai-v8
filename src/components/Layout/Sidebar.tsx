@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Lightbulb } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Lightbulb, Bell, Lightning } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
+import { Notifications } from './Notifications';
 
 const previousChats = [{
   id: 1,
@@ -34,6 +34,7 @@ export const Sidebar = () => {
   const [isDocked, setIsDocked] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -52,6 +53,10 @@ export const Sidebar = () => {
 
   const openSearch = () => {
     setIsSearchOpen(true);
+  };
+
+  const handleKnowledgeClick = () => {
+    console.log('Knowledge clicked');
   };
 
   // Handle keyboard shortcuts
@@ -110,9 +115,11 @@ export const Sidebar = () => {
               </button>
             )}
           </div>
-          <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
-            <Search className="w-4 h-4 text-gray-600" />
-          </button>
+          {!isCollapsed && (
+            <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+              <Search className="w-4 h-4 text-gray-600" />
+            </button>
+          )}
         </div>
         {!isCollapsed && (
           <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors w-full">
@@ -128,6 +135,13 @@ export const Sidebar = () => {
 
       {isCollapsed ? (
         <>
+          {/* Collapsed search button */}
+          <div className="p-2">
+            <button onClick={openSearch} className="w-full p-2 hover:bg-gray-200 rounded-lg transition-colors flex items-center justify-center">
+              <Search className="w-4 h-4 text-gray-600" />
+            </button>
+          </div>
+
           {/* Collapsed chat items */}
           <div className="flex-1 overflow-y-auto p-2">
             {previousChats.map(chat => (
@@ -147,8 +161,27 @@ export const Sidebar = () => {
           {/* Share section collapsed */}
           <ShareSection isCollapsed={true} />
 
-          {/* Collapsed user profile */}
-          <div className="border-t border-gray-300 p-2">
+          {/* Collapsed user profile with icons */}
+          <div className="border-t border-gray-300 p-2 space-y-2">
+            {/* Notification and Knowledge icons */}
+            <div className="flex flex-col space-y-2">
+              <button 
+                onClick={() => setShowNotifications(true)}
+                className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
+              >
+                <Bell className="w-4 h-4 text-gray-600" />
+              </button>
+              <button 
+                onClick={handleKnowledgeClick}
+                className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
+              >
+                <div className="relative">
+                  <Lightbulb className="w-4 h-4 text-gray-600" />
+                  <Lightning className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
+                </div>
+              </button>
+            </div>
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors">
@@ -179,8 +212,11 @@ export const Sidebar = () => {
                 
                 <DropdownMenuSeparator />
                 
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
-                  <Lightbulb className="w-4 h-4" />
+                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
+                  <div className="relative">
+                    <Lightbulb className="w-4 h-4" />
+                    <Lightning className="w-2 h-2 absolute top-0 right-0" />
+                  </div>
                   <span>Knowledge</span>
                 </DropdownMenuItem>
                 
@@ -252,8 +288,27 @@ export const Sidebar = () => {
           {/* Share section expanded */}
           <ShareSection isCollapsed={false} />
 
-          {/* User Profile Section */}
+          {/* User Profile Section with icons */}
           <div className="border-t border-gray-300 p-4">
+            {/* Notification and Knowledge icons row */}
+            <div className="flex justify-end space-x-2 mb-3">
+              <button 
+                onClick={() => setShowNotifications(true)}
+                className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                <Bell className="w-4 h-4 text-gray-600" />
+              </button>
+              <button 
+                onClick={handleKnowledgeClick}
+                className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                <div className="relative">
+                  <Lightbulb className="w-4 h-4 text-gray-600" />
+                  <Lightning className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
+                </div>
+              </button>
+            </div>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
@@ -289,8 +344,11 @@ export const Sidebar = () => {
                 
                 <DropdownMenuSeparator />
                 
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
-                  <Lightbulb className="w-4 h-4" />
+                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
+                  <div className="relative">
+                    <Lightbulb className="w-4 h-4" />
+                    <Lightning className="w-2 h-2 absolute top-0 right-0" />
+                  </div>
                   <span>Knowledge</span>
                 </DropdownMenuItem>
                 
@@ -345,6 +403,9 @@ export const Sidebar = () => {
           </CommandGroup>
         </CommandList>
       </CommandDialog>
+
+      {/* Notifications Modal */}
+      <Notifications isOpen={showNotifications} onClose={() => setShowNotifications(false)} />
     </div>
   );
 };

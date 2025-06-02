@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, Mail, X } from 'lucide-react';
+import { Copy, Mail, Hand, Heart } from 'lucide-react';
 
 interface ShareSectionProps {
   isCollapsed: boolean;
@@ -11,6 +11,13 @@ interface ShareSectionProps {
 export const ShareSection = ({ isCollapsed }: ShareSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const HandHeartIcon = () => (
+    <div className="relative w-6 h-6 flex items-center justify-center">
+      <Hand className="w-5 h-5 text-black" strokeWidth={1.5} />
+      <Heart className="w-2 h-2 text-black absolute top-0 right-0" fill="black" strokeWidth={1} />
+    </div>
+  );
+
   if (isCollapsed) {
     return (
       <div className="border-t border-gray-300 p-2">
@@ -18,7 +25,7 @@ export const ShareSection = ({ isCollapsed }: ShareSectionProps) => {
           onClick={() => setIsOpen(true)}
           className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
         >
-          <span className="text-2xl">🚀</span>
+          <HandHeartIcon />
         </button>
       </div>
     );
@@ -31,8 +38,8 @@ export const ShareSection = ({ isCollapsed }: ShareSectionProps) => {
           onClick={() => setIsOpen(true)}
           className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left"
         >
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-sm font-bold">F</span>
+          <div className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center flex-shrink-0">
+            <HandHeartIcon />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900">Share FNTX with a friend</p>
@@ -45,16 +52,8 @@ export const ShareSection = ({ isCollapsed }: ShareSectionProps) => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                  <span className="text-white font-bold">F</span>
-                </div>
-                <span>Share FNTX with a friend</span>
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
-                <X className="w-4 h-4" />
-              </Button>
+            <DialogTitle className="flex items-center justify-center">
+              <div className="text-2xl font-bold text-gray-800">FNTX</div>
             </DialogTitle>
           </DialogHeader>
           
