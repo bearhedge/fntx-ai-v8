@@ -95,7 +95,7 @@ export const Sidebar = () => {
 
   // Simple SVG icons as components
   const PandaIcon = ({
-    size = "w-8 h-8"
+    size = "w-20 h-20"
   }: {
     size?: string;
   }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{ transform: 'translateY(1px)' }} />;
