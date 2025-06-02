@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
-
 const previousChats = [{
   id: 1,
   title: 'How to Build AI-Enhanced Trading System',
@@ -28,18 +27,15 @@ const previousChats = [{
   icon: '📊',
   active: false
 }];
-
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDocked, setIsDocked] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
   const toggleDock = () => {
     setIsDocked(!isDocked);
     if (isDocked) {
@@ -50,11 +46,9 @@ export const Sidebar = () => {
       setIsCollapsed(false);
     }
   };
-
   const openSearch = () => {
     setIsSearchOpen(true);
   };
-
   const handleKnowledgeClick = () => {
     console.log('Knowledge clicked');
   };
@@ -67,7 +61,6 @@ export const Sidebar = () => {
         openSearch();
       }
     };
-
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
@@ -85,56 +78,34 @@ export const Sidebar = () => {
       }
     }
   }, [isHovering, isDocked]);
-
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-80';
-
-  return (
-    <div 
-      className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`}
-      onMouseEnter={() => !isDocked && setIsHovering(true)}
-      onMouseLeave={() => !isDocked && setIsHovering(false)}
-    >
+  return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <button 
-              onClick={toggleDock} 
-              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-              title={isDocked ? "Undock sidebar" : "Dock sidebar"}
-            >
-              {isDocked ? (
-                <Lock className="w-4 h-4 text-gray-600" />
-              ) : (
-                <Unlock className="w-4 h-4 text-gray-600" />
-              )}
+            <button onClick={toggleDock} className="p-2 hover:bg-gray-200 rounded-lg transition-colors" title={isDocked ? "Undock sidebar" : "Dock sidebar"}>
+              {isDocked ? <Lock className="w-4 h-4 text-gray-600" /> : <Unlock className="w-4 h-4 text-gray-600" />}
             </button>
-            {!isCollapsed && (
-              <button onClick={toggleCollapse} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+            {!isCollapsed && <button onClick={toggleCollapse} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                 <PanelLeftClose className="w-4 h-4 text-gray-600" />
-              </button>
-            )}
+              </button>}
           </div>
-          {!isCollapsed && (
-            <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+          {!isCollapsed && <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
               <Search className="w-4 h-4 text-gray-600" />
-            </button>
-          )}
+            </button>}
         </div>
-        {!isCollapsed && (
-          <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors w-full">
+        {!isCollapsed && <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors w-full">
             <Plus className="w-4 h-4" />
             <span className="text-sm font-medium text-gray-700 flex-1">New day</span>
             <div className="flex items-center space-x-1 text-xs text-gray-500">
               <span className="px-1 py-0.5 bg-gray-300 rounded text-xs">⌘</span>
               <span className="px-1 py-0.5 bg-gray-300 rounded text-xs">K</span>
             </div>
-          </button>
-        )}
+          </button>}
       </div>
 
-      {isCollapsed ? (
-        <>
+      {isCollapsed ? <>
           {/* Collapsed search button */}
           <div className="p-2">
             <button onClick={openSearch} className="w-full p-2 hover:bg-gray-200 rounded-lg transition-colors flex items-center justify-center">
@@ -144,18 +115,11 @@ export const Sidebar = () => {
 
           {/* Collapsed chat items */}
           <div className="flex-1 overflow-y-auto p-2">
-            {previousChats.map(chat => (
-              <button 
-                key={chat.id} 
-                className={`w-full p-2 rounded-lg transition-colors mb-2 ${
-                  chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'
-                }`}
-              >
+            {previousChats.map(chat => <button key={chat.id} className={`w-full p-2 rounded-lg transition-colors mb-2 ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
                 <div className="w-6 h-6 rounded-full bg-gray-600 text-white text-xs flex items-center justify-center mx-auto">
                   {chat.icon === 'AI' ? 'AI' : chat.icon}
                 </div>
-              </button>
-            ))}
+              </button>)}
           </div>
 
           {/* Share section collapsed */}
@@ -165,16 +129,10 @@ export const Sidebar = () => {
           <div className="border-t border-gray-300 p-2 space-y-2">
             {/* Notification and Knowledge icons */}
             <div className="flex flex-col space-y-2">
-              <button 
-                onClick={() => setShowNotifications(true)}
-                className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
-              >
+              <button onClick={() => setShowNotifications(true)} className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
-              <button 
-                onClick={handleKnowledgeClick}
-                className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
-              >
+              <button onClick={handleKnowledgeClick} className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
                 <div className="relative">
                   <Lightbulb className="w-4 h-4 text-gray-600" />
                   <Zap className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
@@ -253,35 +211,26 @@ export const Sidebar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </>
-      ) : (
-        <>
+        </> : <>
           {/* Previous chats list */}
           <div className="flex-1 overflow-y-auto">
             <div className="p-4 space-y-2">
-              {previousChats.map(chat => (
-                <button 
-                  key={chat.id} 
-                  className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${
-                    chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'
-                  }`}
-                >
-                  <div className="w-8 h-8 rounded-full bg-gray-600 text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+              {previousChats.map(chat => <button key={chat.id} className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
+                  <div className="w-8 h-8 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5 bg-zinc-400">
                     {chat.icon === 'AI' ? 'AI' : chat.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate">
+                    <p className="text-gray-800 truncate font-light text-sm">
                       {chat.title}
                     </p>
-                    <p className="text-xs text-gray-600 mt-1 truncate">
+                    <p className="text-xs text-gray-600 mt-1 truncate font-light">
                       {chat.preview}
                     </p>
                   </div>
                   <div className="text-xs text-gray-500 flex-shrink-0 mt-0.5">
                     {chat.date}
                   </div>
-                </button>
-              ))}
+                </button>)}
             </div>
           </div>
 
@@ -292,16 +241,10 @@ export const Sidebar = () => {
           <div className="border-t border-gray-300 p-4">
             {/* Notification and Knowledge icons row */}
             <div className="flex justify-end space-x-2 mb-3">
-              <button 
-                onClick={() => setShowNotifications(true)}
-                className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
-              >
+              <button onClick={() => setShowNotifications(true)} className="p-2 rounded-lg hover:bg-gray-200 transition-colors">
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
-              <button 
-                onClick={handleKnowledgeClick}
-                className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
-              >
+              <button onClick={handleKnowledgeClick} className="p-2 rounded-lg hover:bg-gray-200 transition-colors">
                 <div className="relative">
                   <Lightbulb className="w-4 h-4 text-gray-600" />
                   <Zap className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
@@ -385,8 +328,7 @@ export const Sidebar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </>
-      )}
+        </>}
 
       {/* Search Dialog */}
       <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
@@ -394,18 +336,15 @@ export const Sidebar = () => {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Recent">
-            {previousChats.map(chat => (
-              <CommandItem key={chat.id}>
+            {previousChats.map(chat => <CommandItem key={chat.id}>
                 <MessageSquare className="mr-2 h-4 w-4" />
                 <span>{chat.title}</span>
-              </CommandItem>
-            ))}
+              </CommandItem>)}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
 
       {/* Notifications Modal */}
       <Notifications isOpen={showNotifications} onClose={() => setShowNotifications(false)} />
-    </div>
-  );
+    </div>;
 };

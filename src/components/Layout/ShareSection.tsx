@@ -1,49 +1,34 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Copy, Mail, Hand, Heart } from 'lucide-react';
-
 interface ShareSectionProps {
   isCollapsed: boolean;
 }
-
-export const ShareSection = ({ isCollapsed }: ShareSectionProps) => {
+export const ShareSection = ({
+  isCollapsed
+}: ShareSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const HandHeartIcon = () => (
-    <div className="relative w-6 h-6 flex items-center justify-center">
+  const HandHeartIcon = () => <div className="relative w-6 h-6 flex items-center justify-center">
       <Hand className="w-5 h-5 text-black" strokeWidth={1.5} />
       <Heart className="w-2 h-2 text-black absolute top-0 right-0" fill="black" strokeWidth={1} />
-    </div>
-  );
-
+    </div>;
   if (isCollapsed) {
-    return (
-      <div className="border-t border-gray-300 p-2">
-        <button 
-          onClick={() => setIsOpen(true)}
-          className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
-        >
+    return <div className="border-t border-gray-300 p-2">
+        <button onClick={() => setIsOpen(true)} className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
           <HandHeartIcon />
         </button>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <>
-      <div className="border-t border-gray-300 p-4">
-        <button 
-          onClick={() => setIsOpen(true)}
-          className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left"
-        >
+  return <>
+      <div className="border-t border-gray-100 p-4">
+        <button onClick={() => setIsOpen(true)} className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
           <div className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center flex-shrink-0">
             <HandHeartIcon />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900">Share FNTX with a friend</p>
-            <p className="text-xs text-gray-600">Get 500 credits each</p>
+            <p className="text-sm text-gray-900 font-light">Share FNTX with a friend</p>
+            <p className="text-xs text-gray-600 font-light">Get 500 credits each</p>
           </div>
           <span className="text-gray-400">→</span>
         </button>
@@ -96,6 +81,5 @@ export const ShareSection = ({ isCollapsed }: ShareSectionProps) => {
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
+    </>;
 };
