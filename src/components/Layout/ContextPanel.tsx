@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Monitor, Minimize2, Brain, ChevronDown, ChevronUp, Play, Code, Globe } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 interface ContextPanelProps {
@@ -38,15 +38,11 @@ export const ContextPanel = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-25 border-gray-200 bg-gray-200">
               <DropdownMenuItem className="flex items-center space-x-3 p-3 text-white hover:bg-gray-600 ">
-                <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
-                  <span className="text-xs text-white font-medium">VS</span>
-                </div>
+                <Code className="w-6 h-6 text-slate-950" />
                 <span className="text-sm text-zinc-950 font-normal">VS Code</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center space-x-3 p-3 text-white hover:bg-gray-600">
-                <div className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center">
-                  <span className="text-xs text-white font-medium">B</span>
-                </div>
+                <Globe className="w-6 h-6 text-slate-950" />
                 <span className="text-sm font-normal text-zinc-950">Browser</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
