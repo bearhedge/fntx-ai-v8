@@ -86,7 +86,7 @@ export const Sidebar = () => {
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-80';
 
   // Simple SVG icons as components
-  const PandaIcon = ({ size = "w-8 h-8" }: { size?: string }) => (
+  const PandaIcon = ({ size = "w-6 h-6" }: { size?: string }) => (
     <img 
       src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" 
       alt="Panda" 
@@ -170,7 +170,7 @@ export const Sidebar = () => {
                   
                   <Avatar className="w-8 h-8">
                     <AvatarFallback className="bg-white border border-gray-300">
-                      <PandaIcon size="w-6 h-6" />
+                      <PandaIcon />
                     </AvatarFallback>
                   </Avatar>
                 </button>

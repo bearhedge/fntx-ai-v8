@@ -59,10 +59,7 @@ export const ShareSection = ({
           <div className="flex flex-col">
             {/* Header with FNTX logo */}
             <div className="flex justify-center pt-12 pb-8">
-              <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <text x="10" y="50" fontSize="48" fontWeight="bold" fill="#1a1a2e">FNTX</text>
-                <path d="M160 20 Q180 40 160 60 Q140 40 160 20" stroke="#9ca3af" strokeWidth="3" fill="none"/>
-              </svg>
+              <div className="text-6xl font-bold text-black">FNTX</div>
             </div>
             
             {/* Content */}
