@@ -86,7 +86,7 @@ export const Sidebar = () => {
 
   // Simple SVG icons as components
   const PandaIcon = ({
-    size = "w-4 h-4"
+    size = "w-5 h-5"
   }: {
     size?: string;
   }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{ transform: 'translateY(1px)' }} />;
@@ -242,94 +242,100 @@ export const Sidebar = () => {
 
           {/* User Profile Section with icons */}
           <div className="border-t border-gray-300 p-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
-                  <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
-                      <PandaIcon size="w-3 h-3" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
-                    <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
-                  </div>
-                  
-                  {/* Notification and Knowledge icons aligned with username */}
-                  <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={handleNotificationClick}
-                      className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-                    >
-                      <Bell className="w-4 h-4 text-gray-600" />
-                    </button>
-                    <button onClick={e => {
+            <div className="flex items-center space-x-3">
+              {/* Bell icon outside of dropdown */}
+              <button 
+                onClick={handleNotificationClick}
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <Bell className="w-4 h-4 text-gray-600" />
+              </button>
+              
+              {/* Knowledge icon outside of dropdown */}
+              <button 
+                onClick={e => {
                   e.stopPropagation();
                   handleKnowledgeClick();
-                }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
-                      <SimpleLightbulb />
-                    </button>
+                }} 
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <SimpleLightbulb />
+              </button>
+              
+              {/* Dropdown trigger for user profile */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex-1 flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
+                        <PandaIcon size="w-5 h-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
+                      <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
+                    </div>
                     <ChevronUp className="w-4 h-4 text-gray-400" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64 mb-2 ml-4" align="start" side="top">
+                  {/* Plan Section */}
+                  <div className="p-3 bg-gray-50 rounded-lg mb-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Free</span>
+                      <button className="px-3 py-1 bg-black text-white text-xs rounded-full hover:bg-gray-800 transition-colors">
+                        Upgrade
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-gray-600">
+                      <span className="flex items-center space-x-1">
+                        <span>✨</span>
+                        <span>Credits</span>
+                      </span>
+                      <span>190 + 291 →</span>
+                    </div>
                   </div>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64 mb-2 ml-4" align="start" side="top">
-                {/* Plan Section */}
-                <div className="p-3 bg-gray-50 rounded-lg mb-2">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Free</span>
-                    <button className="px-3 py-1 bg-black text-white text-xs rounded-full hover:bg-gray-800 transition-colors">
-                      Upgrade
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-between text-xs text-gray-600">
-                    <span className="flex items-center space-x-1">
-                      <span>✨</span>
-                      <span>Credits</span>
-                    </span>
-                    <span>190 + 291 →</span>
-                  </div>
-                </div>
-                
-                <DropdownMenuSeparator />
-                
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
-                  <SimpleLightbulb />
-                  <span>Knowledge</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
-                  <User className="w-4 h-4" />
-                  <span>Account</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
-                  <Settings className="w-4 h-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuSeparator />
-                
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
-                  <Home className="w-4 h-4" />
-                  <span>Homepage</span>
-                  <span className="ml-auto">↗</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
-                  <Mail className="w-4 h-4" />
-                  <span>Contact us</span>
-                  <span className="ml-auto">↗</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuSeparator />
-                
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2 text-red-600">
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
+                    <SimpleLightbulb />
+                    <span>Knowledge</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+                    <User className="w-4 h-4" />
+                    <span>Account</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+                    <Settings className="w-4 h-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+                    <Home className="w-4 h-4" />
+                    <span>Homepage</span>
+                    <span className="ml-auto">↗</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
+                    <Mail className="w-4 h-4" />
+                    <span>Contact us</span>
+                    <span className="ml-auto">↗</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2 text-red-600">
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </>}
 
