@@ -283,14 +283,14 @@ export const Sidebar = () => {
 
           <ShareSection isCollapsed={false} />
 
-          {/* User Profile Section with username header */}
+          {/* User Profile Section */}
           <div className="border-t border-gray-300 p-4">
-            {/* Username section with switch account */}
+            {/* Username section with switch account - ONLY ONE */}
             <div className="flex items-center justify-between mb-3 p-2 rounded-lg hover:bg-gray-200 transition-colors">
               <div className="flex items-center space-x-3">
                 <Avatar className="w-8 h-8">
-                  <AvatarFallback className="bg-yellow-500 text-white font-semibold text-sm">
-                    J
+                  <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
+                    <PandaIcon size="w-4 h-4" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
@@ -307,13 +307,13 @@ export const Sidebar = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              {/* Dropdown trigger for user profile FIRST */}
+              {/* Dropdown trigger for user profile */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex-1 flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
                     <Avatar className="w-8 h-8">
-                      <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
-                        <PandaIcon size="w-4 h-4" />
+                      <AvatarFallback className="bg-yellow-500 text-white font-semibold text-sm">
+                        J
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
@@ -324,19 +324,6 @@ export const Sidebar = () => {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-64 mb-2 ml-4" align="start" side="top">
-                  {/* Username section - NEW */}
-                  <div className="flex items-center space-x-3 p-3 border-b border-gray-200 bg-gray-50">
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
-                        <PandaIcon size="w-4 h-4" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
-                      <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
-                    </div>
-                  </div>
-                  
                   {/* Plan Section */}
                   <div className="p-3 bg-gray-50 rounded-lg mb-2">
                     <div className="flex items-center justify-between mb-2">
@@ -419,14 +406,6 @@ export const Sidebar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              
-              {/* Switch Account icon next to the panda */}
-              <button 
-                onClick={handleSwitchAccountClick}
-                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                <ArrowRightLeft className="w-4 h-4 text-gray-600" />
-              </button>
               
               {/* Bell icon */}
               <button onClick={handleNotificationClick} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
