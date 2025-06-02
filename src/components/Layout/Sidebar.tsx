@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText, ArrowRightLeft } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
-import { SwitchAccountModal } from './SwitchAccountModal';
-
 const previousChats = [{
   id: 1,
   title: 'Daily Trading Day',
@@ -35,7 +33,6 @@ export const Sidebar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   console.log('Sidebar render - showNotifications:', showNotifications);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -69,11 +66,6 @@ export const Sidebar = () => {
   const handleRecordsClick = () => {
     console.log('Records clicked');
   };
-  const handleSwitchAccountClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    console.log('Switch account clicked');
-    setShowSwitchAccount(true);
-  };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -106,7 +98,6 @@ export const Sidebar = () => {
   }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{
     transform: 'translateY(1px)'
   }} />;
-  
   const SimpleLightbulb = ({
     size = "w-4 h-4"
   }: {
@@ -116,7 +107,6 @@ export const Sidebar = () => {
       <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>;
-  
   return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
@@ -283,37 +273,16 @@ export const Sidebar = () => {
 
           <ShareSection isCollapsed={false} />
 
-          {/* User Profile Section */}
+          {/* User Profile Section with icons */}
           <div className="border-t border-gray-300 p-4">
-            {/* Username section with switch account - ONLY ONE */}
-            <div className="flex items-center justify-between mb-3 p-2 rounded-lg hover:bg-gray-200 transition-colors">
-              <div className="flex items-center space-x-3">
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
-                    <PandaIcon size="w-4 h-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
-                  <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
-                </div>
-              </div>
-              <button 
-                onClick={handleSwitchAccountClick}
-                className="p-1 rounded hover:bg-gray-300 transition-colors"
-              >
-                <ArrowRightLeft className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
-
             <div className="flex items-center space-x-3">
-              {/* Dropdown trigger for user profile */}
+              {/* Dropdown trigger for user profile FIRST */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex-1 flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
                     <Avatar className="w-8 h-8">
-                      <AvatarFallback className="bg-yellow-500 text-white font-semibold text-sm">
-                        J
+                      <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
+                        <PandaIcon size="w-4 h-4" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
@@ -407,18 +376,20 @@ export const Sidebar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
               
-              {/* Bell icon */}
-              <button onClick={handleNotificationClick} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
+              {/* Bell icon SECOND */}
+              <button onClick={handleNotificationClick} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
+            marginLeft: '-2px'
+          }}>
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Mandate icon */}
+              {/* Mandate icon THIRD - moved left by 5mm */}
               <button onClick={e => {
-                e.stopPropagation();
-                handleKnowledgeClick();
-              }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
-                marginLeft: '-19px'
-              }}>
+            e.stopPropagation();
+            handleKnowledgeClick();
+          }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
+            marginLeft: '1px'
+          }}>
                 <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
             </div>
@@ -447,14 +418,8 @@ export const Sidebar = () => {
 
       {/* Notifications Modal */}
       {showNotifications && <Notifications isOpen={showNotifications} onClose={() => {
-        console.log('Closing notifications');
-        setShowNotifications(false);
-      }} />}
-
-      {/* Switch Account Modal */}
-      <SwitchAccountModal 
-        isOpen={showSwitchAccount} 
-        onClose={() => setShowSwitchAccount(false)} 
-      />
+      console.log('Closing notifications');
+      setShowNotifications(false);
+    }} />}
     </div>;
 };
