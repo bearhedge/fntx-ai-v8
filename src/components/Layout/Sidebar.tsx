@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -6,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
-
 const previousChats = [{
   id: 1,
   title: 'Daily trading day',
@@ -29,18 +27,15 @@ const previousChats = [{
   icon: '🧠',
   active: false
 }];
-
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDocked, setIsDocked] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
   const toggleDock = () => {
     setIsDocked(!isDocked);
     if (isDocked) {
@@ -49,15 +44,12 @@ export const Sidebar = () => {
       setIsCollapsed(false);
     }
   };
-
   const openSearch = () => {
     setIsSearchOpen(true);
   };
-
   const handleKnowledgeClick = () => {
     console.log('Knowledge clicked');
   };
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -65,11 +57,9 @@ export const Sidebar = () => {
         openSearch();
       }
     };
-
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
-
   useEffect(() => {
     if (!isDocked) {
       if (isHovering) {
@@ -82,26 +72,23 @@ export const Sidebar = () => {
       }
     }
   }, [isHovering, isDocked]);
-
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-80';
 
   // Simple SVG icons as components
-  const PandaIcon = ({ size = "w-4 h-4" }: { size?: string }) => (
-    <img 
-      src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" 
-      alt="Panda" 
-      className={size}
-    />
-  );
-
-  const SimpleLightbulb = ({ size = "w-4 h-4" }: { size?: string }) => (
-    <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9 21h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  );
-
+  const PandaIcon = ({
+    size = "w-4 h-4"
+  }: {
+    size?: string;
+  }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={size} />;
+  const SimpleLightbulb = ({
+    size = "w-4 h-4"
+  }: {
+    size?: string;
+  }) => <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 21h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>;
   return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
@@ -139,7 +126,7 @@ export const Sidebar = () => {
           {/* Collapsed chat items */}
           <div className="flex-1 overflow-y-auto p-2">
             {previousChats.map(chat => <button key={chat.id} className={`w-full p-2 rounded-lg transition-colors mb-2 ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
-                <div className="w-6 h-6 rounded-full bg-gray-600 text-white text-xs flex items-center justify-center mx-auto">
+                <div className="w-6 h-6 rounded-full text-white text-xs flex items-center justify-center mx-auto bg-neutral-300">
                   🧠
                 </div>
               </button>)}
