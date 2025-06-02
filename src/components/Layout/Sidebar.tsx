@@ -244,26 +244,7 @@ export const Sidebar = () => {
           {/* User Profile Section with icons */}
           <div className="border-t border-gray-300 p-4">
             <div className="flex items-center space-x-3">
-              {/* Bell icon first */}
-              <button 
-                onClick={handleNotificationClick}
-                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                <Bell className="w-4 h-4 text-gray-600" />
-              </button>
-              
-              {/* Knowledge icon second */}
-              <button 
-                onClick={e => {
-                  e.stopPropagation();
-                  handleKnowledgeClick();
-                }} 
-                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                <SimpleLightbulb />
-              </button>
-              
-              {/* Dropdown trigger for user profile */}
+              {/* Dropdown trigger for user profile FIRST */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex-1 flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
@@ -336,6 +317,25 @@ export const Sidebar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              
+              {/* Bell icon SECOND */}
+              <button 
+                onClick={handleNotificationClick}
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <Bell className="w-4 h-4 text-gray-600" />
+              </button>
+              
+              {/* Knowledge icon THIRD */}
+              <button 
+                onClick={e => {
+                  e.stopPropagation();
+                  handleKnowledgeClick();
+                }} 
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <SimpleLightbulb />
+              </button>
             </div>
           </div>
         </>}
