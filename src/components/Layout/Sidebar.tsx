@@ -5,6 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
+import { RecordsModal } from './RecordsModal';
+
 const previousChats = [{
   id: 1,
   title: 'Daily Trading Day',
@@ -33,6 +35,7 @@ export const Sidebar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showRecords, setShowRecords] = useState(false);
   console.log('Sidebar render - showNotifications:', showNotifications);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -65,6 +68,7 @@ export const Sidebar = () => {
   };
   const handleRecordsClick = () => {
     console.log('Records clicked');
+    setShowRecords(true);
   };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -421,5 +425,8 @@ export const Sidebar = () => {
       console.log('Closing notifications');
       setShowNotifications(false);
     }} />}
+
+      {/* Records Modal */}
+      {showRecords && <RecordsModal isOpen={showRecords} onClose={() => setShowRecords(false)} />}
     </div>;
 };
