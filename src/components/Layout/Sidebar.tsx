@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Lightbulb, Bell, Lightning } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Lightbulb, Bell, Zap } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -177,7 +177,7 @@ export const Sidebar = () => {
               >
                 <div className="relative">
                   <Lightbulb className="w-4 h-4 text-gray-600" />
-                  <Lightning className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
+                  <Zap className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
                 </div>
               </button>
             </div>
@@ -215,7 +215,7 @@ export const Sidebar = () => {
                 <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
                   <div className="relative">
                     <Lightbulb className="w-4 h-4" />
-                    <Lightning className="w-2 h-2 absolute top-0 right-0" />
+                    <Zap className="w-2 h-2 absolute top-0 right-0" />
                   </div>
                   <span>Knowledge</span>
                 </DropdownMenuItem>
@@ -304,7 +304,7 @@ export const Sidebar = () => {
               >
                 <div className="relative">
                   <Lightbulb className="w-4 h-4 text-gray-600" />
-                  <Lightning className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
+                  <Zap className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
                 </div>
               </button>
             </div>
@@ -347,7 +347,7 @@ export const Sidebar = () => {
                 <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
                   <div className="relative">
                     <Lightbulb className="w-4 h-4" />
-                    <Lightning className="w-2 h-2 absolute top-0 right-0" />
+                    <Zap className="w-2 h-2 absolute top-0 right-0" />
                   </div>
                   <span>Knowledge</span>
                 </DropdownMenuItem>
