@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText, Wallet } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
 import { RecordsModal } from './RecordsModal';
-import { TreasuryModal } from './TreasuryModal';
-
 const previousChats = [{
   id: 1,
   title: 'Daily Trading Day',
@@ -37,7 +35,6 @@ export const Sidebar = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showRecords, setShowRecords] = useState(false);
-  const [showTreasury, setShowTreasury] = useState(false);
   console.log('Sidebar render - showNotifications:', showNotifications);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -71,10 +68,6 @@ export const Sidebar = () => {
   const handleRecordsClick = () => {
     console.log('Records clicked');
     setShowRecords(true);
-  };
-  const handleTreasuryClick = () => {
-    console.log('Treasury clicked');
-    setShowTreasury(true);
   };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -218,11 +211,6 @@ export const Sidebar = () => {
                   <span>Records</span>
                 </DropdownMenuItem>
                 
-                <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleTreasuryClick}>
-                  <Wallet className="w-4 h-4" />
-                  <span>Treasury</span>
-                </DropdownMenuItem>
-                
                 <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
                   <ScrollText className="w-4 h-4" />
                   <span>Mandate</span>
@@ -351,11 +339,6 @@ export const Sidebar = () => {
                     <span>Records</span>
                   </DropdownMenuItem>
                   
-                  <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleTreasuryClick}>
-                    <Wallet className="w-4 h-4" />
-                    <span>Treasury</span>
-                  </DropdownMenuItem>
-                  
                   <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
                     <ScrollText className="w-4 h-4" />
                     <span>Mandate</span>
@@ -444,8 +427,5 @@ export const Sidebar = () => {
 
       {/* Records Modal */}
       {showRecords && <RecordsModal isOpen={showRecords} onClose={() => setShowRecords(false)} />}
-
-      {/* Treasury Modal */}
-      {showTreasury && <TreasuryModal isOpen={showTreasury} onClose={() => setShowTreasury(false)} />}
     </div>;
 };
