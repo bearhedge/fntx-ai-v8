@@ -394,7 +394,7 @@ export const Sidebar = () => {
                   handleKnowledgeClick();
                 }} 
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-                style={{ marginLeft: '-15px' }}
+                style={{ marginLeft: '-12px' }}
               >
                 <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
