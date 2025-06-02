@@ -59,7 +59,11 @@ export const ShareSection = ({
           <div className="flex flex-col">
             {/* Header with FNTX logo */}
             <div className="flex justify-center pt-12 pb-8">
-              <div className="text-6xl font-bold text-black">FNTX</div>
+              <img 
+                src="/lovable-uploads/b85318d4-56bb-4df5-bebf-97205c24e092.png" 
+                alt="FNTX Logo" 
+                className="h-16"
+              />
             </div>
             
             {/* Content */}
