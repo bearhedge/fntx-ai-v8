@@ -15,14 +15,14 @@ const previousChats = [{
   active: false
 }, {
   id: 2,
-  title: 'Daily trading day',
+  title: 'Market Analysis Session',
   preview: 'You don\'t have enough credits to...',
   date: '4/23',
   icon: '🧠',
   active: true
 }, {
   id: 3,
-  title: 'Daily trading day',
+  title: 'Portfolio Review',
   preview: 'Let me create a comprehensive...',
   date: 'Yesterday',
   icon: '🧠',
@@ -86,7 +86,7 @@ export const Sidebar = () => {
 
   // Simple SVG icons as components
   const PandaIcon = ({
-    size = "w-5 h-5"
+    size = "w-4 h-4"
   }: {
     size?: string;
   }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{ transform: 'translateY(1px)' }} />;
@@ -250,7 +250,7 @@ export const Sidebar = () => {
                   <button className="flex-1 flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
                     <Avatar className="w-8 h-8">
                       <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
-                        <PandaIcon size="w-5 h-5" />
+                        <PandaIcon size="w-4 h-4" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
@@ -326,13 +326,13 @@ export const Sidebar = () => {
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Knowledge icon THIRD */}
+              {/* Knowledge icon THIRD with more space to the right */}
               <button 
                 onClick={e => {
                   e.stopPropagation();
                   handleKnowledgeClick();
                 }} 
-                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors mr-2"
               >
                 <SimpleLightbulb />
               </button>
@@ -340,16 +340,24 @@ export const Sidebar = () => {
           </div>
         </>}
 
-      {/* Search Dialog */}
+      {/* Search Dialog with enhanced information */}
       <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-        <CommandInput placeholder="Search tasks..." />
+        <CommandInput placeholder="Search chats..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Recent">
-            {previousChats.map(chat => <CommandItem key={chat.id}>
-                <MessageSquare className="mr-2 h-4 w-4" />
-                <span>{chat.title}</span>
-              </CommandItem>)}
+          <CommandGroup heading="Recent Chats">
+            {previousChats.map(chat => (
+              <CommandItem key={chat.id} className="flex items-center justify-between px-3 py-2">
+                <div className="flex items-center space-x-3 flex-1 min-w-0">
+                  <MessageSquare className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-medium text-gray-900 truncate block">{chat.title}</span>
+                    <span className="text-xs text-gray-500 truncate block">{chat.preview}</span>
+                  </div>
+                </div>
+                <span className="text-xs text-gray-400 flex-shrink-0 ml-2">{chat.date}</span>
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
