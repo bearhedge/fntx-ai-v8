@@ -1,28 +1,48 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Copy, Mail, Hand, Heart } from 'lucide-react';
+
 interface ShareSectionProps {
   isCollapsed: boolean;
 }
+
 export const ShareSection = ({
   isCollapsed
 }: ShareSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const HandHeartIcon = () => <div className="relative w-6 h-6 flex items-center justify-center">
-      <Hand className="w-5 h-5 text-black" strokeWidth={1.5} />
-      <Heart className="w-2 h-2 text-black absolute top-0 right-0" fill="black" strokeWidth={1} />
-    </div>;
+
+  const HandHeartIcon = () => (
+    <div className="w-6 h-6 flex items-center justify-center">
+      <img 
+        src="/lovable-uploads/74deb9a2-253e-47ac-a98c-f1767624e468.png" 
+        alt="Hand Heart" 
+        className="w-5 h-5"
+      />
+    </div>
+  );
+
   if (isCollapsed) {
-    return <div className="border-t border-gray-300 p-2">
-        <button onClick={() => setIsOpen(true)} className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
+    return (
+      <div className="border-t border-gray-300 p-2">
+        <button 
+          onClick={() => setIsOpen(true)} 
+          className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
+        >
           <HandHeartIcon />
         </button>
-      </div>;
+      </div>
+    );
   }
-  return <>
+
+  return (
+    <>
       <div className="border-t border-gray-100 p-4">
-        <button onClick={() => setIsOpen(true)} className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
+        <button 
+          onClick={() => setIsOpen(true)} 
+          className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left"
+        >
           <div className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center flex-shrink-0">
             <HandHeartIcon />
           </div>
@@ -38,7 +58,11 @@ export const ShareSection = ({
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-center">
-              <div className="text-2xl font-bold text-gray-800">FNTX</div>
+              <img 
+                src="/lovable-uploads/b85318d4-56bb-4df5-bebf-97205c24e092.png" 
+                alt="FNTX" 
+                className="h-8"
+              />
             </DialogTitle>
           </DialogHeader>
           
@@ -81,5 +105,6 @@ export const ShareSection = ({
           </div>
         </DialogContent>
       </Dialog>
-    </>;
+    </>
+  );
 };
