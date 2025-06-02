@@ -8,21 +8,21 @@ import { Notifications } from './Notifications';
 
 const previousChats = [{
   id: 1,
-  title: 'Daily trading day',
+  title: 'Daily Trading Day',
   preview: 'Based on your feedback, I\'ve co...',
   date: '17:28',
   icon: '🧠',
   active: false
 }, {
   id: 2,
-  title: 'Market Analysis Session',
+  title: 'Daily Trading Day',
   preview: 'You don\'t have enough credits to...',
   date: '4/23',
   icon: '🧠',
   active: true
 }, {
   id: 3,
-  title: 'Portfolio Review',
+  title: 'Daily Trading Day',
   preview: 'Let me create a comprehensive...',
   date: 'Yesterday',
   icon: '🧠',
