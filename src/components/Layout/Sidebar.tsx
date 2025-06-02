@@ -35,6 +35,8 @@ export const Sidebar = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
+  console.log('Sidebar render - showNotifications:', showNotifications);
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -51,6 +53,12 @@ export const Sidebar = () => {
   };
   const handleKnowledgeClick = () => {
     console.log('Knowledge clicked');
+  };
+  const handleNotificationClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('Notification button clicked - current state:', showNotifications);
+    setShowNotifications(true);
+    console.log('Notification state set to true');
   };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -250,11 +258,7 @@ export const Sidebar = () => {
                   {/* Notification and Knowledge icons aligned with username */}
                   <div className="flex items-center space-x-2">
                     <button 
-                      onClick={e => {
-                        e.stopPropagation();
-                        console.log('Notification button clicked');
-                        setShowNotifications(true);
-                      }} 
+                      onClick={handleNotificationClick}
                       className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
                     >
                       <Bell className="w-4 h-4 text-gray-600" />
@@ -344,6 +348,14 @@ export const Sidebar = () => {
       </CommandDialog>
 
       {/* Notifications Modal */}
-      <Notifications isOpen={showNotifications} onClose={() => setShowNotifications(false)} />
+      {showNotifications && (
+        <Notifications 
+          isOpen={showNotifications} 
+          onClose={() => {
+            console.log('Closing notifications');
+            setShowNotifications(false);
+          }} 
+        />
+      )}
     </div>;
 };

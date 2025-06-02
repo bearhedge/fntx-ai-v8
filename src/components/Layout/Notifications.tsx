@@ -22,7 +22,14 @@ const mockNotifications: NotificationItem[] = [
 ];
 
 export const Notifications = ({ isOpen, onClose }: NotificationsProps) => {
-  if (!isOpen) return null;
+  console.log('Notifications component - isOpen:', isOpen);
+  
+  if (!isOpen) {
+    console.log('Notifications not rendering - isOpen is false');
+    return null;
+  }
+
+  console.log('Notifications component rendering');
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-start pt-20">
