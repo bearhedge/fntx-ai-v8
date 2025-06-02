@@ -143,8 +143,8 @@ export const Sidebar = () => {
               <DropdownMenuTrigger asChild>
                 <button className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
                   <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-white border border-gray-300">
-                      <PandaIcon />
+                    <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
+                      <PandaIcon size="w-3 h-3" />
                     </AvatarFallback>
                   </Avatar>
                 </button>
@@ -238,8 +238,8 @@ export const Sidebar = () => {
               <DropdownMenuTrigger asChild>
                 <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
                   <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-white border border-gray-300">
-                      <PandaIcon />
+                    <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
+                      <PandaIcon size="w-3 h-3" />
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
@@ -249,10 +249,14 @@ export const Sidebar = () => {
                   
                   {/* Notification and Knowledge icons aligned with username */}
                   <div className="flex items-center space-x-2">
-                    <button onClick={e => {
-                  e.stopPropagation();
-                  setShowNotifications(true);
-                }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
+                    <button 
+                      onClick={e => {
+                        e.stopPropagation();
+                        console.log('Notification button clicked');
+                        setShowNotifications(true);
+                      }} 
+                      className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+                    >
                       <Bell className="w-4 h-4 text-gray-600" />
                     </button>
                     <button onClick={e => {
