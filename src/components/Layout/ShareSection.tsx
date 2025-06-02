@@ -45,7 +45,7 @@ export const ShareSection = ({
             <div className="px-8 pb-8">
               <div className="grid grid-cols-3 gap-8 text-center mb-8">
                 <div>
-                  <h3 className="text-sm mb-4 font-light text-gray-400 -m1-10">Invitation code</h3>
+                  <h3 className="text-sm mb-4 font-light text-gray-400 text-center left--5">Invitation code</h3>
                 </div>
                 <div>
                   <h3 className="text-sm mb-4 font-light text-gray-400">Friends invited</h3>
@@ -56,12 +56,12 @@ export const ShareSection = ({
               </div>
               
               <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-8 items-center py-4 px-6 bg-gray-50 rounded-lg">
+                <div className="grid grid-cols-3 gap-8 items-center py-4 px-6 bg-gray-50 rounded-lg ">
                   <div className="text-left">
-                    <span className="font-mono text-sm font-light text-gray-400">FXBXHKSL8XR7</span>
+                    <span className="font-mono text-sm text-gray-400 font-extralight">FXBXHKSL8XR7</span>
                   </div>
                   <div className="text-center">
-                    <span className="text-sm font-light text-gray-400">0 / 1</span>
+                    <span className="text-sm text-gray-400 font-extralight">0 / 1</span>
                   </div>
                   <div className="flex justify-center space-x-3">
                     <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
@@ -73,12 +73,12 @@ export const ShareSection = ({
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-8 items-center py-4 px-6 bg-gray-50 rounded-lg">
+                <div className="grid grid-cols-3 gap-8 items-center py-4 px-6 bg-gray-50 rounded-lg ">
                   <div className="text-left">
-                    <span className="font-mono text-sm font-light text-gray-400">L05OUHWNAXE7W9</span>
+                    <span className="font-mono text-sm text-gray-400 font-extralight">L05OUHWNAXE7W9</span>
                   </div>
                   <div className="text-center">
-                    <span className="text-sm font-light text-gray-400">0 / 1</span>
+                    <span className="text-sm text-gray-400 font-extralight">0 / 1</span>
                   </div>
                   <div className="flex justify-center space-x-3">
                     <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
