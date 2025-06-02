@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -212,8 +212,8 @@ export const Sidebar = () => {
                 </DropdownMenuItem>
                 
                 <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
-                  <SimpleLightbulb />
-                  <span>Knowledge</span>
+                  <ScrollText className="w-4 h-4" />
+                  <span>Mandate</span>
                 </DropdownMenuItem>
                 
                 <DropdownMenuSeparator />
@@ -340,8 +340,8 @@ export const Sidebar = () => {
                   </DropdownMenuItem>
                   
                   <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
-                    <SimpleLightbulb />
-                    <span>Knowledge</span>
+                    <ScrollText className="w-4 h-4" />
+                    <span>Mandate</span>
                   </DropdownMenuItem>
                   
                   <DropdownMenuSeparator />
@@ -387,16 +387,16 @@ export const Sidebar = () => {
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Knowledge icon THIRD with more space to the right and moved 10mm to the left */}
+              {/* Mandate icon THIRD with more space to the right and moved 10mm to the left */}
               <button 
                 onClick={e => {
                   e.stopPropagation();
                   handleKnowledgeClick();
                 }} 
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors mr-2"
-                style={{ marginLeft: '1mm' }}
+                style={{ marginLeft: '-10mm' }}
               >
-                <SimpleLightbulb />
+                <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
             </div>
           </div>
