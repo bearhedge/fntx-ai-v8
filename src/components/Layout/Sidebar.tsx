@@ -326,13 +326,14 @@ export const Sidebar = () => {
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Knowledge icon THIRD with more space to the right */}
+              {/* Knowledge icon THIRD with more space to the right and moved 10mm to the left */}
               <button 
                 onClick={e => {
                   e.stopPropagation();
                   handleKnowledgeClick();
                 }} 
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors mr-2"
+                style={{ marginLeft: '10mm' }}
               >
                 <SimpleLightbulb />
               </button>
