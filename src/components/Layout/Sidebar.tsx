@@ -90,6 +90,7 @@ export const Sidebar = () => {
   }: {
     size?: string;
   }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{ transform: 'translateY(1px)' }} />;
+  
   const SimpleLightbulb = ({
     size = "w-4 h-4"
   }: {
@@ -152,7 +153,7 @@ export const Sidebar = () => {
                 <button className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
                   <Avatar className="w-8 h-8">
                     <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
-                      <PandaIcon size="w-3 h-3" />
+                      <PandaIcon size="w-4 h-4" />
                     </AvatarFallback>
                   </Avatar>
                 </button>
@@ -243,15 +244,7 @@ export const Sidebar = () => {
           {/* User Profile Section with icons */}
           <div className="border-t border-gray-300 p-4">
             <div className="flex items-center space-x-3">
-              {/* Bell icon outside of dropdown */}
-              <button 
-                onClick={handleNotificationClick}
-                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                <Bell className="w-4 h-4 text-gray-600" />
-              </button>
-              
-              {/* Knowledge icon outside of dropdown */}
+              {/* Knowledge icon first */}
               <button 
                 onClick={e => {
                   e.stopPropagation();
@@ -260,6 +253,14 @@ export const Sidebar = () => {
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 <SimpleLightbulb />
+              </button>
+              
+              {/* Bell icon second */}
+              <button 
+                onClick={handleNotificationClick}
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
               {/* Dropdown trigger for user profile */}

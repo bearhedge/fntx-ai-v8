@@ -46,11 +46,11 @@ export const Notifications = ({ isOpen, onClose }: NotificationsProps) => {
         
         <div className="p-6 space-y-4">
           {mockNotifications.map((notification) => (
-            <div key={notification.id} className="flex justify-between items-start">
-              <div className="text-sm text-gray-500 font-medium flex-shrink-0 mr-4">
+            <div key={notification.id} className="flex items-start gap-4">
+              <div className="text-sm text-gray-500 font-medium flex-shrink-0 w-24">
                 {notification.date}
               </div>
-              <div className="text-gray-900 text-base flex-1">
+              <div className="text-gray-900 text-sm flex-1 leading-relaxed">
                 {notification.message}
               </div>
             </div>
