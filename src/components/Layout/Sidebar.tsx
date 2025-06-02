@@ -211,7 +211,7 @@ export const Sidebar = () => {
             
             <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
               <BookOpen className="w-4 h-4" />
-              <span>Track Record</span>
+              <span>Track record</span>
             </DropdownMenuItem>
             
             <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2">
