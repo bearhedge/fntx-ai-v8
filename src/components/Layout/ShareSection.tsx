@@ -55,48 +55,48 @@ export const ShareSection = ({
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-center">
-              <img 
-                src="/lovable-uploads/b85318d4-56bb-4df5-bebf-97205c24e092.png" 
-                alt="FNTX" 
-                className="h-8"
-              />
-            </DialogTitle>
+        <DialogContent className="max-w-lg mx-auto bg-white rounded-2xl shadow-xl border-0 p-8">
+          <DialogHeader className="text-center pb-6">
+            <div className="flex justify-center mb-6">
+              <HandHeartIcon />
+            </div>
+            <div className="border-2 border-yellow-400 rounded-lg p-4 mb-4">
+              <DialogTitle className="text-2xl font-medium text-gray-900">
+                Share FNTX with a friend
+              </DialogTitle>
+            </div>
+            <p className="text-gray-600">Refer a friend, get 500 credits each</p>
           </DialogHeader>
           
           <div className="space-y-6">
-            <p className="text-gray-600 text-center">Refer a friend, get 500 credits each</p>
+            <div className="grid grid-cols-3 gap-4 text-sm text-gray-600 font-medium">
+              <div className="text-left">Invitation code</div>
+              <div className="text-center">Friends invited</div>
+              <div className="text-right">Share</div>
+            </div>
             
             <div className="space-y-4">
-              <div className="flex justify-between items-center text-sm text-gray-600">
-                <span>Invitation code</span>
-                <span>Friends invited</span>
-                <span>Share</span>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="font-mono text-sm">FXBXHKSL8XR7</span>
-                <span className="text-sm text-gray-600">1 / 1</span>
-                <div className="flex space-x-2">
-                  <Button variant="ghost" size="sm">
+              <div className="grid grid-cols-3 gap-4 items-center py-3 px-4 bg-gray-50 rounded-lg">
+                <span className="font-mono text-sm font-medium text-gray-900">FXBXHKSL8XR7</span>
+                <span className="text-sm text-gray-600 text-center">1 / 1</span>
+                <div className="flex justify-end space-x-2">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Copy className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Mail className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="font-mono text-sm">L05OUHWNAXE7W9</span>
-                <span className="text-sm text-gray-600">1 / 1</span>
-                <div className="flex space-x-2">
-                  <Button variant="ghost" size="sm">
+              <div className="grid grid-cols-3 gap-4 items-center py-3 px-4 bg-gray-50 rounded-lg">
+                <span className="font-mono text-sm font-medium text-gray-900">L05OUHWNAXE7W9</span>
+                <span className="text-sm text-gray-600 text-center">1 / 1</span>
+                <div className="flex justify-end space-x-2">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Copy className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <Mail className="w-4 h-4" />
                   </Button>
                 </div>

@@ -1,10 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Lightbulb, Bell, Zap } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
+
 const previousChats = [{
   id: 1,
   title: 'Daily trading day',
@@ -27,15 +29,18 @@ const previousChats = [{
   icon: '🧠',
   active: false
 }];
+
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDocked, setIsDocked] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
+
   const toggleDock = () => {
     setIsDocked(!isDocked);
     if (isDocked) {
@@ -44,12 +49,15 @@ export const Sidebar = () => {
       setIsCollapsed(false);
     }
   };
+
   const openSearch = () => {
     setIsSearchOpen(true);
   };
+
   const handleKnowledgeClick = () => {
     console.log('Knowledge clicked');
   };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -57,9 +65,11 @@ export const Sidebar = () => {
         openSearch();
       }
     };
+
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
+
   useEffect(() => {
     if (!isDocked) {
       if (isHovering) {
@@ -72,7 +82,29 @@ export const Sidebar = () => {
       }
     }
   }, [isHovering, isDocked]);
+
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-80';
+
+  // Simple SVG icons as components
+  const PandaIcon = ({ size = "w-8 h-8" }: { size?: string }) => (
+    <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="8" fill="white" stroke="black" strokeWidth="1.5"/>
+      <circle cx="7" cy="7" r="2" fill="black"/>
+      <circle cx="17" cy="7" r="2" fill="black"/>
+      <circle cx="10" cy="10" r="1" fill="black"/>
+      <circle cx="14" cy="10" r="1" fill="black"/>
+      <path d="M10 14 Q12 16 14 14" stroke="black" strokeWidth="1.5" fill="none"/>
+    </svg>
+  );
+
+  const SimpleLightbulb = ({ size = "w-4 h-4" }: { size?: string }) => (
+    <svg className={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 21h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+
   return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
@@ -135,16 +167,13 @@ export const Sidebar = () => {
                   e.stopPropagation();
                   handleKnowledgeClick();
                 }} className="p-1 rounded hover:bg-gray-300 transition-colors">
-                      <div className="relative">
-                        <Lightbulb className="w-3 h-3 text-gray-600" />
-                        <Zap className="w-1.5 h-1.5 text-gray-600 absolute -top-0.5 -right-0.5" />
-                      </div>
+                      <SimpleLightbulb size="w-3 h-3" />
                     </button>
                   </div>
                   
                   <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-pink-600 text-white text-sm font-medium">
-                      BH
+                    <AvatarFallback className="bg-white border border-gray-300">
+                      <PandaIcon size="w-6 h-6" />
                     </AvatarFallback>
                   </Avatar>
                 </button>
@@ -170,10 +199,7 @@ export const Sidebar = () => {
                 <DropdownMenuSeparator />
                 
                 <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
-                  <div className="relative">
-                    <Lightbulb className="w-4 h-4" />
-                    <Zap className="w-2 h-2 absolute top-0 right-0" />
-                  </div>
+                  <SimpleLightbulb />
                   <span>Knowledge</span>
                 </DropdownMenuItem>
                 
@@ -241,8 +267,8 @@ export const Sidebar = () => {
               <DropdownMenuTrigger asChild>
                 <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-200 transition-colors text-left">
                   <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-pink-600 text-white text-sm font-medium">
-                      BH
+                    <AvatarFallback className="bg-white border border-gray-300">
+                      <PandaIcon />
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
@@ -262,10 +288,7 @@ export const Sidebar = () => {
                   e.stopPropagation();
                   handleKnowledgeClick();
                 }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
-                      <div className="relative">
-                        <Lightbulb className="w-4 h-4 text-gray-600" />
-                        <Zap className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
-                      </div>
+                      <SimpleLightbulb />
                     </button>
                     <ChevronUp className="w-4 h-4 text-gray-400" />
                   </div>
@@ -292,10 +315,7 @@ export const Sidebar = () => {
                 <DropdownMenuSeparator />
                 
                 <DropdownMenuItem className="flex items-center space-x-2 px-3 py-2" onClick={handleKnowledgeClick}>
-                  <div className="relative">
-                    <Lightbulb className="w-4 h-4" />
-                    <Zap className="w-2 h-2 absolute top-0 right-0" />
-                  </div>
+                  <SimpleLightbulb />
                   <span>Knowledge</span>
                 </DropdownMenuItem>
                 
