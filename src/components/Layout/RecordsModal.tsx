@@ -240,7 +240,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
         <ScrollArea className="h-[calc(90vh-200px)]">
           {/* Controls */}
-          <div className="flex items-center gap-4 mb-4 px-1">
+          <div className="flex items-center gap-4 mb-4 px-1 py-[10px]">
             <Select value={filterType} onValueChange={setFilterType}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Filter" />
