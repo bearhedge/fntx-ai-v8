@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Lightbulb, Bell, Zap } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -6,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
-
 const previousChats = [{
   id: 1,
   title: 'Daily trading day',
@@ -29,18 +27,15 @@ const previousChats = [{
   icon: '🧠',
   active: false
 }];
-
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDocked, setIsDocked] = useState(true);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
   const toggleDock = () => {
     setIsDocked(!isDocked);
     if (isDocked) {
@@ -49,15 +44,12 @@ export const Sidebar = () => {
       setIsCollapsed(false);
     }
   };
-
   const openSearch = () => {
     setIsSearchOpen(true);
   };
-
   const handleKnowledgeClick = () => {
     console.log('Knowledge clicked');
   };
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -68,7 +60,6 @@ export const Sidebar = () => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
-
   useEffect(() => {
     if (!isDocked) {
       if (isHovering) {
@@ -81,76 +72,48 @@ export const Sidebar = () => {
       }
     }
   }, [isHovering, isDocked]);
-
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-80';
-
-  return (
-    <div 
-      className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`}
-      onMouseEnter={() => !isDocked && setIsHovering(true)}
-      onMouseLeave={() => !isDocked && setIsHovering(false)}
-    >
+  return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <button 
-              onClick={toggleDock} 
-              className="p-2 hover:bg-gray-200 rounded-lg transition-colors" 
-              title={isDocked ? "Undock sidebar" : "Dock sidebar"}
-            >
+            <button onClick={toggleDock} className="p-2 hover:bg-gray-200 rounded-lg transition-colors" title={isDocked ? "Undock sidebar" : "Dock sidebar"}>
               {isDocked ? <Lock className="w-4 h-4 text-gray-600" /> : <Unlock className="w-4 h-4 text-gray-600" />}
             </button>
-            {!isCollapsed && (
-              <button onClick={toggleCollapse} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+            {!isCollapsed && <button onClick={toggleCollapse} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                 <PanelLeftClose className="w-4 h-4 text-gray-600" />
-              </button>
-            )}
+              </button>}
           </div>
-          {!isCollapsed && (
-            <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+          {!isCollapsed && <button onClick={openSearch} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
               <Search className="w-4 h-4 text-gray-600" />
-            </button>
-          )}
+            </button>}
         </div>
-        {!isCollapsed && (
-          <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors w-full">
+        {!isCollapsed && <button className="flex items-center space-x-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors w-full">
             <Plus className="w-4 h-4" />
             <span className="text-sm font-medium text-gray-700 flex-1">New day</span>
             <div className="flex items-center space-x-1 text-xs text-gray-500">
               <span className="px-1 py-0.5 bg-gray-300 rounded text-xs">⌘</span>
               <span className="px-1 py-0.5 bg-gray-300 rounded text-xs">K</span>
             </div>
-          </button>
-        )}
+          </button>}
       </div>
 
-      {isCollapsed ? (
-        <>
+      {isCollapsed ? <>
           {/* Collapsed search button */}
           <div className="p-2">
-            <button 
-              onClick={openSearch} 
-              className="w-full p-2 hover:bg-gray-200 rounded-lg transition-colors flex items-center justify-center"
-            >
+            <button onClick={openSearch} className="w-full p-2 hover:bg-gray-200 rounded-lg transition-colors flex items-center justify-center">
               <Search className="w-4 h-4 text-gray-600" />
             </button>
           </div>
 
           {/* Collapsed chat items */}
           <div className="flex-1 overflow-y-auto p-2">
-            {previousChats.map(chat => (
-              <button 
-                key={chat.id} 
-                className={`w-full p-2 rounded-lg transition-colors mb-2 ${
-                  chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'
-                }`}
-              >
+            {previousChats.map(chat => <button key={chat.id} className={`w-full p-2 rounded-lg transition-colors mb-2 ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
                 <div className="w-6 h-6 rounded-full bg-gray-600 text-white text-xs flex items-center justify-center mx-auto">
                   🧠
                 </div>
-              </button>
-            ))}
+              </button>)}
           </div>
 
           <ShareSection isCollapsed={true} />
@@ -162,22 +125,16 @@ export const Sidebar = () => {
                 <button className="w-full p-2 rounded-lg hover:bg-gray-200 transition-colors flex flex-col items-center space-y-2">
                   {/* Notification and Knowledge icons row */}
                   <div className="flex space-x-1">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowNotifications(true);
-                      }} 
-                      className="p-1 rounded hover:bg-gray-300 transition-colors"
-                    >
+                    <button onClick={e => {
+                  e.stopPropagation();
+                  setShowNotifications(true);
+                }} className="p-1 rounded hover:bg-gray-300 transition-colors">
                       <Bell className="w-3 h-3 text-gray-600" />
                     </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleKnowledgeClick();
-                      }} 
-                      className="p-1 rounded hover:bg-gray-300 transition-colors"
-                    >
+                    <button onClick={e => {
+                  e.stopPropagation();
+                  handleKnowledgeClick();
+                }} className="p-1 rounded hover:bg-gray-300 transition-colors">
                       <div className="relative">
                         <Lightbulb className="w-3 h-3 text-gray-600" />
                         <Zap className="w-1.5 h-1.5 text-gray-600 absolute -top-0.5 -right-0.5" />
@@ -253,20 +210,12 @@ export const Sidebar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </>
-      ) : (
-        <>
+        </> : <>
           {/* Previous chats list */}
           <div className="flex-1 overflow-y-auto">
             <div className="p-4 space-y-2">
-              {previousChats.map(chat => (
-                <button 
-                  key={chat.id} 
-                  className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${
-                    chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'
-                  }`}
-                >
-                  <div className="w-8 h-8 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5 bg-zinc-400">
+              {previousChats.map(chat => <button key={chat.id} className={`w-full flex items-start space-x-3 p-3 rounded-lg text-left transition-colors ${chat.active ? 'bg-gray-200 border border-gray-400' : 'hover:bg-gray-200'}`}>
+                  <div className="w-8 h-8 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5 bg-neutral-300">
                     🧠
                   </div>
                   <div className="flex-1 min-w-0">
@@ -280,8 +229,7 @@ export const Sidebar = () => {
                   <div className="text-xs text-gray-500 flex-shrink-0 mt-0.5">
                     {chat.date}
                   </div>
-                </button>
-              ))}
+                </button>)}
             </div>
           </div>
 
@@ -304,22 +252,16 @@ export const Sidebar = () => {
                   
                   {/* Notification and Knowledge icons aligned with username */}
                   <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowNotifications(true);
-                      }} 
-                      className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-                    >
+                    <button onClick={e => {
+                  e.stopPropagation();
+                  setShowNotifications(true);
+                }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
                       <Bell className="w-4 h-4 text-gray-600" />
                     </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleKnowledgeClick();
-                      }} 
-                      className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
-                    >
+                    <button onClick={e => {
+                  e.stopPropagation();
+                  handleKnowledgeClick();
+                }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
                       <div className="relative">
                         <Lightbulb className="w-4 h-4 text-gray-600" />
                         <Zap className="w-2 h-2 text-gray-600 absolute top-0 right-0" />
@@ -390,8 +332,7 @@ export const Sidebar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </>
-      )}
+        </>}
 
       {/* Search Dialog */}
       <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
@@ -399,18 +340,15 @@ export const Sidebar = () => {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Recent">
-            {previousChats.map(chat => (
-              <CommandItem key={chat.id}>
+            {previousChats.map(chat => <CommandItem key={chat.id}>
                 <MessageSquare className="mr-2 h-4 w-4" />
                 <span>{chat.title}</span>
-              </CommandItem>
-            ))}
+              </CommandItem>)}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
 
       {/* Notifications Modal */}
       <Notifications isOpen={showNotifications} onClose={() => setShowNotifications(false)} />
-    </div>
-  );
+    </div>;
 };
