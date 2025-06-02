@@ -333,7 +333,7 @@ export const Sidebar = () => {
                   handleKnowledgeClick();
                 }} 
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors mr-2"
-                style={{ marginLeft: '10mm' }}
+                style={{ marginLeft: '3mm' }}
               >
                 <SimpleLightbulb />
               </button>
