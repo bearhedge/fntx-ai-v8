@@ -383,6 +383,7 @@ export const Sidebar = () => {
               <button 
                 onClick={handleNotificationClick}
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+                style={{ marginLeft: '-2px' }}                
               >
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
