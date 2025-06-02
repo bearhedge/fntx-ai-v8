@@ -6,7 +6,6 @@ import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, Comma
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
 import { RecordsModal } from './RecordsModal';
-
 const previousChats = [{
   id: 1,
   title: 'Daily Trading Day',
@@ -310,7 +309,7 @@ export const Sidebar = () => {
                         <span>✨</span>
                         <span>Credits</span>
                       </span>
-                      <span>1000 →</span>
+                      <span>1,000 →</span>
                     </div>
                   </div>
                   
