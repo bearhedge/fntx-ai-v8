@@ -116,6 +116,7 @@ export const Sidebar = () => {
       <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M9 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>;
+  
   return <div className={`${sidebarWidth} bg-gray-100 border-r border-gray-300 flex flex-col relative transition-all duration-300`} onMouseEnter={() => !isDocked && setIsHovering(true)} onMouseLeave={() => !isDocked && setIsHovering(false)}>
       {/* Header with dock/undock, collapse, New day button, and search */}
       <div className="p-4 border-b border-gray-300">
@@ -419,20 +420,26 @@ export const Sidebar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
               
-              {/* Bell icon SECOND */}
-              <button onClick={handleNotificationClick} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
-            marginLeft: '-2px'
-          }}>
+              {/* Switch Account icon next to the panda */}
+              <button 
+                onClick={handleSwitchAccountClick}
+                className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <ArrowRightLeft className="w-4 h-4 text-gray-600" />
+              </button>
+              
+              {/* Bell icon */}
+              <button onClick={handleNotificationClick} className="p-2 rounded-lg hover:bg-gray-300 transition-colors">
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Mandate icon THIRD */}
+              {/* Mandate icon */}
               <button onClick={e => {
-            e.stopPropagation();
-            handleKnowledgeClick();
-          }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
-            marginLeft: '-19px'
-          }}>
+                e.stopPropagation();
+                handleKnowledgeClick();
+              }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
+                marginLeft: '-19px'
+              }}>
                 <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
             </div>
@@ -461,9 +468,9 @@ export const Sidebar = () => {
 
       {/* Notifications Modal */}
       {showNotifications && <Notifications isOpen={showNotifications} onClose={() => {
-      console.log('Closing notifications');
-      setShowNotifications(false);
-    }} />}
+        console.log('Closing notifications');
+        setShowNotifications(false);
+      }} />}
 
       {/* Switch Account Modal */}
       <SwitchAccountModal 
