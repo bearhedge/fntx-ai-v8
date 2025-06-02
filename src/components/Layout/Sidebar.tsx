@@ -299,7 +299,7 @@ export const Sidebar = () => {
                   {/* Plan Section */}
                   <div className="p-3 bg-gray-50 rounded-lg mb-2">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium">Free</span>
+                      <span className="text-sm font-semibold">Free</span>
                       <button className="px-3 py-1 bg-black text-white text-xs rounded-full hover:bg-gray-800 transition-colors">
                         Upgrade
                       </button>
