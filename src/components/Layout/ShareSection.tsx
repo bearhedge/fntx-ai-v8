@@ -45,7 +45,7 @@ export const ShareSection = ({
             <div className="px-8 pb-8">
               <div className="grid grid-cols-3 gap-8 text-center mb-8">
                 <div>
-                  <h3 className="text-sm mb-4 font-light text-gray-400">Invitation code</h3>
+                  <h3 className="text-sm mb-4 font-light text-gray-400 -m1-1">Invitation code</h3>
                 </div>
                 <div>
                   <h3 className="text-sm mb-4 font-light text-gray-400">Friends invited</h3>
