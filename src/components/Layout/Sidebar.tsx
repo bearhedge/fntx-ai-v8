@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText } from 'lucide-react';
+import { MessageSquare, Plus, User, ChevronUp, Settings, Home, Mail, LogOut, PanelLeftClose, PanelLeftOpen, Search, Lock, Unlock, Bell, Zap, ScrollText, ArrowRightLeft } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ShareSection } from './ShareSection';
 import { Notifications } from './Notifications';
+import { SwitchAccountModal } from './SwitchAccountModal';
+
 const previousChats = [{
   id: 1,
   title: 'Daily Trading Day',
@@ -33,6 +35,7 @@ export const Sidebar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   console.log('Sidebar render - showNotifications:', showNotifications);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -65,6 +68,11 @@ export const Sidebar = () => {
   };
   const handleRecordsClick = () => {
     console.log('Records clicked');
+  };
+  const handleSwitchAccountClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('Switch account clicked');
+    setShowSwitchAccount(true);
   };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -273,8 +281,29 @@ export const Sidebar = () => {
 
           <ShareSection isCollapsed={false} />
 
-          {/* User Profile Section with icons */}
+          {/* User Profile Section with username header */}
           <div className="border-t border-gray-300 p-4">
+            {/* Username section with switch account */}
+            <div className="flex items-center justify-between mb-3 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+              <div className="flex items-center space-x-3">
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback className="bg-yellow-500 text-white font-semibold text-sm">
+                    J
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
+                  <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
+                </div>
+              </div>
+              <button 
+                onClick={handleSwitchAccountClick}
+                className="p-1 rounded hover:bg-gray-300 transition-colors"
+              >
+                <ArrowRightLeft className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+
             <div className="flex items-center space-x-3">
               {/* Dropdown trigger for user profile FIRST */}
               <DropdownMenu>
@@ -383,12 +412,12 @@ export const Sidebar = () => {
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Mandate icon THIRD - moved left by 5mm */}
+              {/* Mandate icon THIRD */}
               <button onClick={e => {
             e.stopPropagation();
             handleKnowledgeClick();
           }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
-            marginLeft: '1px'
+            marginLeft: '-14px'
           }}>
                 <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
@@ -421,5 +450,11 @@ export const Sidebar = () => {
       console.log('Closing notifications');
       setShowNotifications(false);
     }} />}
+
+      {/* Switch Account Modal */}
+      <SwitchAccountModal 
+        isOpen={showSwitchAccount} 
+        onClose={() => setShowSwitchAccount(false)} 
+      />
     </div>;
 };
