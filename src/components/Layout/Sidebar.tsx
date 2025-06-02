@@ -106,6 +106,7 @@ export const Sidebar = () => {
   }) => <img src="/lovable-uploads/698821d8-abf9-4326-884d-fe71882efa8b.png" alt="Panda" className={`${size} object-contain`} style={{
     transform: 'translateY(1px)'
   }} />;
+  
   const SimpleLightbulb = ({
     size = "w-4 h-4"
   }: {
@@ -322,6 +323,19 @@ export const Sidebar = () => {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-64 mb-2 ml-4" align="start" side="top">
+                  {/* Username section - NEW */}
+                  <div className="flex items-center space-x-3 p-3 border-b border-gray-200 bg-gray-50">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="bg-white border border-gray-300 flex items-center justify-center">
+                        <PandaIcon size="w-4 h-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">Jimmy Hou</p>
+                      <p className="text-xs text-gray-600 truncate">info@bearhedge.com</p>
+                    </div>
+                  </div>
+                  
                   {/* Plan Section */}
                   <div className="p-3 bg-gray-50 rounded-lg mb-2">
                     <div className="flex items-center justify-between mb-2">
@@ -417,7 +431,7 @@ export const Sidebar = () => {
             e.stopPropagation();
             handleKnowledgeClick();
           }} className="p-2 rounded-lg hover:bg-gray-300 transition-colors" style={{
-            marginLeft: '-14px'
+            marginLeft: '-19px'
           }}>
                 <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
