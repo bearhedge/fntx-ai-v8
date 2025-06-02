@@ -429,7 +429,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
           {/* Pagination */}
           <div className="flex items-center justify-center mt-4">
-            <Pagination>
+            <Pagination className="py-0">
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
@@ -453,7 +453,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
             </Pagination>
           </div>
 
-          <div className="text-center text-sm text-gray-500 mt-2 px-0 py-[3px]">
+          <div className="text-center text-sm text-gray-500 mt-2 my-[5px] mx-0 px-0 py-[8px]">
             Showing {Math.min(recordsPerPage, filteredAndSortedRecords.length)} of {filteredAndSortedRecords.length} records
           </div>
         </ScrollArea>
