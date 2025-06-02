@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -7,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface RecordDetails {
   time: string;
@@ -247,255 +247,257 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({ isOpen, onClose }) =
           </p>
         </DialogHeader>
 
-        {/* Controls */}
-        <div className="flex items-center gap-4 mb-4">
-          <Select value={filterType} onValueChange={setFilterType}>
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Filter" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="PUT">PUT</SelectItem>
-              <SelectItem value="CALL">CALL</SelectItem>
-              <SelectItem value="BOTH">BOTH</SelectItem>
-            </SelectContent>
-          </Select>
+        <ScrollArea className="h-[calc(90vh-200px)]">
+          {/* Controls */}
+          <div className="flex items-center gap-4 mb-4 px-1">
+            <Select value={filterType} onValueChange={setFilterType}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Filter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="PUT">PUT</SelectItem>
+                <SelectItem value="CALL">CALL</SelectItem>
+                <SelectItem value="BOTH">BOTH</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="date">Date</SelectItem>
-              <SelectItem value="pnl">PnL</SelectItem>
-              <SelectItem value="risk">Risk</SelectItem>
-            </SelectContent>
-          </Select>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="date">Date</SelectItem>
+                <SelectItem value="pnl">PnL</SelectItem>
+                <SelectItem value="risk">Risk</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <Input
-              placeholder="Search records..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                placeholder="Search records..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            <Button variant="outline" onClick={handleExport} className="gap-2">
+              <Download className="w-4 h-4" />
+              Export CSV
+            </Button>
           </div>
 
-          <Button variant="outline" onClick={handleExport} className="gap-2">
-            <Download className="w-4 h-4" />
-            Export CSV
-          </Button>
-        </div>
-
-        {/* Table */}
-        <div className="border rounded-lg overflow-hidden">
-          <Table>
-            <TableHeader className="bg-gray-100">
-              <TableRow>
-                <TableHead className="w-16">Date</TableHead>
-                <TableHead className="w-16 text-center">Type</TableHead>
-                <TableHead className="w-20 text-right">Strike</TableHead>
-                <TableHead className="w-16 text-center">Risk</TableHead>
-                <TableHead className="w-16 text-center">Volume</TableHead>
-                <TableHead className="w-16 text-center">Risk</TableHead>
-                <TableHead className="w-16 text-center">Result</TableHead>
-                <TableHead className="w-20 text-right">PnL</TableHead>
-                <TableHead className="w-24 text-center">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentRecords.map((record, index) => (
-                <React.Fragment key={record.id}>
-                  <TableRow 
-                    className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
-                    onClick={() => handleRowClick(record.id)}
-                  >
-                    <TableCell className="font-mono text-sm">{record.date}</TableCell>
-                    <TableCell className={`text-center font-medium ${getTypeColor(record.type)}`}>
-                      {record.type}
-                    </TableCell>
-                    <TableCell className="text-right font-mono text-sm">{record.strike}</TableCell>
-                    <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
-                      {record.risk}
-                    </TableCell>
-                    <TableCell className="text-center">{record.volume}</TableCell>
-                    <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
-                      {record.risk}
-                    </TableCell>
-                    <TableCell className="text-center text-lg">{getResultIcon(record.result)}</TableCell>
-                    <TableCell className={`text-right font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {record.pnl >= 0 ? '+' : ''}${record.pnl}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex items-center justify-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="w-8 h-8 p-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            console.log('Blockchain link clicked');
-                          }}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="w-8 h-8 p-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            console.log('AI explanation clicked');
-                          }}
-                        >
-                          <Brain className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                  
-                  {/* Expanded Row */}
-                  {expandedRow === record.id && (
-                    <TableRow className="bg-gray-50">
-                      <TableCell colSpan={9} className="p-6">
-                        <div className="grid grid-cols-2 gap-6">
-                          <div className="space-y-4">
-                            <div className="bg-white p-4 rounded-lg border">
-                              <h4 className="font-semibold text-gray-900 mb-3">TRADE DETAILS</h4>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Time:</span>
-                                  <span className="font-mono">{record.details.time}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Wait:</span>
-                                  <span className="font-mono">{record.details.waitTime}h</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Premium:</span>
-                                  <span className="font-mono">${record.details.premium}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">OTM:</span>
-                                  <span className="font-mono">{record.details.otmPercent}%</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="bg-white p-4 rounded-lg border">
-                              <h4 className="font-semibold text-gray-900 mb-3">RISK CONTROLS</h4>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Stop-Loss:</span>
-                                  <span className="font-mono">{record.details.stopLossRatio}x (${(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Take-Profit:</span>
-                                  <span className="font-mono">{(record.details.takeProfitRatio * 100)}% (${(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">IV Rank:</span>
-                                  <span className="font-mono">{record.details.ivRank}%</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-4">
-                            <div className="bg-white p-4 rounded-lg border">
-                              <h4 className="font-semibold text-gray-900 mb-3">RISK METRICS</h4>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Delta:</span>
-                                  <span className="font-mono">{record.details.delta}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Gamma:</span>
-                                  <span className="font-mono">{record.details.gamma}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Theta:</span>
-                                  <span className="font-mono">{record.details.theta}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Vega:</span>
-                                  <span className="font-mono">{record.details.vega}</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="bg-white p-4 rounded-lg border">
-                              <h4 className="font-semibold text-gray-900 mb-3">OUTCOME</h4>
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Result:</span>
-                                  <span>{record.result === 'EXPIRED' ? 'Expired worthless' : record.result === 'STOPPED' ? 'Stopped out' : 'Exercised'}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">PnL:</span>
-                                  <span className={`font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                    {record.pnl >= 0 ? '+' : ''}${record.pnl}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Optimal Exit:</span>
-                                  <span className={record.details.optimalExit ? 'text-green-600' : 'text-red-600'}>
-                                    {record.details.optimalExit ? 'YES' : 'NO'}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+          {/* Table */}
+          <div className="border rounded-lg overflow-hidden mb-4">
+            <Table>
+              <TableHeader className="bg-gray-100">
+                <TableRow>
+                  <TableHead className="w-16">Date</TableHead>
+                  <TableHead className="w-16 text-center">Type</TableHead>
+                  <TableHead className="w-20 text-right">Strike</TableHead>
+                  <TableHead className="w-16 text-center">Risk</TableHead>
+                  <TableHead className="w-16 text-center">Volume</TableHead>
+                  <TableHead className="w-16 text-center">Risk</TableHead>
+                  <TableHead className="w-16 text-center">Result</TableHead>
+                  <TableHead className="w-20 text-right">PnL</TableHead>
+                  <TableHead className="w-24 text-center">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {currentRecords.map((record, index) => (
+                  <React.Fragment key={record.id}>
+                    <TableRow 
+                      className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
+                      onClick={() => handleRowClick(record.id)}
+                    >
+                      <TableCell className="font-mono text-sm">{record.date}</TableCell>
+                      <TableCell className={`text-center font-medium ${getTypeColor(record.type)}`}>
+                        {record.type}
+                      </TableCell>
+                      <TableCell className="text-right font-mono text-sm">{record.strike}</TableCell>
+                      <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
+                        {record.risk}
+                      </TableCell>
+                      <TableCell className="text-center">{record.volume}</TableCell>
+                      <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
+                        {record.risk}
+                      </TableCell>
+                      <TableCell className="text-center text-lg">{getResultIcon(record.result)}</TableCell>
+                      <TableCell className={`text-right font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {record.pnl >= 0 ? '+' : ''}${record.pnl}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="w-8 h-8 p-0"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log('Blockchain link clicked');
+                            }}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="w-8 h-8 p-0"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log('AI explanation clicked');
+                            }}
+                          >
+                            <Brain className="w-4 h-4" />
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
-                  )}
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+                    
+                    {/* Expanded Row */}
+                    {expandedRow === record.id && (
+                      <TableRow className="bg-gray-50">
+                        <TableCell colSpan={9} className="p-6">
+                          <div className="grid grid-cols-2 gap-6">
+                            <div className="space-y-4">
+                              <div className="bg-white p-4 rounded-lg border">
+                                <h4 className="font-semibold text-gray-900 mb-3">TRADE DETAILS</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Time:</span>
+                                    <span className="font-mono">{record.details.time}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Wait:</span>
+                                    <span className="font-mono">{record.details.waitTime}h</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Premium:</span>
+                                    <span className="font-mono">${record.details.premium}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">OTM:</span>
+                                    <span className="font-mono">{record.details.otmPercent}%</span>
+                                  </div>
+                                </div>
+                              </div>
 
-        {/* Pagination */}
-        <div className="flex items-center justify-center mt-4">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                />
-              </PaginationItem>
-              
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const pageNum = i + 1;
-                return (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      onClick={() => setCurrentPage(pageNum)}
-                      isActive={currentPage === pageNum}
-                      className="cursor-pointer"
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
-              
-              <PaginationItem>
-                <PaginationNext 
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+                              <div className="bg-white p-4 rounded-lg border">
+                                <h4 className="font-semibold text-gray-900 mb-3">RISK CONTROLS</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Stop-Loss:</span>
+                                    <span className="font-mono">{record.details.stopLossRatio}x (${(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Take-Profit:</span>
+                                    <span className="font-mono">{(record.details.takeProfitRatio * 100)}% (${(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">IV Rank:</span>
+                                    <span className="font-mono">{record.details.ivRank}%</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
-        <div className="text-center text-sm text-gray-500 mt-2">
-          Showing {Math.min(recordsPerPage, filteredAndSortedRecords.length)} of {filteredAndSortedRecords.length} records
-        </div>
+                            <div className="space-y-4">
+                              <div className="bg-white p-4 rounded-lg border">
+                                <h4 className="font-semibold text-gray-900 mb-3">RISK METRICS</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Delta:</span>
+                                    <span className="font-mono">{record.details.delta}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Gamma:</span>
+                                    <span className="font-mono">{record.details.gamma}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Theta:</span>
+                                    <span className="font-mono">{record.details.theta}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Vega:</span>
+                                    <span className="font-mono">{record.details.vega}</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-white p-4 rounded-lg border">
+                                <h4 className="font-semibold text-gray-900 mb-3">OUTCOME</h4>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Result:</span>
+                                    <span>{record.result === 'EXPIRED' ? 'Expired worthless' : record.result === 'STOPPED' ? 'Stopped out' : 'Exercised'}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">PnL:</span>
+                                    <span className={`font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                      {record.pnl >= 0 ? '+' : ''}${record.pnl}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">Optimal Exit:</span>
+                                    <span className={record.details.optimalExit ? 'text-green-600' : 'text-red-600'}>
+                                      {record.details.optimalExit ? 'YES' : 'NO'}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex items-center justify-center mt-4">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                  />
+                </PaginationItem>
+                
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  const pageNum = i + 1;
+                  return (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(pageNum)}
+                        isActive={currentPage === pageNum}
+                        className="cursor-pointer"
+                      >
+                        {pageNum}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+
+          <div className="text-center text-sm text-gray-500 mt-2">
+            Showing {Math.min(recordsPerPage, filteredAndSortedRecords.length)} of {filteredAndSortedRecords.length} records
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
