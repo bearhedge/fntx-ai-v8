@@ -387,13 +387,14 @@ export const Sidebar = () => {
                 <Bell className="w-4 h-4 text-gray-600" />
               </button>
               
-              {/* Mandate icon THIRD */}
+              {/* Mandate icon THIRD - moved left by 5mm */}
               <button 
                 onClick={e => {
                   e.stopPropagation();
                   handleKnowledgeClick();
                 }} 
                 className="p-2 rounded-lg hover:bg-gray-300 transition-colors"
+                style={{ marginLeft: '-19px' }}
               >
                 <ScrollText className="w-4 h-4 text-gray-600" />
               </button>
