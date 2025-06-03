@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, HelpCircle, Calendar as CalendarIcon } from 'lucide-react';
+import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, Calendar as CalendarIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,53 +49,81 @@ interface RecordsModalProps {
   onClose: () => void;
 }
 
-// Updated performance metrics with detailed definitions
-const performanceMetrics = [{
-  label: "Distributions to Paid-in (DPI)",
-  value: "1.27x",
-  calculation: "22,860 ÷ 18,000",
-  definition: "Cash returned divided by invested capital."
-}, {
-  label: "Residual Value to Paid-in (RVPI)",
-  value: "0.47x",
-  calculation: "8,390 ÷ 18,000",
-  definition: "Remaining investment value divided by invested capital."
-}, {
-  label: "Total Value to Paid-in (TVPI)",
-  value: "1.74x",
-  calculation: "31,250 ÷ 18,000",
-  definition: "DPI plus RVPI; total value relative to invested capital."
-}, {
-  label: "Multiple on Invested Capital (MOIC)",
-  value: "1.58x",
-  calculation: "28,440 ÷ 18,000",
-  definition: "Total return multiple on invested funds."
-}, {
-  label: "Net Asset Value (NAV)",
-  value: "HKD 18,820",
-  calculation: "18,820",
-  definition: "Current market value of fund's assets minus liabilities."
-}, {
-  label: "Internal Rate of Return (IRR)",
-  value: "13.4%",
-  calculation: "Annualized return",
-  definition: "Annualized investment return rate considering timing."
-}, {
-  label: "Principle",
-  value: "HKD 18,000",
-  calculation: "Capital Deployed",
-  definition: "Original invested amount or loan balance."
-}, {
-  label: "Loss Ratio",
-  value: "5.3%",
-  calculation: "7 ÷ 131 trades",
-  definition: "Losses divided by earned premiums (insurance metric)."
-}, {
-  label: "Time to Liquidity",
-  value: "2.3 days",
-  calculation: "Average time to close",
-  definition: "Duration until investment converts to cash."
-}];
+// Updated performance metrics with new metrics and refined definitions
+const performanceMetrics = [
+  {
+    label: "Distributions to Paid-in (DPI)",
+    value: "1.27x",
+    calculation: "22,860 ÷ 18,000",
+    definition: "Measures how much cash has been returned to investors compared to what they invested."
+  },
+  {
+    label: "Residual Value to Paid-in (RVPI)",
+    value: "0.73x",
+    calculation: "13,140 ÷ 18,000",
+    definition: "Shows the current unrealized value of remaining investments relative to invested capital."
+  },
+  {
+    label: "Total Value to Paid-in (TVPI)",
+    value: "2.00x",
+    calculation: "36,000 ÷ 18,000",
+    definition: "Combines DPI and RVPI to show total value vs. invested capital."
+  },
+  {
+    label: "Multiple on Invested Capital (MOIC)",
+    value: "1.85x",
+    calculation: "33,300 ÷ 18,000",
+    definition: "Total value generated per $1 invested, before accounting for time."
+  },
+  {
+    label: "Net Asset Value (NAV)",
+    value: "HKD 19,420",
+    calculation: "Assets - Liabilities",
+    definition: "The total value of all assets held minus any liabilities."
+  },
+  {
+    label: "Internal Rate of Return (IRR)",
+    value: "17.4%",
+    calculation: "Annualized net return",
+    definition: "Annualized return on investment considering both timing and size of cash flows."
+  },
+  {
+    label: "Principal",
+    value: "HKD 18,000",
+    calculation: "Initial capital invested",
+    definition: "The original capital invested, not including gains or losses."
+  },
+  {
+    label: "Loss Ratio",
+    value: "12.0%",
+    calculation: "2,160 ÷ 18,000",
+    definition: "The percentage of capital lost relative to total invested or risked."
+  },
+  {
+    label: "Time to Liquidity",
+    value: "8.4 months",
+    calculation: "Average duration to cash exit",
+    definition: "How long it's expected to take before investments can be cashed out."
+  },
+  {
+    label: "Sharpe Ratio",
+    value: "1.42",
+    calculation: "Average Excess Return ÷ Standard Deviation",
+    definition: "Risk-adjusted return; how much return per unit of volatility."
+  },
+  {
+    label: "Exercise Ratio",
+    value: "3.2%",
+    calculation: "Exercised Options ÷ Total Trades",
+    definition: "Percent of trades where options were exercised."
+  },
+  {
+    label: "Gross IRR",
+    value: "21.2%",
+    calculation: "Before fees and expenses",
+    definition: "Annualized return before deducting fees, carry, or expenses."
+  }
+];
 
 export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
@@ -262,11 +290,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
           <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
-          <ScrollArea className="h-[calc(90vh-200px)]">
+          <div className="h-[calc(90vh-200px)] overflow-auto">
             {activeTab === 'performance' && (
-              <div className="mb-6 px-1">
+              <div className="px-1">
                 {/* Performance Metrics Section */}
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
                   <div className="flex gap-2">
                     {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
@@ -304,14 +332,13 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                           }}
                           disabled={(date) => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
                           initialFocus
-                          className="pointer-events-auto"
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="grid grid-cols-4 gap-4 mb-6">
                   {performanceMetrics.map((metric, index) => (
                     <div 
                       key={metric.label} 
@@ -320,17 +347,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     >
                       <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-gray-600">{metric.label}</span>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button onClick={(e) => e.stopPropagation()} className="p-1">
-                                <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-xs bg-gray-800 text-white border-gray-700">
-                              <p className="text-sm">{metric.definition}</p>
-                            </TooltipContent>
-                          </Tooltip>
+                          <span className="text-sm text-gray-600 font-normal">{metric.label}</span>
                         </div>
                         <div className="flex items-center justify-center h-full">
                           <span className="text-2xl font-medium text-gray-900 text-center">{metric.value}</span>
@@ -339,10 +356,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       
                       <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-gray-600">Calculation</span>
+                          <span className="text-sm text-gray-600 font-normal">Calculation</span>
                         </div>
-                        <div className="flex items-center justify-center h-full">
-                          <span className="text-lg text-gray-700 text-center">{metric.calculation}</span>
+                        <div className="flex flex-col items-center justify-center h-full">
+                          <span className="text-lg text-gray-700 text-center mb-2">{metric.calculation}</span>
+                          <span className="text-xs text-gray-500 text-center">{metric.definition}</span>
                         </div>
                       </div>
                     </div>
@@ -416,13 +434,13 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                             className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
                             onClick={() => handleRowClick(record.id)}
                           >
-                            <TableCell className="text-sm py-1">{record.date}</TableCell>
-                            <TableCell className="text-center text-sm py-1">{record.type}</TableCell>
-                            <TableCell className="text-right text-sm py-1">{record.strike}</TableCell>
-                            <TableCell className="text-center text-sm py-1">{record.risk}</TableCell>
-                            <TableCell className="text-center text-sm py-1">{record.volume}</TableCell>
-                            <TableCell className="text-center text-sm py-1">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
-                            <TableCell className="text-right text-sm py-1">
+                            <TableCell className="text-sm py-1 font-normal">{record.date}</TableCell>
+                            <TableCell className="text-center text-sm py-1 font-normal">{record.type}</TableCell>
+                            <TableCell className="text-right text-sm py-1 font-normal">{record.strike}</TableCell>
+                            <TableCell className="text-center text-sm py-1 font-normal">{record.risk}</TableCell>
+                            <TableCell className="text-center text-sm py-1 font-normal">{record.volume}</TableCell>
+                            <TableCell className="text-center text-sm py-1 font-normal">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
+                            <TableCell className="text-right text-sm py-1 font-normal">
                               {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
                             </TableCell>
                             <TableCell className="text-center py-1">
@@ -615,7 +633,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 </div>
               </div>
             )}
-          </ScrollArea>
+          </div>
         </DialogContent>
       </Dialog>
     </TooltipProvider>
