@@ -45,13 +45,13 @@ export const ShareSection = ({
             <div className="px-8 pb-8">
               <div className="grid grid-cols-3 gap-8 text-center mb-8">
                 <div>
-                  <h3 className="mb-4 text-gray-400 text-base text-left font-extralight">     Invitation code</h3>
+                  <h3 className="mb-4 text-gray-400 text-base text-left font-normal">     Invitation code</h3>
                 </div>
                 <div>
-                  <h3 className="mb-4 text-gray-400 text-base font-extralight">Friends invited</h3>
+                  <h3 className="mb-4 text-gray-400 text-base font-normal">Friends invited</h3>
                 </div>
                 <div>
-                  <h3 className="mb-4 text-gray-400 text-base font-extralight">Share</h3>
+                  <h3 className="mb-4 text-gray-400 text-base font-normal">Share</h3>
                 </div>
               </div>
               
