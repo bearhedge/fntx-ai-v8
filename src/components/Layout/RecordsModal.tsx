@@ -52,73 +52,85 @@ interface RecordsModalProps {
 // Updated performance metrics with new metrics and refined definitions
 const performanceMetrics = [
   {
-    label: "Distributions to Paid-in (DPI)",
+    label: "DPI",
+    fullLabel: "Distributions to Paid-in (DPI)",
     value: "1.27x",
     calculation: "22,860 ÷ 18,000",
     definition: "Measures how much cash has been returned to investors compared to what they invested."
   },
   {
-    label: "Residual Value to Paid-in (RVPI)",
+    label: "RVPI",
+    fullLabel: "Residual Value to Paid-in (RVPI)",
     value: "0.73x",
     calculation: "13,140 ÷ 18,000",
     definition: "Shows the current unrealized value of remaining investments relative to invested capital."
   },
   {
-    label: "Total Value to Paid-in (TVPI)",
+    label: "TVPI",
+    fullLabel: "Total Value to Paid-in (TVPI)",
     value: "2.00x",
     calculation: "36,000 ÷ 18,000",
     definition: "Combines DPI and RVPI to show total value vs. invested capital."
   },
   {
-    label: "Multiple on Invested Capital (MOIC)",
+    label: "MOIC",
+    fullLabel: "Multiple on Invested Capital (MOIC)",
     value: "1.85x",
     calculation: "33,300 ÷ 18,000",
     definition: "Total value generated per $1 invested, before accounting for time."
   },
   {
-    label: "Net Asset Value (NAV)",
+    label: "NAV",
+    fullLabel: "Net Asset Value (NAV)",
     value: "HKD 19,420",
     calculation: "Assets - Liabilities",
     definition: "The total value of all assets held minus any liabilities."
   },
   {
-    label: "Internal Rate of Return (IRR)",
+    label: "IRR",
+    fullLabel: "Internal Rate of Return (IRR)",
     value: "17.4%",
     calculation: "Annualized net return",
     definition: "Annualized return on investment considering both timing and size of cash flows."
   },
   {
     label: "Principal",
+    fullLabel: "Principal",
     value: "HKD 18,000",
     calculation: "Initial capital invested",
     definition: "The original capital invested, not including gains or losses."
   },
   {
     label: "Loss Ratio",
+    fullLabel: "Loss Ratio",
     value: "12.0%",
     calculation: "2,160 ÷ 18,000",
     definition: "The percentage of capital lost relative to total invested or risked."
   },
   {
     label: "Time to Liquidity",
+    fullLabel: "Time to Liquidity",
     value: "8.4 months",
     calculation: "Average duration to cash exit",
     definition: "How long it's expected to take before investments can be cashed out."
   },
   {
     label: "Sharpe Ratio",
+    fullLabel: "Sharpe Ratio",
     value: "1.42",
     calculation: "Average Excess Return ÷ Standard Deviation",
     definition: "Risk-adjusted return; how much return per unit of volatility."
   },
   {
     label: "Exercise Ratio",
+    fullLabel: "Exercise Ratio",
     value: "3.2%",
     calculation: "Exercised Options ÷ Total Trades",
     definition: "Percent of trades where options were exercised."
   },
   {
     label: "Gross IRR",
+    fullLabel: "Gross IRR",
     value: "21.2%",
     calculation: "Before fees and expenses",
     definition: "Annualized return before deducting fees, carry, or expenses."
@@ -292,348 +304,348 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
             <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
-          <ScrollArea className="flex-1 px-6 pb-6">
-            {activeTab === 'performance' && (
-              <div className="space-y-6">
-                {/* Performance Metrics Section */}
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
-                  <div className="flex gap-2">
-                    {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
-                      <Button
-                        key={timeframe}
-                        variant={selectedTimeframe === timeframe ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handleTimeframeChange(timeframe)}
-                        className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                      >
-                        {timeframe}
-                      </Button>
-                    ))}
-                    <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={customDateRange.from ? "default" : "outline"}
-                          size="sm"
-                          className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                        >
-                          <CalendarIcon className="w-3 h-3 mr-1" />
-                          {formatCustomDateRange()}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="end">
-                        <Calendar
-                          mode="range"
-                          selected={{ from: customDateRange.from, to: customDateRange.to }}
-                          onSelect={(range) => {
-                            setCustomDateRange(range || {});
-                            if (range?.from && range?.to) {
-                              setSelectedTimeframe('Custom Date');
-                              setIsCustomDateOpen(false);
-                            }
-                          }}
-                          disabled={(date) => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-4 gap-4">
-                  {performanceMetrics.map((metric, index) => (
-                    <div 
-                      key={metric.label} 
-                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative aspect-square"
-                      onClick={() => handleCardClick(metric.label)}
-                    >
-                      <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-gray-600 font-normal">{metric.label}</span>
-                        </div>
-                        <div className="flex items-center justify-center h-full">
-                          <span className="text-2xl font-medium text-gray-900 text-center">{metric.value}</span>
-                        </div>
-                      </div>
-                      
-                      <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-gray-600 font-normal">Calculation</span>
-                        </div>
-                        <div className="flex flex-col items-center justify-center h-full">
-                          <span className="text-lg text-gray-700 text-center mb-2">{metric.calculation}</span>
-                          <span className="text-xs text-gray-500 text-center">{metric.definition}</span>
-                        </div>
+          <div className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="px-6 pb-6">
+                {activeTab === 'performance' && (
+                  <div className="space-y-6">
+                    {/* Performance Metrics Section */}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
+                      <div className="flex gap-2">
+                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
+                          <Button
+                            key={timeframe}
+                            variant={selectedTimeframe === timeframe ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handleTimeframeChange(timeframe)}
+                            className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                          >
+                            {timeframe}
+                          </Button>
+                        ))}
+                        <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={customDateRange.from ? "default" : "outline"}
+                              size="sm"
+                              className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                            >
+                              <CalendarIcon className="w-3 h-3 mr-1" />
+                              {formatCustomDateRange()}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="end">
+                            <Calendar
+                              mode="range"
+                              selected={{ from: customDateRange.from, to: customDateRange.to }}
+                              onSelect={(range) => {
+                                setCustomDateRange(range || {});
+                                if (range?.from && range?.to) {
+                                  setSelectedTimeframe('Custom Date');
+                                  setIsCustomDateOpen(false);
+                                }
+                              }}
+                              disabled={(date) => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'history' && (
-              <div className="space-y-4">
-                {/* Controls */}
-                <div className="flex items-center gap-4">
-                  <Select value={filterType} onValueChange={setFilterType}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue placeholder="Filter" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="put">put</SelectItem>
-                      <SelectItem value="call">call</SelectItem>
-                      <SelectItem value="both">both</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="date">Date</SelectItem>
-                      <SelectItem value="pnl">PnL</SelectItem>
-                      <SelectItem value="risk">Risk</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <div className="relative flex-1 max-w-sm">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input
-                      placeholder="Search records..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-
-                  <Button variant="outline" onClick={handleExport} className="gap-2">
-                    <Download className="w-4 h-4" />
-                    Export CSV
-                  </Button>
-                </div>
-
-                {/* Table */}
-                <div className="border rounded-lg overflow-hidden mb-4">
-                  <Table>
-                    <TableHeader className="bg-gray-50">
-                      <TableRow>
-                        <TableHead className="w-24">Date</TableHead>
-                        <TableHead className="w-16 text-center">Type</TableHead>
-                        <TableHead className="w-20 text-right">Strike</TableHead>
-                        <TableHead className="w-20 text-center">Risk</TableHead>
-                        <TableHead className="w-16 text-center">Volume</TableHead>
-                        <TableHead className="w-16 text-center">Result</TableHead>
-                        <TableHead className="w-24 text-right">PnL (HKD)</TableHead>
-                        <TableHead className="w-24 text-center">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {currentRecords.map((record, index) => (
-                        <React.Fragment key={record.id}>
-                          <TableRow 
-                            className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
-                            onClick={() => handleRowClick(record.id)}
-                          >
-                            <TableCell className="text-sm py-1 font-normal">{record.date}</TableCell>
-                            <TableCell className="text-center text-sm py-1 font-normal">{record.type}</TableCell>
-                            <TableCell className="text-right text-sm py-1 font-normal">{record.strike}</TableCell>
-                            <TableCell className="text-center text-sm py-1 font-normal">{record.risk}</TableCell>
-                            <TableCell className="text-center text-sm py-1 font-normal">{record.volume}</TableCell>
-                            <TableCell className="text-center text-sm py-1 font-normal">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
-                            <TableCell className="text-right text-sm py-1 font-normal">
-                              {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
-                            </TableCell>
-                            <TableCell className="text-center py-1">
-                              <div className="flex items-center justify-center gap-2">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="w-6 h-6 p-0"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log('Blockchain link clicked');
-                                  }}
-                                >
-                                  <ExternalLink className="w-3 h-3" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="w-6 h-6 p-0"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log('AI explanation clicked');
-                                  }}
-                                >
-                                  <Brain className="w-3 h-3" />
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
+                    
+                    <div className="grid grid-cols-4 gap-4">
+                      {performanceMetrics.map((metric, index) => (
+                        <div 
+                          key={metric.label} 
+                          className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative w-full aspect-square"
+                          onClick={() => handleCardClick(metric.label)}
+                        >
+                          {/* Front Side */}
+                          <div className={`absolute inset-0 p-4 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
+                            <div className="text-sm text-gray-600 font-normal mb-3">{metric.label}</div>
+                            <div className="text-2xl font-medium text-gray-900">{metric.value}</div>
+                          </div>
                           
-                          {/* Expanded Row */}
-                          {expandedRow === record.id && (
-                            <TableRow className="bg-gray-50">
-                              <TableCell colSpan={8} className="p-6">
-                                <div className="grid grid-cols-2 gap-6">
-                                  <div className="space-y-4">
-                                    <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-medium text-gray-900 mb-3">Trade Details</h4>
-                                      <div className="space-y-2 text-sm">
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Time:</span>
-                                          <span>{record.details.time}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Wait:</span>
-                                          <span>{record.details.waitTime} hours</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Premium:</span>
-                                          <span>HKD {record.details.premium}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">OTM:</span>
-                                          <span>{record.details.otmPercent}%</span>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-medium text-gray-900 mb-3">Risk Controls</h4>
-                                      <div className="space-y-2 text-sm">
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Stop-Loss:</span>
-                                          <span>{record.details.stopLossRatio}x (HKD {(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Take-Profit:</span>
-                                          <span>{record.details.takeProfitRatio * 100}% (HKD {(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">IV Rank:</span>
-                                          <span>{record.details.ivRank}%</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="space-y-4">
-                                    <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-medium text-gray-900 mb-3">Risk Metrics</h4>
-                                      <div className="space-y-2 text-sm">
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Delta:</span>
-                                          <span>{record.details.delta}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Gamma:</span>
-                                          <span>{record.details.gamma}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Theta:</span>
-                                          <span>{record.details.theta}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Vega:</span>
-                                          <span>{record.details.vega}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-medium text-gray-900 mb-3">Outcome</h4>
-                                      <div className="space-y-2 text-sm">
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Result:</span>
-                                          <span>{record.result === 'expired' ? 'Expired' : 'Exercised'}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">PnL:</span>
-                                          <span>
-                                            HKD {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
-                                          </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-600">Optimal Exit:</span>
-                                          <span>{record.details.optimalExit ? 'Yes' : 'No'}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          )}
-                        </React.Fragment>
+                          {/* Back Side */}
+                          <div className={`absolute inset-0 p-4 transition-opacity duration-300 flex flex-col justify-between ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
+                            <div className="text-sm font-medium text-gray-900 text-center">{metric.fullLabel}</div>
+                            <div className="flex-1 flex flex-col justify-center">
+                              <div className="text-sm text-gray-700 text-center mb-2">{metric.definition}</div>
+                              <div className="text-xs text-gray-500 text-center">{metric.calculation}</div>
+                            </div>
+                          </div>
+                        </div>
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                    </div>
+                  </div>
+                )}
 
-                {/* Pagination */}
-                <div className="flex items-center justify-center mt-4">
-                  <Pagination className="py-0">
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious 
-                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                          className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                {activeTab === 'history' && (
+                  <div className="space-y-4">
+                    {/* Controls */}
+                    <div className="flex items-center gap-4">
+                      <Select value={filterType} onValueChange={setFilterType}>
+                        <SelectTrigger className="w-32">
+                          <SelectValue placeholder="Filter" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Types</SelectItem>
+                          <SelectItem value="put">put</SelectItem>
+                          <SelectItem value="call">call</SelectItem>
+                          <SelectItem value="both">both</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <Select value={sortBy} onValueChange={setSortBy}>
+                        <SelectTrigger className="w-32">
+                          <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="date">Date</SelectItem>
+                          <SelectItem value="pnl">PnL</SelectItem>
+                          <SelectItem value="risk">Risk</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <div className="relative flex-1 max-w-sm">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Input
+                          placeholder="Search records..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="pl-10"
                         />
-                      </PaginationItem>
-                      
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        const pageNum = i + 1;
-                        return (
-                          <PaginationItem key={pageNum}>
-                            <PaginationLink
-                              onClick={() => setCurrentPage(pageNum)}
-                              isActive={currentPage === pageNum}
-                              className="cursor-pointer"
-                            >
-                              {pageNum}
-                            </PaginationLink>
+                      </div>
+
+                      <Button variant="outline" onClick={handleExport} className="gap-2">
+                        <Download className="w-4 h-4" />
+                        Export CSV
+                      </Button>
+                    </div>
+
+                    {/* Table */}
+                    <div className="border rounded-lg overflow-hidden mb-4">
+                      <Table>
+                        <TableHeader className="bg-gray-50">
+                          <TableRow>
+                            <TableHead className="w-24">Date</TableHead>
+                            <TableHead className="w-16 text-center">Type</TableHead>
+                            <TableHead className="w-20 text-right">Strike</TableHead>
+                            <TableHead className="w-20 text-center">Risk</TableHead>
+                            <TableHead className="w-16 text-center">Volume</TableHead>
+                            <TableHead className="w-16 text-center">Result</TableHead>
+                            <TableHead className="w-24 text-right">PnL (HKD)</TableHead>
+                            <TableHead className="w-24 text-center">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {currentRecords.map((record, index) => (
+                            <React.Fragment key={record.id}>
+                              <TableRow 
+                                className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
+                                onClick={() => handleRowClick(record.id)}
+                              >
+                                <TableCell className="text-sm py-1 font-normal">{record.date}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{record.type}</TableCell>
+                                <TableCell className="text-right text-sm py-1 font-normal">{record.strike}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{record.risk}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{record.volume}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
+                                <TableCell className="text-right text-sm py-1 font-normal">
+                                  {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
+                                </TableCell>
+                                <TableCell className="text-center py-1">
+                                  <div className="flex items-center justify-center gap-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="w-6 h-6 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Blockchain link clicked');
+                                      }}
+                                    >
+                                      <ExternalLink className="w-3 h-3" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="w-6 h-6 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('AI explanation clicked');
+                                      }}
+                                    >
+                                      <Brain className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                              
+                              {/* Expanded Row */}
+                              {expandedRow === record.id && (
+                                <TableRow className="bg-gray-50">
+                                  <TableCell colSpan={8} className="p-6">
+                                    <div className="grid grid-cols-2 gap-6">
+                                      <div className="space-y-4">
+                                        <div className="bg-white p-4 rounded-lg border">
+                                          <h4 className="font-medium text-gray-900 mb-3">Trade Details</h4>
+                                          <div className="space-y-2 text-sm">
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Time:</span>
+                                              <span>{record.details.time}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Wait:</span>
+                                              <span>{record.details.waitTime} hours</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Premium:</span>
+                                              <span>HKD {record.details.premium}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">OTM:</span>
+                                              <span>{record.details.otmPercent}%</span>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="bg-white p-4 rounded-lg border">
+                                          <h4 className="font-medium text-gray-900 mb-3">Risk Controls</h4>
+                                          <div className="space-y-2 text-sm">
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Stop-Loss:</span>
+                                              <span>{record.details.stopLossRatio}x (HKD {(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Take-Profit:</span>
+                                              <span>{record.details.takeProfitRatio * 100}% (HKD {(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">IV Rank:</span>
+                                              <span>{record.details.ivRank}%</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div className="space-y-4">
+                                        <div className="bg-white p-4 rounded-lg border">
+                                          <h4 className="font-medium text-gray-900 mb-3">Risk Metrics</h4>
+                                          <div className="space-y-2 text-sm">
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Delta:</span>
+                                              <span>{record.details.delta}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Gamma:</span>
+                                              <span>{record.details.gamma}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Theta:</span>
+                                              <span>{record.details.theta}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Vega:</span>
+                                              <span>{record.details.vega}</span>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="bg-white p-4 rounded-lg border">
+                                          <h4 className="font-medium text-gray-900 mb-3">Outcome</h4>
+                                          <div className="space-y-2 text-sm">
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Result:</span>
+                                              <span>{record.result === 'expired' ? 'Expired' : 'Exercised'}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">PnL:</span>
+                                              <span>
+                                                HKD {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
+                                              </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">Optimal Exit:</span>
+                                              <span>{record.details.optimalExit ? 'Yes' : 'No'}</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="flex items-center justify-center mt-4">
+                      <Pagination className="py-0">
+                        <PaginationContent>
+                          <PaginationItem>
+                            <PaginationPrevious 
+                              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                              className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                            />
                           </PaginationItem>
-                        );
-                      })}
-                      
-                      <PaginationItem>
-                        <PaginationNext 
-                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                          className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              </div>
-            )}
+                          
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            const pageNum = i + 1;
+                            return (
+                              <PaginationItem key={pageNum}>
+                                <PaginationLink
+                                  onClick={() => setCurrentPage(pageNum)}
+                                  isActive={currentPage === pageNum}
+                                  className="cursor-pointer"
+                                >
+                                  {pageNum}
+                                </PaginationLink>
+                              </PaginationItem>
+                            );
+                          })}
+                          
+                          <PaginationItem>
+                            <PaginationNext 
+                              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
+                    </div>
+                  </div>
+                )}
 
-            {activeTab === 'withdrawals' && (
-              <WithdrawalTab 
-                availableBalance={2500}
-                withdrawalHistory={sampleWithdrawals}
-                availabilityBreakdown={availabilityBreakdown}
-              />
-            )}
+                {activeTab === 'withdrawals' && (
+                  <WithdrawalTab 
+                    availableBalance={2500}
+                    withdrawalHistory={sampleWithdrawals}
+                    availabilityBreakdown={availabilityBreakdown}
+                  />
+                )}
 
-            {activeTab === 'analytics' && (
-              <div className="text-center py-12">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
-                <p className="text-gray-600 mb-4">
-                  Detailed analytics and insights coming soon.
-                </p>
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
-                  <p className="text-sm text-gray-500">
-                    This section will include advanced portfolio analytics, risk metrics, 
-                    performance attribution, and AI-generated trading insights.
-                  </p>
-                </div>
+                {activeTab === 'analytics' && (
+                  <div className="text-center py-12">
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
+                    <p className="text-gray-600 mb-4">
+                      Detailed analytics and insights coming soon.
+                    </p>
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
+                      <p className="text-sm text-gray-500">
+                        This section will include advanced portfolio analytics, risk metrics, 
+                        performance attribution, and AI-generated trading insights.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </ScrollArea>
+            </ScrollArea>
+          </div>
         </DialogContent>
       </Dialog>
     </TooltipProvider>
