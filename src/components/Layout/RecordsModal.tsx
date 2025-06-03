@@ -36,7 +36,7 @@ interface Record {
   strike: string;
   risk: 'low' | 'moderate' | 'high';
   volume: number;
-  result: 'expired' | 'stopped' | 'exercised';
+  result: 'expired' | 'exercised';
   pnl: number;
   details: RecordDetails;
 }
@@ -46,52 +46,52 @@ interface RecordsModalProps {
   onClose: () => void;
 }
 
-// Performance metrics data
+// Updated performance metrics with new names and definitions
 const performanceMetrics = [{
-  label: "DPI",
-  value: "1.27",
+  label: "Distributions to Paid-in (DPI)",
+  value: "1.27x",
   calculation: "22,860 ÷ 18,000",
-  tooltip: "Distributions to Paid-In Capital - Total premium collected divided by principal deployed"
+  definition: "Cash returned divided by invested capital."
 }, {
-  label: "TVPI",
-  value: "1.74",
+  label: "Total Value to Paid-in (TVPI)",
+  value: "1.74x",
   calculation: "31,250 ÷ 18,000",
-  tooltip: "Total Value to Paid-In Capital - Total value including unrealized positions"
+  definition: "DPI plus RVPI; total value relative to invested capital."
 }, {
-  label: "RVPI",
-  value: "0.47",
+  label: "Residual Value to Paid-in (RVPI)",
+  value: "0.47x",
   calculation: "8,390 ÷ 18,000",
-  tooltip: "Residual Value to Paid-In Capital - Unrealized value divided by principal"
+  definition: "Remaining investment value divided by invested capital."
 }, {
-  label: "IRR",
+  label: "Internal Rate of Return (IRR)",
   value: "13.4%",
   calculation: "Annualized return",
-  tooltip: "Internal Rate of Return - Annualized return based on cash flows and PnL"
+  definition: "Annualized investment return rate considering timing."
 }, {
-  label: "MOIC",
-  value: "1.58",
+  label: "Multiple on Invested Capital (MOIC)",
+  value: "1.58x",
   calculation: "28,440 ÷ 18,000",
-  tooltip: "Multiple on Invested Capital - Total return divided by invested capital"
+  definition: "Total return multiple on invested funds."
 }, {
   label: "Loss Ratio",
   value: "5.3%",
   calculation: "7 ÷ 131 trades",
-  tooltip: "Percentage of trades resulting in realized loss"
+  definition: "Losses divided by earned premiums (insurance metric)."
 }, {
-  label: "Principal",
-  value: "$18,000",
+  label: "Principle",
+  value: "HKD 18,000",
   calculation: "Capital Deployed",
-  tooltip: "Total capital deployed in trading strategies"
+  definition: "Original invested amount or loan balance."
 }, {
-  label: "NAV",
-  value: "$18,820",
+  label: "Net Asset Value (NAV)",
+  value: "HKD 18,820",
   calculation: "18,820",
-  tooltip: "Current value of open positions plus remaining capital"
+  definition: "Current market value of fund's assets minus liabilities."
 }, {
   label: "Time to Liquidity",
-  value: "2.3d",
+  value: "2.3 days",
   calculation: "Average time to close",
-  tooltip: "Average time from trade open to closure"
+  definition: "Duration until investment converts to cash."
 }];
 
 export const RecordsModal: React.FC<RecordsModalProps> = ({
@@ -106,7 +106,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState('3M');
   const [flippedCard, setFlippedCard] = useState<string | null>(null);
-  const recordsPerPage = 10;
+  const recordsPerPage = 50;
 
   // Sample withdrawal data
   const sampleWithdrawals: WithdrawalRecord[] = [{
@@ -200,8 +200,6 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     switch (result) {
       case 'expired':
         return '✓';
-      case 'stopped':
-        return '×';
       case 'exercised':
         return '!';
       default:
@@ -229,7 +227,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
             <div className="flex items-center justify-between">
               <DialogTitle className="text-xl font-medium text-gray-900">Records</DialogTitle>
             </div>
-            <p className="text-sm text-gray-600 mt-2 font-normal">
+            <p className="text-sm text-gray-600 mt-2">
               Complete trading history with detailed metrics, outcomes, and withdrawal management.
             </p>
           </DialogHeader>
@@ -243,13 +241,13 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
                   <div className="flex gap-2">
-                    {['1M', '3M', 'YTD', 'ALL'].map(timeframe => (
+                    {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL', 'Custom Date'].map(timeframe => (
                       <Button
                         key={timeframe}
                         variant={selectedTimeframe === timeframe ? "default" : "outline"}
                         size="sm"
                         onClick={() => setSelectedTimeframe(timeframe)}
-                        className="h-8 px-3 text-xs font-normal"
+                        className="h-8 px-3 text-xs"
                       >
                         {timeframe}
                       </Button>
@@ -261,32 +259,32 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                   {performanceMetrics.map((metric, index) => (
                     <div 
                       key={metric.label} 
-                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative h-24"
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative h-32"
                       onClick={() => handleCardClick(metric.label)}
                     >
                       <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-normal text-gray-600">{metric.label}</span>
+                          <span className="text-sm text-gray-600">{metric.label}</span>
                           <Tooltip>
                             <TooltipTrigger onClick={(e) => e.stopPropagation()}>
                               <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
                             </TooltipTrigger>
-                            <TooltipContent className="max-w-xs">
-                              <p className="text-sm font-normal">{metric.tooltip}</p>
+                            <TooltipContent className="max-w-xs bg-gray-800 text-white border-gray-700">
+                              <p className="text-sm">{metric.definition}</p>
                             </TooltipContent>
                           </Tooltip>
                         </div>
                         <div className="flex items-center justify-center h-full">
-                          <span className="text-xl font-medium text-gray-900">{metric.value}</span>
+                          <span className="text-2xl font-medium text-gray-900 text-center">{metric.value}</span>
                         </div>
                       </div>
                       
                       <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-normal text-gray-600">Calculation</span>
+                          <span className="text-sm text-gray-600">Calculation</span>
                         </div>
                         <div className="flex items-center justify-center h-full">
-                          <span className="text-sm font-normal text-gray-700">{metric.calculation}</span>
+                          <span className="text-lg text-gray-700 text-center">{metric.calculation}</span>
                         </div>
                       </div>
                     </div>
@@ -305,9 +303,9 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="put">Put</SelectItem>
-                      <SelectItem value="call">Call</SelectItem>
-                      <SelectItem value="both">Both</SelectItem>
+                      <SelectItem value="put">put</SelectItem>
+                      <SelectItem value="call">call</SelectItem>
+                      <SelectItem value="both">both</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -328,11 +326,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       placeholder="Search records..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 font-normal"
+                      className="pl-10"
                     />
                   </div>
 
-                  <Button variant="outline" onClick={handleExport} className="gap-2 font-normal">
+                  <Button variant="outline" onClick={handleExport} className="gap-2">
                     <Download className="w-4 h-4" />
                     Export CSV
                   </Button>
@@ -343,37 +341,33 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                   <Table>
                     <TableHeader className="bg-gray-50">
                       <TableRow>
-                        <TableHead className="w-16 font-normal">Date</TableHead>
-                        <TableHead className="w-16 text-center font-normal">Type</TableHead>
-                        <TableHead className="w-20 text-right font-normal">Strike</TableHead>
-                        <TableHead className="w-16 text-center font-normal">Risk</TableHead>
-                        <TableHead className="w-16 text-center font-normal">Volume</TableHead>
-                        <TableHead className="w-16 text-center font-normal">Result</TableHead>
-                        <TableHead className="w-20 text-right font-normal">PnL</TableHead>
-                        <TableHead className="w-24 text-center font-normal">Actions</TableHead>
+                        <TableHead className="w-20">Date</TableHead>
+                        <TableHead className="w-16 text-center">Type</TableHead>
+                        <TableHead className="w-20 text-right">Strike</TableHead>
+                        <TableHead className="w-20 text-center">Risk</TableHead>
+                        <TableHead className="w-16 text-center">Volume</TableHead>
+                        <TableHead className="w-16 text-center">Result</TableHead>
+                        <TableHead className="w-24 text-right">PnL (HKD)</TableHead>
+                        <TableHead className="w-24 text-center">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {currentRecords.map((record, index) => (
                         <React.Fragment key={record.id}>
                           <TableRow 
-                            className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
+                            className={`cursor-pointer hover:bg-gray-50 h-10 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
                             onClick={() => handleRowClick(record.id)}
                           >
-                            <TableCell className="font-mono text-sm font-normal">{record.date}</TableCell>
-                            <TableCell className="text-center font-normal text-gray-900">
-                              {record.type}
+                            <TableCell className="text-sm py-2">{record.date}</TableCell>
+                            <TableCell className="text-center text-sm py-2">{record.type}</TableCell>
+                            <TableCell className="text-right text-sm py-2">{record.strike}</TableCell>
+                            <TableCell className="text-center text-sm py-2">{record.risk}</TableCell>
+                            <TableCell className="text-center text-sm py-2">{record.volume}</TableCell>
+                            <TableCell className="text-center text-lg py-2">{getResultIcon(record.result)}</TableCell>
+                            <TableCell className="text-right text-sm py-2">
+                              {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
                             </TableCell>
-                            <TableCell className="text-right font-mono text-sm font-normal">{record.strike}</TableCell>
-                            <TableCell className="text-center font-normal text-gray-900">
-                              {record.risk}
-                            </TableCell>
-                            <TableCell className="text-center font-normal">{record.volume}</TableCell>
-                            <TableCell className="text-center text-lg font-normal">{getResultIcon(record.result)}</TableCell>
-                            <TableCell className={`text-right font-mono font-normal ${record.pnl >= 0 ? 'text-gray-900' : 'text-gray-900'}`}>
-                              {record.pnl >= 0 ? '' : '('}${Math.abs(record.pnl)}{record.pnl < 0 ? ')' : ''}
-                            </TableCell>
-                            <TableCell className="text-center">
+                            <TableCell className="text-center py-2">
                               <div className="flex items-center justify-center gap-2">
                                 <Button
                                   variant="ghost"
@@ -409,40 +403,40 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                   <div className="space-y-4">
                                     <div className="bg-white p-4 rounded-lg border">
                                       <h4 className="font-medium text-gray-900 mb-3">Trade Details</h4>
-                                      <div className="space-y-2 text-sm font-normal">
+                                      <div className="space-y-2 text-sm">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Time:</span>
-                                          <span className="font-mono">{record.details.time}</span>
+                                          <span>{record.details.time}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Wait:</span>
-                                          <span className="font-mono">{record.details.waitTime}h</span>
+                                          <span>{record.details.waitTime} hours</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Premium:</span>
-                                          <span className="font-mono">${record.details.premium}</span>
+                                          <span>HKD {record.details.premium}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">OTM:</span>
-                                          <span className="font-mono">{record.details.otmPercent}%</span>
+                                          <span>{record.details.otmPercent}%</span>
                                         </div>
                                       </div>
                                     </div>
 
                                     <div className="bg-white p-4 rounded-lg border">
                                       <h4 className="font-medium text-gray-900 mb-3">Risk Controls</h4>
-                                      <div className="space-y-2 text-sm font-normal">
+                                      <div className="space-y-2 text-sm">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Stop-Loss:</span>
-                                          <span className="font-mono">{record.details.stopLossRatio}x (${(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
+                                          <span>{record.details.stopLossRatio}x (HKD {(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Take-Profit:</span>
-                                          <span className="font-mono">{record.details.takeProfitRatio * 100}% (${(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
+                                          <span>{record.details.takeProfitRatio * 100}% (HKD {(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">IV Rank:</span>
-                                          <span className="font-mono">{record.details.ivRank}%</span>
+                                          <span>{record.details.ivRank}%</span>
                                         </div>
                                       </div>
                                     </div>
@@ -451,44 +445,42 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                   <div className="space-y-4">
                                     <div className="bg-white p-4 rounded-lg border">
                                       <h4 className="font-medium text-gray-900 mb-3">Risk Metrics</h4>
-                                      <div className="space-y-2 text-sm font-normal">
+                                      <div className="space-y-2 text-sm">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Delta:</span>
-                                          <span className="font-mono">{record.details.delta}</span>
+                                          <span>{record.details.delta}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Gamma:</span>
-                                          <span className="font-mono">{record.details.gamma}</span>
+                                          <span>{record.details.gamma}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Theta:</span>
-                                          <span className="font-mono">{record.details.theta}</span>
+                                          <span>{record.details.theta}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Vega:</span>
-                                          <span className="font-mono">{record.details.vega}</span>
+                                          <span>{record.details.vega}</span>
                                         </div>
                                       </div>
                                     </div>
 
                                     <div className="bg-white p-4 rounded-lg border">
                                       <h4 className="font-medium text-gray-900 mb-3">Outcome</h4>
-                                      <div className="space-y-2 text-sm font-normal">
+                                      <div className="space-y-2 text-sm">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Result:</span>
-                                          <span>{record.result === 'expired' ? 'Expired worthless' : record.result === 'stopped' ? 'Stopped out' : 'Exercised'}</span>
+                                          <span>{record.result === 'expired' ? 'Expired' : 'Exercised'}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">PnL:</span>
-                                          <span className="font-mono font-normal text-gray-900">
-                                            {record.pnl >= 0 ? '' : '('}${Math.abs(record.pnl)}{record.pnl < 0 ? ')' : ''}
+                                          <span>
+                                            HKD {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
                                           </span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Optimal Exit:</span>
-                                          <span className={record.details.optimalExit ? 'text-gray-900' : 'text-gray-900'}>
-                                            {record.details.optimalExit ? 'Yes' : 'No'}
-                                          </span>
+                                          <span>{record.details.optimalExit ? 'Yes' : 'No'}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -553,11 +545,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
               <div className="px-1">
                 <div className="text-center py-12">
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
-                  <p className="text-gray-600 mb-4 font-normal">
+                  <p className="text-gray-600 mb-4">
                     Detailed analytics and insights coming soon.
                   </p>
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
-                    <p className="text-sm text-gray-500 font-normal">
+                    <p className="text-sm text-gray-500">
                       This section will include advanced portfolio analytics, risk metrics, 
                       performance attribution, and AI-generated trading insights.
                     </p>
@@ -575,7 +567,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 const sampleData: Record[] = [
   {
     id: '1',
-    date: '6/1',
+    date: '6/1/2025',
     type: 'put',
     strike: '530P',
     risk: 'moderate',
@@ -600,7 +592,7 @@ const sampleData: Record[] = [
   },
   {
     id: '2',
-    date: '6/2',
+    date: '6/2/2025',
     type: 'call',
     strike: '534C',
     risk: 'low',
@@ -625,12 +617,12 @@ const sampleData: Record[] = [
   },
   {
     id: '3',
-    date: '6/3',
+    date: '6/3/2025',
     type: 'put',
     strike: '528P',
     risk: 'moderate',
     volume: 3,
-    result: 'stopped',
+    result: 'exercised',
     pnl: -120,
     details: {
       time: '10:15 EST',
@@ -648,15 +640,15 @@ const sampleData: Record[] = [
       optimalExit: false
     }
   },
-  // Adding more sample data to reach 30 rows
-  ...Array.from({ length: 27 }, (_, i) => ({
+  // Adding more sample data to reach sufficient records for pagination
+  ...Array.from({ length: 97 }, (_, i) => ({
     id: (i + 4).toString(),
-    date: `6/${i + 4}`,
+    date: `6/${i + 4}/2025`,
     type: (['put', 'call', 'both'][i % 3]) as 'put' | 'call' | 'both',
     strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
     risk: (['low', 'moderate', 'high'][i % 3]) as 'low' | 'moderate' | 'high',
     volume: i % 3 + 1,
-    result: (['expired', 'stopped', 'exercised'][i % 3]) as 'expired' | 'stopped' | 'exercised',
+    result: (['expired', 'exercised'][i % 2]) as 'expired' | 'exercised',
     pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
     details: {
       time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
