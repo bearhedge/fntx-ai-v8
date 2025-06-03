@@ -45,7 +45,7 @@ export const ShareSection = ({
             <div className="px-8 pb-8">
               <div className="grid grid-cols-3 gap-8 text-center mb-8">
                 <div>
-                  <h3 className="mb-4 font-light text-gray-400 text-center text-base">Invitation code</h3>
+                  <h3 className="mb-4 font-light text-gray-400 text-base text-left">     Invitation code</h3>
                 </div>
                 <div>
                   <h3 className="mb-4 font-light text-gray-400 text-base">Friends invited</h3>
@@ -64,7 +64,7 @@ export const ShareSection = ({
                     <span className="text-sm text-gray-400 font-extralight">0 / 1</span>
                   </div>
                   <div className="flex justify-center space-x-3">
-                    <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
+                    <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200 font-normal">
                       <Copy className="w-5 h-5 text-gray-600" />
                     </Button>
                     <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-gray-200">
