@@ -63,3 +63,32 @@ export interface MarketData {
   marketTrend: string;
   marketStatus: 'open' | 'closed' | 'pre-market' | 'after-hours';
 }
+
+export interface WithdrawalRecord {
+  id: string;
+  date: string;
+  amount: number;
+  status: 'Pending' | 'Completed' | 'Failed';
+  destination: string;
+  transactionId?: string;
+  fees: number;
+}
+
+export interface AvailabilityBreakdown {
+  total: number;
+  available: number;
+  locked: number;
+  pendingRelease: {
+    amount: number;
+    releaseDate: string;
+    reason: string;
+  }[];
+}
+
+export interface WithdrawalDestination {
+  id: string;
+  type: 'bank' | 'crypto';
+  name: string;
+  details: string;
+  lastUsed?: string;
+}

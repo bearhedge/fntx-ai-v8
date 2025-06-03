@@ -8,6 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TabNavigation } from './TabNavigation';
+import { WithdrawalTab } from './WithdrawalTab';
+import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
 
 interface RecordDetails {
   time: string;
@@ -120,6 +123,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
   onClose
 }) => {
+  const [activeTab, setActiveTab] = useState('performance');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
@@ -127,6 +131,59 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState('3M');
   const recordsPerPage = 10;
+
+  // Sample withdrawal data
+  const sampleWithdrawals: WithdrawalRecord[] = [
+    {
+      id: '1',
+      date: '6/2/2025',
+      amount: 350,
+      status: 'Pending',
+      destination: 'Bank Account (****1234)',
+      transactionId: 'TXN001',
+      fees: 5
+    },
+    {
+      id: '2',
+      date: '5/28/2025',
+      amount: 500,
+      status: 'Completed',
+      destination: 'Bank Account (****1234)',
+      transactionId: 'TXN002',
+      fees: 5
+    },
+    {
+      id: '3',
+      date: '5/15/2025',
+      amount: 1200,
+      status: 'Completed',
+      destination: 'Crypto Wallet (0x1234...)',
+      transactionId: 'TXN003',
+      fees: 15
+    },
+    {
+      id: '4',
+      date: '4/30/2025',
+      amount: 800,
+      status: 'Completed',
+      destination: 'Bank Account (****1234)',
+      transactionId: 'TXN004',
+      fees: 5
+    }
+  ];
+
+  const availabilityBreakdown: AvailabilityBreakdown = {
+    total: 18820,
+    available: 2500,
+    locked: 14000,
+    pendingRelease: [
+      {
+        amount: 2320,
+        releaseDate: '6/15/2025',
+        reason: 'Options expiry'
+      }
+    ]
+  };
 
   const filteredAndSortedRecords = useMemo(() => {
     let filtered = sampleData;
@@ -214,286 +271,327 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
           <DialogHeader className="bg-gray-50 -m-6 p-6 mb-4">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-xl font-semibold text-gray-900">Records</DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="w-8 h-8 p-0 rounded-full hover:bg-gray-200"
+              >
+                <X className="w-4 h-4" />
+              </Button>
             </div>
             <p className="text-sm text-gray-600 mt-2">
-              Complete trading history with detailed metrics and outcomes. Review your trading performance and learn from past decisions.
+              Complete trading history with detailed metrics, outcomes, and withdrawal management.
             </p>
           </DialogHeader>
 
+          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+
           <ScrollArea className="h-[calc(90vh-200px)]">
-            {/* Performance Metrics Section */}
-            <div className="mb-6 px-1">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Performance Metrics</h3>
-                <div className="flex gap-2">
-                  {['1M', '3M', 'YTD', 'ALL'].map((timeframe) => (
-                    <Button
-                      key={timeframe}
-                      variant={selectedTimeframe === timeframe ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedTimeframe(timeframe)}
-                      className="h-8 px-3 text-xs"
-                    >
-                      {timeframe}
-                    </Button>
+            {activeTab === 'performance' && (
+              <div className="mb-6 px-1">
+                {/* Performance Metrics Section */}
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Performance Metrics</h3>
+                  <div className="flex gap-2">
+                    {['1M', '3M', 'YTD', 'ALL'].map((timeframe) => (
+                      <Button
+                        key={timeframe}
+                        variant={selectedTimeframe === timeframe ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedTimeframe(timeframe)}
+                        className="h-8 px-3 text-xs"
+                      >
+                        {timeframe}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  {performanceMetrics.map((metric, index) => (
+                    <div key={metric.label} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-600">{metric.label}</span>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <p className="text-sm">{metric.tooltip}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-xl font-bold text-gray-900">{metric.value}</span>
+                        {metric.delta && (
+                          <div className={`flex items-center text-sm font-medium ${
+                            metric.positive ? 'text-green-600' : 'text-red-600'
+                          }`}>
+                            {metric.positive ? (
+                              <TrendingUp className="w-3 h-3 mr-1" />
+                            ) : (
+                              <TrendingDown className="w-3 h-3 mr-1" />
+                            )}
+                            {metric.delta}
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="text-xs text-gray-500 mt-1">{metric.subtext}</div>
+                    </div>
                   ))}
                 </div>
               </div>
-              
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                {performanceMetrics.map((metric, index) => (
-                  <div key={metric.label} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-600">{metric.label}</span>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
-                          <p className="text-sm">{metric.tooltip}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                    
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-xl font-bold text-gray-900">{metric.value}</span>
-                      {metric.delta && (
-                        <div className={`flex items-center text-sm font-medium ${
-                          metric.positive ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          {metric.positive ? (
-                            <TrendingUp className="w-3 h-3 mr-1" />
-                          ) : (
-                            <TrendingDown className="w-3 h-3 mr-1" />
-                          )}
-                          {metric.delta}
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="text-xs text-gray-500 mt-1">{metric.subtext}</div>
+            )}
+
+            {activeTab === 'history' && (
+              <div>
+                {/* Controls */}
+                <div className="flex items-center gap-4 mb-4 px-1 py-[10px]">
+                  <Select value={filterType} onValueChange={setFilterType}>
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="Filter" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="PUT">PUT</SelectItem>
+                      <SelectItem value="CALL">CALL</SelectItem>
+                      <SelectItem value="BOTH">BOTH</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="date">Date</SelectItem>
+                      <SelectItem value="pnl">PnL</SelectItem>
+                      <SelectItem value="risk">Risk</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <div className="relative flex-1 max-w-sm">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Controls */}
-            <div className="flex items-center gap-4 mb-4 px-1 py-[10px]">
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Filter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="PUT">PUT</SelectItem>
-                  <SelectItem value="CALL">CALL</SelectItem>
-                  <SelectItem value="BOTH">BOTH</SelectItem>
-                </SelectContent>
-              </Select>
+                  <Button variant="outline" onClick={handleExport} className="gap-2">
+                    <Download className="w-4 h-4" />
+                    Export CSV
+                  </Button>
+                </div>
 
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="date">Date</SelectItem>
-                  <SelectItem value="pnl">PnL</SelectItem>
-                  <SelectItem value="risk">Risk</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <div className="relative flex-1 max-w-sm">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
-              </div>
-
-              <Button variant="outline" onClick={handleExport} className="gap-2">
-                <Download className="w-4 h-4" />
-                Export CSV
-              </Button>
-            </div>
-
-            {/* Table */}
-            <div className="border rounded-lg overflow-hidden mb-4">
-              <Table>
-                <TableHeader className="bg-gray-100">
-                  <TableRow>
-                    <TableHead className="w-16">Date</TableHead>
-                    <TableHead className="w-16 text-center">Type</TableHead>
-                    <TableHead className="w-20 text-right">Strike</TableHead>
-                    <TableHead className="w-16 text-center">Risk</TableHead>
-                    <TableHead className="w-16 text-center">Volume</TableHead>
-                    <TableHead className="w-16 text-center">Risk</TableHead>
-                    <TableHead className="w-16 text-center">Result</TableHead>
-                    <TableHead className="w-20 text-right">PnL</TableHead>
-                    <TableHead className="w-24 text-center">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentRecords.map((record, index) => <React.Fragment key={record.id}>
-                      <TableRow className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`} onClick={() => handleRowClick(record.id)}>
-                        <TableCell className="font-mono text-sm">{record.date}</TableCell>
-                        <TableCell className={`text-center font-medium ${getTypeColor(record.type)}`}>
-                          {record.type}
-                        </TableCell>
-                        <TableCell className="text-right font-mono text-sm">{record.strike}</TableCell>
-                        <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
-                          {record.risk}
-                        </TableCell>
-                        <TableCell className="text-center">{record.volume}</TableCell>
-                        <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
-                          {record.risk}
-                        </TableCell>
-                        <TableCell className="text-center text-lg">{getResultIcon(record.result)}</TableCell>
-                        <TableCell className={`text-right font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {record.pnl >= 0 ? '+' : ''}${record.pnl}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <div className="flex items-center justify-center gap-2">
-                            <Button variant="ghost" size="sm" className="w-8 h-8 p-0" onClick={e => {
-                          e.stopPropagation();
-                          console.log('Blockchain link clicked');
-                        }}>
+                {/* Table */}
+                <div className="border rounded-lg overflow-hidden mb-4">
+                  <Table>
+                    <TableHeader className="bg-gray-100">
+                      <TableRow>
+                        <TableHead className="w-16">Date</TableHead>
+                        <TableHead className="w-16 text-center">Type</TableHead>
+                        <TableHead className="w-20 text-right">Strike</TableHead>
+                        <TableHead className="w-16 text-center">Risk</TableHead>
+                        <TableHead className="w-16 text-center">Volume</TableHead>
+                        <TableHead className="w-16 text-center">Risk</TableHead>
+                        <TableHead className="w-16 text-center">Result</TableHead>
+                        <TableHead className="w-20 text-right">PnL</TableHead>
+                        <TableHead className="w-24 text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {currentRecords.map((record, index) => <React.Fragment key={record.id}>
+                          <TableRow className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`} onClick={() => handleRowClick(record.id)}>
+                            <TableCell className="font-mono text-sm">{record.date}</TableCell>
+                            <TableCell className={`text-center font-medium ${getTypeColor(record.type)}`}>
+                              {record.type}
+                            </TableCell>
+                            <TableCell className="text-right font-mono text-sm">{record.strike}</TableCell>
+                            <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
+                              {record.risk}
+                            </TableCell>
+                            <TableCell className="text-center">{record.volume}</TableCell>
+                            <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
+                              {record.risk}
+                            </TableCell>
+                            <TableCell className="text-center text-lg">{getResultIcon(record.result)}</TableCell>
+                            <TableCell className={`text-right font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                              {record.pnl >= 0 ? '+' : ''}${record.pnl}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <div className="flex items-center justify-center gap-2">
+                                <Button variant="ghost" size="sm" className="w-8 h-8 p-0" onClick={e => {
+                              e.stopPropagation();
+                              console.log('Blockchain link clicked');
+                            }}>
                               <ExternalLink className="w-4 h-4" />
                             </Button>
                             <Button variant="ghost" size="sm" className="w-8 h-8 p-0" onClick={e => {
-                          e.stopPropagation();
-                          console.log('AI explanation clicked');
-                        }}>
+                              e.stopPropagation();
+                              console.log('AI explanation clicked');
+                            }}>
                               <Brain className="w-4 h-4" />
                             </Button>
                           </div>
                         </TableCell>
-                      </TableRow>
+                          </TableRow>
+                          
+                          {/* Expanded Row */}
+                          {expandedRow === record.id && <TableRow className="bg-gray-50">
+                              <TableCell colSpan={9} className="p-6">
+                                <div className="grid grid-cols-2 gap-6">
+                                  <div className="space-y-4">
+                                    <div className="bg-white p-4 rounded-lg border">
+                                      <h4 className="font-semibold text-gray-900 mb-3">TRADE DETAILS</h4>
+                                      <div className="space-y-2 text-sm">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Time:</span>
+                                          <span className="font-mono">{record.details.time}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Wait:</span>
+                                          <span className="font-mono">{record.details.waitTime}h</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Premium:</span>
+                                          <span className="font-mono">${record.details.premium}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">OTM:</span>
+                                          <span className="font-mono">{record.details.otmPercent}%</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div className="bg-white p-4 rounded-lg border">
+                                      <h4 className="font-semibold text-gray-900 mb-3">RISK CONTROLS</h4>
+                                      <div className="space-y-2 text-sm">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Stop-Loss:</span>
+                                          <span className="font-mono">{record.details.stopLossRatio}x (${(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Take-Profit:</span>
+                                          <span className="font-mono">{record.details.takeProfitRatio * 100}% (${(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">IV Rank:</span>
+                                          <span className="font-mono">{record.details.ivRank}%</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-4">
+                                    <div className="bg-white p-4 rounded-lg border">
+                                      <h4 className="font-semibold text-gray-900 mb-3">RISK METRICS</h4>
+                                      <div className="space-y-2 text-sm">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Delta:</span>
+                                          <span className="font-mono">{record.details.delta}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Gamma:</span>
+                                          <span className="font-mono">{record.details.gamma}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Theta:</span>
+                                          <span className="font-mono">{record.details.theta}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Vega:</span>
+                                          <span className="font-mono">{record.details.vega}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div className="bg-white p-4 rounded-lg border">
+                                      <h4 className="font-semibold text-gray-900 mb-3">OUTCOME</h4>
+                                      <div className="space-y-2 text-sm">
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Result:</span>
+                                          <span>{record.result === 'EXPIRED' ? 'Expired worthless' : record.result === 'STOPPED' ? 'Stopped out' : 'Exercised'}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">PnL:</span>
+                                          <span className={`font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                            {record.pnl >= 0 ? '+' : ''}${record.pnl}
+                                          </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-600">Optimal Exit:</span>
+                                          <span className={record.details.optimalExit ? 'text-green-600' : 'text-red-600'}>
+                                            {record.details.optimalExit ? 'YES' : 'NO'}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </TableCell>
+                            </TableRow>}
+                      </React.Fragment>)}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                {/* Pagination */}
+                <div className="flex items-center justify-center mt-4">
+                  <Pagination className="py-0">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                      </PaginationItem>
                       
-                      {/* Expanded Row */}
-                      {expandedRow === record.id && <TableRow className="bg-gray-50">
-                          <TableCell colSpan={9} className="p-6">
-                            <div className="grid grid-cols-2 gap-6">
-                              <div className="space-y-4">
-                                <div className="bg-white p-4 rounded-lg border">
-                                  <h4 className="font-semibold text-gray-900 mb-3">TRADE DETAILS</h4>
-                                  <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Time:</span>
-                                      <span className="font-mono">{record.details.time}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Wait:</span>
-                                      <span className="font-mono">{record.details.waitTime}h</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Premium:</span>
-                                      <span className="font-mono">${record.details.premium}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">OTM:</span>
-                                      <span className="font-mono">{record.details.otmPercent}%</span>
-                                    </div>
-                                  </div>
-                                </div>
+                      {Array.from({
+                        length: Math.min(5, totalPages)
+                      }, (_, i) => {
+                        const pageNum = i + 1;
+                        return <PaginationItem key={pageNum}>
+                              <PaginationLink onClick={() => setCurrentPage(pageNum)} isActive={currentPage === pageNum} className="cursor-pointer">
+                                {pageNum}
+                              </PaginationLink>
+                            </PaginationItem>;
+                      })}
+                      
+                      <PaginationItem>
+                        <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
 
-                                <div className="bg-white p-4 rounded-lg border">
-                                  <h4 className="font-semibold text-gray-900 mb-3">RISK CONTROLS</h4>
-                                  <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Stop-Loss:</span>
-                                      <span className="font-mono">{record.details.stopLossRatio}x (${(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Take-Profit:</span>
-                                      <span className="font-mono">{record.details.takeProfitRatio * 100}% (${(record.details.premium * record.details.takeProfitRatio).toFixed(2)})</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">IV Rank:</span>
-                                      <span className="font-mono">{record.details.ivRank}%</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                <div className="text-center text-sm text-gray-500 mt-2 my-[5px] mx-0 px-0 py-[8px]">
+                  Showing {Math.min(recordsPerPage, filteredAndSortedRecords.length)} of {filteredAndSortedRecords.length} records
+                </div>
+              </div>
+            )}
 
-                              <div className="space-y-4">
-                                <div className="bg-white p-4 rounded-lg border">
-                                  <h4 className="font-semibold text-gray-900 mb-3">RISK METRICS</h4>
-                                  <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Delta:</span>
-                                      <span className="font-mono">{record.details.delta}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Gamma:</span>
-                                      <span className="font-mono">{record.details.gamma}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Theta:</span>
-                                      <span className="font-mono">{record.details.theta}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Vega:</span>
-                                      <span className="font-mono">{record.details.vega}</span>
-                                    </div>
-                                  </div>
-                                </div>
+            {activeTab === 'withdrawals' && (
+              <WithdrawalTab
+                availableBalance={2500}
+                withdrawalHistory={sampleWithdrawals}
+                availabilityBreakdown={availabilityBreakdown}
+              />
+            )}
 
-                                <div className="bg-white p-4 rounded-lg border">
-                                  <h4 className="font-semibold text-gray-900 mb-3">OUTCOME</h4>
-                                  <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Result:</span>
-                                      <span>{record.result === 'EXPIRED' ? 'Expired worthless' : record.result === 'STOPPED' ? 'Stopped out' : 'Exercised'}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">PnL:</span>
-                                      <span className={`font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {record.pnl >= 0 ? '+' : ''}${record.pnl}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">Optimal Exit:</span>
-                                      <span className={record.details.optimalExit ? 'text-green-600' : 'text-red-600'}>
-                                        {record.details.optimalExit ? 'YES' : 'NO'}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </TableCell>
-                        </TableRow>}
-                  </React.Fragment>)}
-                </TableBody>
-              </Table>
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-center mt-4">
-              <Pagination className="py-0">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
-                  </PaginationItem>
-                  
-                  {Array.from({
-                    length: Math.min(5, totalPages)
-                  }, (_, i) => {
-                    const pageNum = i + 1;
-                    return <PaginationItem key={pageNum}>
-                          <PaginationLink onClick={() => setCurrentPage(pageNum)} isActive={currentPage === pageNum} className="cursor-pointer">
-                            {pageNum}
-                          </PaginationLink>
-                        </PaginationItem>;
-                  })}
-                  
-                  <PaginationItem>
-                    <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-
-            <div className="text-center text-sm text-gray-500 mt-2 my-[5px] mx-0 px-0 py-[8px]">
-              Showing {Math.min(recordsPerPage, filteredAndSortedRecords.length)} of {filteredAndSortedRecords.length} records
-            </div>
+            {activeTab === 'analytics' && (
+              <div className="px-1">
+                <div className="text-center py-12">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Advanced Analytics</h3>
+                  <p className="text-gray-600 mb-4">
+                    Detailed analytics and insights coming soon.
+                  </p>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
+                    <p className="text-sm text-gray-500">
+                      This section will include advanced portfolio analytics, risk metrics, 
+                      performance attribution, and AI-generated trading insights.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </ScrollArea>
         </DialogContent>
       </Dialog>
@@ -601,4 +699,4 @@ const sampleData: Record[] = [{
     blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
     optimalExit: i % 3 !== 1
   }
-}))];
+}));
