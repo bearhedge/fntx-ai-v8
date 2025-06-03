@@ -54,77 +54,75 @@ const performanceMetrics = [
   {
     label: "DPI",
     fullLabel: "Distributions to Paid-in (DPI)",
-    value: "1.27x",
-    calculation: "22,860 ÷ 18,000",
-    definition: "Measures how much cash has been returned to investors compared to what they invested."
+    value: "0.05x",
+    calculation: "5000 ÷ 1,000,000",
+    definition: "Measures how much cash has been returned compared to what has been invested."
   },
   {
     label: "RVPI",
     fullLabel: "Residual Value to Paid-in (RVPI)",
-    value: "0.73x",
-    calculation: "13,140 ÷ 18,000",
-    definition: "Shows the current unrealized value of remaining investments relative to invested capital."
+    value: "0.95x",
+    calculation: "999,5000 ÷ 1,000,000",
+    definition: "Shows the current unrealized value of remaining principal relative to invested capital."
   },
   {
     label: "TVPI",
     fullLabel: "Total Value to Paid-in (TVPI)",
-    value: "2.00x",
-    calculation: "36,000 ÷ 18,000",
-    definition: "Combines DPI and RVPI to show total value vs. invested capital."
+    value: "1.00x",
+    calculation: "1,000,000 ÷ 1,000,000",
+    definition: "Combines DPI and RVPI to show total value vs. principal."
   },
   {
     label: "MOIC",
     fullLabel: "Multiple on Invested Capital (MOIC)",
-    value: "1.85x",
-    calculation: "33,300 ÷ 18,000",
+    value: "1.00x",
+    calculation: "1,000,000 ÷ 1,000,000",
     definition: "Total value generated per $1 invested, before accounting for time."
   },
   {
     label: "NAV",
     fullLabel: "Net Asset Value (NAV)",
-    value: "HKD 19,420",
-    calculation: "Assets - Liabilities",
-    definition: "The total value of all assets held minus any liabilities."
+    value: "HKD 1,000,020",
+    calculation: "Assets minus liabilities",
+    definition: "Total value of all assets held minus any liabilities."
   },
   {
     label: "IRR",
     fullLabel: "Internal Rate of Return (IRR)",
-    value: "17.4%",
-    calculation: "Annualized net return",
-    definition: "Annualized return on investment considering both timing and size of cash flows."
+    value: "0.4%",
+    definition: "Annualized return adjusted for time."
   },
   {
     label: "Principal",
     fullLabel: "Principal",
-    value: "HKD 18,000",
-    calculation: "Initial capital invested",
-    definition: "The original capital invested, not including gains or losses."
+    value: "HKD 1,000,000",
+    definition: "The original capital invested, excluding gains or losses."
   },
   {
     label: "Loss Ratio",
     fullLabel: "Loss Ratio",
-    value: "12.0%",
-    calculation: "2,160 ÷ 18,000",
-    definition: "The percentage of capital lost relative to total invested or risked."
+    value: "0.0%",
+    calculation: "0 ÷ 1,000,000",
+    definition: "The percentage of capital lost relative to total risked."
   },
   {
     label: "Time to Liquidity",
     fullLabel: "Time to Liquidity",
-    value: "8.4 months",
-    calculation: "Average duration to cash exit",
+    value: "3.4 hours",
+    calculation: "Average duration",
     definition: "How long it's expected to take before investments can be cashed out."
   },
   {
     label: "Sharpe Ratio",
     fullLabel: "Sharpe Ratio",
-    value: "1.42",
+    value: "1.00",
     calculation: "Average Excess Return ÷ Standard Deviation",
     definition: "Risk-adjusted return; how much return per unit of volatility."
   },
   {
     label: "Exercise Ratio",
     fullLabel: "Exercise Ratio",
-    value: "3.2%",
+    value: "2.0%",
     calculation: "Exercised Options ÷ Total Trades",
     definition: "Percent of trades where options were exercised."
   },
