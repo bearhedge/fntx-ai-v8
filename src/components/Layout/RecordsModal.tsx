@@ -599,104 +599,106 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   );
 };
 
-const sampleData: Record[] = [{
-  id: '1',
-  date: '6/1',
-  type: 'PUT',
-  strike: '530P',
-  risk: 'Mod.',
-  volume: 1,
-  result: 'EXPIRED',
-  pnl: 55,
-  details: {
-    time: '14:32 EST',
-    waitTime: 2.1,
-    premium: 0.55,
-    otmPercent: 2.5,
-    delta: -0.13,
-    gamma: 0.02,
-    theta: 0.19,
-    vega: 0.11,
-    ivRank: 78,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x1234...',
-    optimalExit: true
-  }
-}, {
-  id: '2',
-  date: '6/2',
-  type: 'CALL',
-  strike: '534C',
-  risk: 'Low',
-  volume: 2,
-  result: 'EXPIRED',
-  pnl: 78,
-  details: {
-    time: '09:15 EST',
-    waitTime: 3.2,
-    premium: 0.39,
-    otmPercent: 1.8,
-    delta: 0.22,
-    gamma: 0.03,
-    theta: -0.15,
-    vega: 0.09,
-    ivRank: 65,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x5678...',
-    optimalExit: true
-  }
-}, {
-  id: '3',
-  date: '6/3',
-  type: 'PUT',
-  strike: '528P',
-  risk: 'Mod.',
-  volume: 3,
-  result: 'STOPPED',
-  pnl: -120,
-  details: {
-    time: '10:15 EST',
-    waitTime: 1.5,
-    premium: 0.40,
-    otmPercent: 3.2,
-    delta: -0.18,
-    gamma: 0.03,
-    theta: 0.22,
-    vega: 0.14,
-    ivRank: 82,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x9abc...',
-    optimalExit: false
-  }
-},
-// Adding more sample data to reach 30 rows
-...Array.from({
-  length: 27
-}, (_, i) => ({
-  id: (i + 4).toString(),
-  date: `6/${i + 4}`,
-  type: ['PUT', 'CALL', 'BOTH'][i % 3] as 'PUT' | 'CALL' | 'BOTH',
-  strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
-  risk: ['Low', 'Mod.', 'High'][i % 3] as 'Low' | 'Mod.' | 'High',
-  volume: i % 3 + 1,
-  result: ['EXPIRED', 'STOPPED', 'EXERCISED'][i % 3] as 'EXPIRED' | 'STOPPED' | 'EXERCISED',
-  pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
-  details: {
-    time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
-    waitTime: 1 + i % 5,
-    premium: 0.3 + i % 10 * 0.05,
-    otmPercent: 1 + i % 8,
-    delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
-    gamma: 0.01 + i % 5 * 0.01,
-    theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
-    vega: 0.08 + i % 5 * 0.02,
-    ivRank: 60 + i % 30,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
-    optimalExit: i % 3 !== 1
-  }
-}));
+const sampleData: Record[] = [
+  {
+    id: '1',
+    date: '6/1',
+    type: 'PUT',
+    strike: '530P',
+    risk: 'Mod.',
+    volume: 1,
+    result: 'EXPIRED',
+    pnl: 55,
+    details: {
+      time: '14:32 EST',
+      waitTime: 2.1,
+      premium: 0.55,
+      otmPercent: 2.5,
+      delta: -0.13,
+      gamma: 0.02,
+      theta: 0.19,
+      vega: 0.11,
+      ivRank: 78,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1234...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '2',
+    date: '6/2',
+    type: 'CALL',
+    strike: '534C',
+    risk: 'Low',
+    volume: 2,
+    result: 'EXPIRED',
+    pnl: 78,
+    details: {
+      time: '09:15 EST',
+      waitTime: 3.2,
+      premium: 0.39,
+      otmPercent: 1.8,
+      delta: 0.22,
+      gamma: 0.03,
+      theta: -0.15,
+      vega: 0.09,
+      ivRank: 65,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x5678...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '3',
+    date: '6/3',
+    type: 'PUT',
+    strike: '528P',
+    risk: 'Mod.',
+    volume: 3,
+    result: 'STOPPED',
+    pnl: -120,
+    details: {
+      time: '10:15 EST',
+      waitTime: 1.5,
+      premium: 0.40,
+      otmPercent: 3.2,
+      delta: -0.18,
+      gamma: 0.03,
+      theta: 0.22,
+      vega: 0.14,
+      ivRank: 82,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x9abc...',
+      optimalExit: false
+    }
+  },
+  // Adding more sample data to reach 30 rows
+  ...Array.from({ length: 27 }, (_, i) => ({
+    id: (i + 4).toString(),
+    date: `6/${i + 4}`,
+    type: ['PUT', 'CALL', 'BOTH'][i % 3] as 'PUT' | 'CALL' | 'BOTH',
+    strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
+    risk: ['Low', 'Mod.', 'High'][i % 3] as 'Low' | 'Mod.' | 'High',
+    volume: i % 3 + 1,
+    result: ['EXPIRED', 'STOPPED', 'EXERCISED'][i % 3] as 'EXPIRED' | 'STOPPED' | 'EXERCISED',
+    pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
+    details: {
+      time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
+      waitTime: 1 + i % 5,
+      premium: 0.3 + i % 10 * 0.05,
+      otmPercent: 1 + i % 8,
+      delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
+      gamma: 0.01 + i % 5 * 0.01,
+      theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
+      vega: 0.08 + i % 5 * 0.02,
+      ivRank: 60 + i % 30,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
+      optimalExit: i % 3 !== 1
+    }
+  }))
+];
