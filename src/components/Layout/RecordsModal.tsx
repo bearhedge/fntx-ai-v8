@@ -358,13 +358,14 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       {performanceMetrics.map((metric, index) => (
                         <div 
                           key={metric.label} 
-                          className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative w-full aspect-square"
+                          className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative w-full h-40"
+                          style={{ aspectRatio: '1/1' }}
                           onClick={() => handleCardClick(metric.label)}
                         >
                           {/* Front Side */}
                           <div className={`absolute inset-0 p-4 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
-                            <div className="text-sm text-gray-600 font-normal mb-3">{metric.label}</div>
-                            <div className="text-2xl font-medium text-gray-900">{metric.value}</div>
+                            <div className="text-lg font-medium text-gray-900 mb-2">{metric.label}</div>
+                            <div className="text-lg font-medium text-gray-900">{metric.value}</div>
                           </div>
                           
                           {/* Back Side */}
