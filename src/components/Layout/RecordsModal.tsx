@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, Calendar as CalendarIcon } from 'lucide-react';
+import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, Calendar as CalendarIcon, HelpCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -278,8 +278,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   return (
     <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-7xl max-h-[90vh] overflow-hidden bg-white py-6">
-          <DialogHeader className="bg-gray-50 -m-6 p-6 mb-4">
+        <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
+          <DialogHeader className="bg-gray-50 p-6 flex-shrink-0">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-xl font-medium text-gray-900">Records</DialogTitle>
             </div>
@@ -288,13 +288,15 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
             </p>
           </DialogHeader>
 
-          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="flex-shrink-0 px-6">
+            <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
 
-          <div className="h-[calc(90vh-200px)] overflow-auto">
+          <ScrollArea className="flex-1 px-6 pb-6">
             {activeTab === 'performance' && (
-              <div className="px-1">
+              <div className="space-y-6">
                 {/* Performance Metrics Section */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between">
                   <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
                   <div className="flex gap-2">
                     {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
@@ -338,11 +340,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-4 gap-4">
                   {performanceMetrics.map((metric, index) => (
                     <div 
                       key={metric.label} 
-                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative h-32"
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative aspect-square"
                       onClick={() => handleCardClick(metric.label)}
                     >
                       <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
@@ -370,9 +372,9 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
             )}
 
             {activeTab === 'history' && (
-              <div>
+              <div className="space-y-4">
                 {/* Controls */}
-                <div className="flex items-center gap-4 mb-4 px-1 py-3">
+                <div className="flex items-center gap-4">
                   <Select value={filterType} onValueChange={setFilterType}>
                     <SelectTrigger className="w-32">
                       <SelectValue placeholder="Filter" />
@@ -618,22 +620,20 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
             )}
 
             {activeTab === 'analytics' && (
-              <div className="px-1">
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
-                  <p className="text-gray-600 mb-4">
-                    Detailed analytics and insights coming soon.
+              <div className="text-center py-12">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
+                <p className="text-gray-600 mb-4">
+                  Detailed analytics and insights coming soon.
+                </p>
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
+                  <p className="text-sm text-gray-500">
+                    This section will include advanced portfolio analytics, risk metrics, 
+                    performance attribution, and AI-generated trading insights.
                   </p>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
-                    <p className="text-sm text-gray-500">
-                      This section will include advanced portfolio analytics, risk metrics, 
-                      performance attribution, and AI-generated trading insights.
-                    </p>
-                  </div>
                 </div>
               </div>
             )}
-          </div>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </TooltipProvider>
