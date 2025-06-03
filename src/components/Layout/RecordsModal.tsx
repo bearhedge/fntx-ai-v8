@@ -1,5 +1,6 @@
+
 import React, { useState, useMemo } from 'react';
-import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, TrendingUp, TrendingDown, HelpCircle } from 'lucide-react';
+import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, HelpCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
+
 interface RecordDetails {
   time: string;
   waitTime: number;
@@ -26,17 +28,19 @@ interface RecordDetails {
   blockchainTxId: string;
   optimalExit: boolean;
 }
+
 interface Record {
   id: string;
   date: string;
-  type: 'PUT' | 'CALL' | 'BOTH';
+  type: 'put' | 'call' | 'both';
   strike: string;
-  risk: 'Low' | 'Mod.' | 'High';
+  risk: 'low' | 'moderate' | 'high';
   volume: number;
-  result: 'EXPIRED' | 'STOPPED' | 'EXERCISED';
+  result: 'expired' | 'stopped' | 'exercised';
   pnl: number;
   details: RecordDetails;
 }
+
 interface RecordsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -45,68 +49,51 @@ interface RecordsModalProps {
 // Performance metrics data
 const performanceMetrics = [{
   label: "DPI",
-  value: "1.27x",
-  delta: "+0.02",
-  positive: true,
-  subtext: "$22,860 / $18,000",
+  value: "1.27",
+  calculation: "22,860 ÷ 18,000",
   tooltip: "Distributions to Paid-In Capital - Total premium collected divided by principal deployed"
 }, {
   label: "TVPI",
-  value: "1.74x",
-  delta: "+0.05",
-  positive: true,
-  subtext: "$31,250 / $18,000",
+  value: "1.74",
+  calculation: "31,250 ÷ 18,000",
   tooltip: "Total Value to Paid-In Capital - Total value including unrealized positions"
 }, {
   label: "RVPI",
-  value: "0.47x",
-  delta: "-0.01",
-  positive: false,
-  subtext: "$8,390 / $18,000",
+  value: "0.47",
+  calculation: "8,390 ÷ 18,000",
   tooltip: "Residual Value to Paid-In Capital - Unrealized value divided by principal"
 }, {
   label: "IRR",
   value: "13.4%",
-  delta: "+0.8%",
-  positive: true,
-  subtext: "Annualized",
+  calculation: "Annualized return",
   tooltip: "Internal Rate of Return - Annualized return based on cash flows and PnL"
 }, {
   label: "MOIC",
-  value: "1.58x",
-  delta: "+0.03",
-  positive: true,
-  subtext: "$28,440 / $18,000",
+  value: "1.58",
+  calculation: "28,440 ÷ 18,000",
   tooltip: "Multiple on Invested Capital - Total return divided by invested capital"
 }, {
   label: "Loss Ratio",
   value: "5.3%",
-  delta: "-1.2%",
-  positive: true,
-  subtext: "7 / 131 trades",
+  calculation: "7 ÷ 131 trades",
   tooltip: "Percentage of trades resulting in realized loss"
 }, {
   label: "Principal",
   value: "$18,000",
-  delta: null,
-  positive: null,
-  subtext: "Capital Deployed",
+  calculation: "Capital Deployed",
   tooltip: "Total capital deployed in trading strategies"
 }, {
   label: "NAV",
   value: "$18,820",
-  delta: "+$420",
-  positive: true,
-  subtext: "Net Asset Value",
+  calculation: "18,820",
   tooltip: "Current value of open positions plus remaining capital"
 }, {
   label: "Time to Liquidity",
   value: "2.3d",
-  delta: "-0.2d",
-  positive: true,
-  subtext: "Avg time to close",
+  calculation: "Average time to close",
   tooltip: "Average time from trade open to closure"
 }];
+
 export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
   onClose
@@ -118,6 +105,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   const [sortBy, setSortBy] = useState('date');
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState('3M');
+  const [flippedCard, setFlippedCard] = useState<string | null>(null);
   const recordsPerPage = 10;
 
   // Sample withdrawal data
@@ -154,6 +142,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     transactionId: 'TXN004',
     fees: 5
   }];
+
   const availabilityBreakdown: AvailabilityBreakdown = {
     total: 18820,
     available: 2500,
@@ -164,12 +153,18 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       reason: 'Options expiry'
     }]
   };
+
   const filteredAndSortedRecords = useMemo(() => {
     let filtered = sampleData;
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(record => record.date.toLowerCase().includes(searchTerm.toLowerCase()) || record.type.toLowerCase().includes(searchTerm.toLowerCase()) || record.strike.toLowerCase().includes(searchTerm.toLowerCase()) || record.risk.toLowerCase().includes(searchTerm.toLowerCase()));
+      filtered = filtered.filter(record => 
+        record.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.strike.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.risk.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     // Apply type filter
@@ -185,72 +180,56 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         case 'pnl':
           return b.pnl - a.pnl;
         case 'risk':
-          const riskOrder = {
-            'Low': 1,
-            'Mod.': 2,
-            'High': 3
-          };
+          const riskOrder = { 'low': 1, 'moderate': 2, 'high': 3 };
           return riskOrder[b.risk] - riskOrder[a.risk];
         default:
           return 0;
       }
     });
+
     return filtered;
   }, [searchTerm, filterType, sortBy]);
+
   const totalPages = Math.ceil(filteredAndSortedRecords.length / recordsPerPage);
-  const currentRecords = filteredAndSortedRecords.slice((currentPage - 1) * recordsPerPage, currentPage * recordsPerPage);
-  const getRiskColor = (risk: string) => {
-    switch (risk) {
-      case 'Low':
-        return 'text-blue-600';
-      case 'Mod.':
-        return 'text-amber-600';
-      case 'High':
-        return 'text-red-600';
-      default:
-        return 'text-gray-600';
-    }
-  };
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'PUT':
-        return 'text-red-600';
-      case 'CALL':
-        return 'text-green-600';
-      case 'BOTH':
-        return 'text-blue-600';
-      default:
-        return 'text-gray-600';
-    }
-  };
+  const currentRecords = filteredAndSortedRecords.slice(
+    (currentPage - 1) * recordsPerPage,
+    currentPage * recordsPerPage
+  );
+
   const getResultIcon = (result: string) => {
     switch (result) {
-      case 'EXPIRED':
-        return '✅';
-      case 'STOPPED':
-        return '❌';
-      case 'EXERCISED':
-        return '⚠️';
+      case 'expired':
+        return '✓';
+      case 'stopped':
+        return '×';
+      case 'exercised':
+        return '!';
       default:
-        return '❓';
+        return '?';
     }
   };
+
   const handleRowClick = (recordId: string) => {
     setExpandedRow(expandedRow === recordId ? null : recordId);
   };
+
+  const handleCardClick = (metricLabel: string) => {
+    setFlippedCard(flippedCard === metricLabel ? null : metricLabel);
+  };
+
   const handleExport = () => {
     console.log('Exporting CSV...');
-    // CSV export functionality would go here
   };
-  return <TooltipProvider>
+
+  return (
+    <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-7xl max-h-[90vh] overflow-hidden bg-white py-[25px]">
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-hidden bg-white py-6">
           <DialogHeader className="bg-gray-50 -m-6 p-6 mb-4">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-xl font-semibold text-gray-900">Records</DialogTitle>
-              
+              <DialogTitle className="text-xl font-medium text-gray-900">Records</DialogTitle>
             </div>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-gray-600 mt-2 font-normal">
               Complete trading history with detailed metrics, outcomes, and withdrawal management.
             </p>
           </DialogHeader>
@@ -258,56 +237,77 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
           <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
           <ScrollArea className="h-[calc(90vh-200px)]">
-            {activeTab === 'performance' && <div className="mb-6 px-1">
+            {activeTab === 'performance' && (
+              <div className="mb-6 px-1">
                 {/* Performance Metrics Section */}
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Performance Metrics</h3>
+                  <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
                   <div className="flex gap-2">
-                    {['1M', '3M', 'YTD', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => setSelectedTimeframe(timeframe)} className="h-8 px-3 text-xs">
+                    {['1M', '3M', 'YTD', 'ALL'].map(timeframe => (
+                      <Button
+                        key={timeframe}
+                        variant={selectedTimeframe === timeframe ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedTimeframe(timeframe)}
+                        className="h-8 px-3 text-xs font-normal"
+                      >
                         {timeframe}
-                      </Button>)}
+                      </Button>
+                    ))}
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                  {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-600">{metric.label}</span>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-xs">
-                            <p className="text-sm">{metric.tooltip}</p>
-                          </TooltipContent>
-                        </Tooltip>
+                  {performanceMetrics.map((metric, index) => (
+                    <div 
+                      key={metric.label} 
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative h-24"
+                      onClick={() => handleCardClick(metric.label)}
+                    >
+                      <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-normal text-gray-600">{metric.label}</span>
+                          <Tooltip>
+                            <TooltipTrigger onClick={(e) => e.stopPropagation()}>
+                              <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs">
+                              <p className="text-sm font-normal">{metric.tooltip}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <div className="flex items-center justify-center h-full">
+                          <span className="text-xl font-medium text-gray-900">{metric.value}</span>
+                        </div>
                       </div>
                       
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-xl font-bold text-gray-900">{metric.value}</span>
-                        {metric.delta && <div className={`flex items-center text-sm font-medium ${metric.positive ? 'text-green-600' : 'text-red-600'}`}>
-                            {metric.positive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
-                            {metric.delta}
-                          </div>}
+                      <div className={`absolute inset-0 p-4 transition-opacity duration-300 ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-normal text-gray-600">Calculation</span>
+                        </div>
+                        <div className="flex items-center justify-center h-full">
+                          <span className="text-sm font-normal text-gray-700">{metric.calculation}</span>
+                        </div>
                       </div>
-                      
-                      <div className="text-xs text-gray-500 mt-1">{metric.subtext}</div>
-                    </div>)}
+                    </div>
+                  ))}
                 </div>
-              </div>}
+              </div>
+            )}
 
-            {activeTab === 'history' && <div>
+            {activeTab === 'history' && (
+              <div>
                 {/* Controls */}
-                <div className="flex items-center gap-4 mb-4 px-1 py-[10px]">
+                <div className="flex items-center gap-4 mb-4 px-1 py-3">
                   <Select value={filterType} onValueChange={setFilterType}>
                     <SelectTrigger className="w-32">
                       <SelectValue placeholder="Filter" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="PUT">PUT</SelectItem>
-                      <SelectItem value="CALL">CALL</SelectItem>
-                      <SelectItem value="BOTH">BOTH</SelectItem>
+                      <SelectItem value="put">Put</SelectItem>
+                      <SelectItem value="call">Call</SelectItem>
+                      <SelectItem value="both">Both</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -324,10 +324,15 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
                   <div className="relative flex-1 max-w-sm">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
+                    <Input
+                      placeholder="Search records..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 font-normal"
+                    />
                   </div>
 
-                  <Button variant="outline" onClick={handleExport} className="gap-2">
+                  <Button variant="outline" onClick={handleExport} className="gap-2 font-normal">
                     <Download className="w-4 h-4" />
                     Export CSV
                   </Button>
@@ -336,64 +341,75 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 {/* Table */}
                 <div className="border rounded-lg overflow-hidden mb-4">
                   <Table>
-                    <TableHeader className="bg-gray-100">
+                    <TableHeader className="bg-gray-50">
                       <TableRow>
-                        <TableHead className="w-16">Date</TableHead>
-                        <TableHead className="w-16 text-center">Type</TableHead>
-                        <TableHead className="w-20 text-right">Strike</TableHead>
-                        <TableHead className="w-16 text-center">Risk</TableHead>
-                        <TableHead className="w-16 text-center">Volume</TableHead>
-                        <TableHead className="w-16 text-center">Risk</TableHead>
-                        <TableHead className="w-16 text-center">Result</TableHead>
-                        <TableHead className="w-20 text-right">PnL</TableHead>
-                        <TableHead className="w-24 text-center">Actions</TableHead>
+                        <TableHead className="w-16 font-normal">Date</TableHead>
+                        <TableHead className="w-16 text-center font-normal">Type</TableHead>
+                        <TableHead className="w-20 text-right font-normal">Strike</TableHead>
+                        <TableHead className="w-16 text-center font-normal">Risk</TableHead>
+                        <TableHead className="w-16 text-center font-normal">Volume</TableHead>
+                        <TableHead className="w-16 text-center font-normal">Result</TableHead>
+                        <TableHead className="w-20 text-right font-normal">PnL</TableHead>
+                        <TableHead className="w-24 text-center font-normal">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {currentRecords.map((record, index) => <React.Fragment key={record.id}>
-                          <TableRow className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`} onClick={() => handleRowClick(record.id)}>
-                            <TableCell className="font-mono text-sm">{record.date}</TableCell>
-                            <TableCell className={`text-center font-medium ${getTypeColor(record.type)}`}>
+                      {currentRecords.map((record, index) => (
+                        <React.Fragment key={record.id}>
+                          <TableRow 
+                            className={`cursor-pointer hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
+                            onClick={() => handleRowClick(record.id)}
+                          >
+                            <TableCell className="font-mono text-sm font-normal">{record.date}</TableCell>
+                            <TableCell className="text-center font-normal text-gray-900">
                               {record.type}
                             </TableCell>
-                            <TableCell className="text-right font-mono text-sm">{record.strike}</TableCell>
-                            <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
+                            <TableCell className="text-right font-mono text-sm font-normal">{record.strike}</TableCell>
+                            <TableCell className="text-center font-normal text-gray-900">
                               {record.risk}
                             </TableCell>
-                            <TableCell className="text-center">{record.volume}</TableCell>
-                            <TableCell className={`text-center font-medium ${getRiskColor(record.risk)}`}>
-                              {record.risk}
-                            </TableCell>
-                            <TableCell className="text-center text-lg">{getResultIcon(record.result)}</TableCell>
-                            <TableCell className={`text-right font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                              {record.pnl >= 0 ? '+' : ''}${record.pnl}
+                            <TableCell className="text-center font-normal">{record.volume}</TableCell>
+                            <TableCell className="text-center text-lg font-normal">{getResultIcon(record.result)}</TableCell>
+                            <TableCell className={`text-right font-mono font-normal ${record.pnl >= 0 ? 'text-gray-900' : 'text-gray-900'}`}>
+                              {record.pnl >= 0 ? '' : '('}${Math.abs(record.pnl)}{record.pnl < 0 ? ')' : ''}
                             </TableCell>
                             <TableCell className="text-center">
                               <div className="flex items-center justify-center gap-2">
-                                <Button variant="ghost" size="sm" className="w-8 h-8 p-0" onClick={e => {
-                            e.stopPropagation();
-                            console.log('Blockchain link clicked');
-                          }}>
-                              <ExternalLink className="w-4 h-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="w-8 h-8 p-0" onClick={e => {
-                            e.stopPropagation();
-                            console.log('AI explanation clicked');
-                          }}>
-                              <Brain className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="w-8 h-8 p-0"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    console.log('Blockchain link clicked');
+                                  }}
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="w-8 h-8 p-0"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    console.log('AI explanation clicked');
+                                  }}
+                                >
+                                  <Brain className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
                           </TableRow>
                           
                           {/* Expanded Row */}
-                          {expandedRow === record.id && <TableRow className="bg-gray-50">
-                              <TableCell colSpan={9} className="p-6">
+                          {expandedRow === record.id && (
+                            <TableRow className="bg-gray-50">
+                              <TableCell colSpan={8} className="p-6">
                                 <div className="grid grid-cols-2 gap-6">
                                   <div className="space-y-4">
                                     <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-semibold text-gray-900 mb-3">TRADE DETAILS</h4>
-                                      <div className="space-y-2 text-sm">
+                                      <h4 className="font-medium text-gray-900 mb-3">Trade Details</h4>
+                                      <div className="space-y-2 text-sm font-normal">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Time:</span>
                                           <span className="font-mono">{record.details.time}</span>
@@ -414,8 +430,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                     </div>
 
                                     <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-semibold text-gray-900 mb-3">RISK CONTROLS</h4>
-                                      <div className="space-y-2 text-sm">
+                                      <h4 className="font-medium text-gray-900 mb-3">Risk Controls</h4>
+                                      <div className="space-y-2 text-sm font-normal">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Stop-Loss:</span>
                                           <span className="font-mono">{record.details.stopLossRatio}x (${(record.details.premium * record.details.stopLossRatio).toFixed(2)})</span>
@@ -434,8 +450,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
                                   <div className="space-y-4">
                                     <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-semibold text-gray-900 mb-3">RISK METRICS</h4>
-                                      <div className="space-y-2 text-sm">
+                                      <h4 className="font-medium text-gray-900 mb-3">Risk Metrics</h4>
+                                      <div className="space-y-2 text-sm font-normal">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Delta:</span>
                                           <span className="font-mono">{record.details.delta}</span>
@@ -456,22 +472,22 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                     </div>
 
                                     <div className="bg-white p-4 rounded-lg border">
-                                      <h4 className="font-semibold text-gray-900 mb-3">OUTCOME</h4>
-                                      <div className="space-y-2 text-sm">
+                                      <h4 className="font-medium text-gray-900 mb-3">Outcome</h4>
+                                      <div className="space-y-2 text-sm font-normal">
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Result:</span>
-                                          <span>{record.result === 'EXPIRED' ? 'Expired worthless' : record.result === 'STOPPED' ? 'Stopped out' : 'Exercised'}</span>
+                                          <span>{record.result === 'expired' ? 'Expired worthless' : record.result === 'stopped' ? 'Stopped out' : 'Exercised'}</span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">PnL:</span>
-                                          <span className={`font-mono font-medium ${record.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                            {record.pnl >= 0 ? '+' : ''}${record.pnl}
+                                          <span className="font-mono font-normal text-gray-900">
+                                            {record.pnl >= 0 ? '' : '('}${Math.abs(record.pnl)}{record.pnl < 0 ? ')' : ''}
                                           </span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Optimal Exit:</span>
-                                          <span className={record.details.optimalExit ? 'text-green-600' : 'text-red-600'}>
-                                            {record.details.optimalExit ? 'YES' : 'NO'}
+                                          <span className={record.details.optimalExit ? 'text-gray-900' : 'text-gray-900'}>
+                                            {record.details.optimalExit ? 'Yes' : 'No'}
                                           </span>
                                         </div>
                                       </div>
@@ -479,8 +495,10 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                   </div>
                                 </div>
                               </TableCell>
-                            </TableRow>}
-                      </React.Fragment>)}
+                            </TableRow>
+                          )}
+                        </React.Fragment>
+                      ))}
                     </TableBody>
                   </Table>
                 </div>
@@ -490,149 +508,170 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                   <Pagination className="py-0">
                     <PaginationContent>
                       <PaginationItem>
-                        <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                        <PaginationPrevious 
+                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                          className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                        />
                       </PaginationItem>
                       
-                      {Array.from({
-                    length: Math.min(5, totalPages)
-                  }, (_, i) => {
-                    const pageNum = i + 1;
-                    return <PaginationItem key={pageNum}>
-                              <PaginationLink onClick={() => setCurrentPage(pageNum)} isActive={currentPage === pageNum} className="cursor-pointer">
-                                {pageNum}
-                              </PaginationLink>
-                            </PaginationItem>;
-                  })}
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        const pageNum = i + 1;
+                        return (
+                          <PaginationItem key={pageNum}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(pageNum)}
+                              isActive={currentPage === pageNum}
+                              className="cursor-pointer"
+                            >
+                              {pageNum}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
                       
                       <PaginationItem>
-                        <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                        <PaginationNext 
+                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                          className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                        />
                       </PaginationItem>
                     </PaginationContent>
                   </Pagination>
                 </div>
+              </div>
+            )}
 
-                
-              </div>}
+            {activeTab === 'withdrawals' && (
+              <WithdrawalTab 
+                availableBalance={2500}
+                withdrawalHistory={sampleWithdrawals}
+                availabilityBreakdown={availabilityBreakdown}
+              />
+            )}
 
-            {activeTab === 'withdrawals' && <WithdrawalTab availableBalance={2500} withdrawalHistory={sampleWithdrawals} availabilityBreakdown={availabilityBreakdown} />}
-
-            {activeTab === 'analytics' && <div className="px-1">
+            {activeTab === 'analytics' && (
+              <div className="px-1">
                 <div className="text-center py-12">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Advanced Analytics</h3>
-                  <p className="text-gray-600 mb-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
+                  <p className="text-gray-600 mb-4 font-normal">
                     Detailed analytics and insights coming soon.
                   </p>
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 font-normal">
                       This section will include advanced portfolio analytics, risk metrics, 
                       performance attribution, and AI-generated trading insights.
                     </p>
                   </div>
                 </div>
-              </div>}
+              </div>
+            )}
           </ScrollArea>
         </DialogContent>
       </Dialog>
-    </TooltipProvider>;
+    </TooltipProvider>
+  );
 };
-const sampleData: Record[] = [{
-  id: '1',
-  date: '6/1',
-  type: 'PUT',
-  strike: '530P',
-  risk: 'Mod.',
-  volume: 1,
-  result: 'EXPIRED',
-  pnl: 55,
-  details: {
-    time: '14:32 EST',
-    waitTime: 2.1,
-    premium: 0.55,
-    otmPercent: 2.5,
-    delta: -0.13,
-    gamma: 0.02,
-    theta: 0.19,
-    vega: 0.11,
-    ivRank: 78,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x1234...',
-    optimalExit: true
-  }
-}, {
-  id: '2',
-  date: '6/2',
-  type: 'CALL',
-  strike: '534C',
-  risk: 'Low',
-  volume: 2,
-  result: 'EXPIRED',
-  pnl: 78,
-  details: {
-    time: '09:15 EST',
-    waitTime: 3.2,
-    premium: 0.39,
-    otmPercent: 1.8,
-    delta: 0.22,
-    gamma: 0.03,
-    theta: -0.15,
-    vega: 0.09,
-    ivRank: 65,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x5678...',
-    optimalExit: true
-  }
-}, {
-  id: '3',
-  date: '6/3',
-  type: 'PUT',
-  strike: '528P',
-  risk: 'Mod.',
-  volume: 3,
-  result: 'STOPPED',
-  pnl: -120,
-  details: {
-    time: '10:15 EST',
-    waitTime: 1.5,
-    premium: 0.40,
-    otmPercent: 3.2,
-    delta: -0.18,
-    gamma: 0.03,
-    theta: 0.22,
-    vega: 0.14,
-    ivRank: 82,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x9abc...',
-    optimalExit: false
-  }
-},
-// Adding more sample data to reach 30 rows
-...Array.from({
-  length: 27
-}, (_, i) => ({
-  id: (i + 4).toString(),
-  date: `6/${i + 4}`,
-  type: ['PUT', 'CALL', 'BOTH'][i % 3] as 'PUT' | 'CALL' | 'BOTH',
-  strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
-  risk: ['Low', 'Mod.', 'High'][i % 3] as 'Low' | 'Mod.' | 'High',
-  volume: i % 3 + 1,
-  result: ['EXPIRED', 'STOPPED', 'EXERCISED'][i % 3] as 'EXPIRED' | 'STOPPED' | 'EXERCISED',
-  pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
-  details: {
-    time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
-    waitTime: 1 + i % 5,
-    premium: 0.3 + i % 10 * 0.05,
-    otmPercent: 1 + i % 8,
-    delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
-    gamma: 0.01 + i % 5 * 0.01,
-    theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
-    vega: 0.08 + i % 5 * 0.02,
-    ivRank: 60 + i % 30,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
-    optimalExit: i % 3 !== 1
-  }
-}))];
+
+const sampleData: Record[] = [
+  {
+    id: '1',
+    date: '6/1',
+    type: 'put',
+    strike: '530P',
+    risk: 'moderate',
+    volume: 1,
+    result: 'expired',
+    pnl: 55,
+    details: {
+      time: '14:32 EST',
+      waitTime: 2.1,
+      premium: 0.55,
+      otmPercent: 2.5,
+      delta: -0.13,
+      gamma: 0.02,
+      theta: 0.19,
+      vega: 0.11,
+      ivRank: 78,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1234...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '2',
+    date: '6/2',
+    type: 'call',
+    strike: '534C',
+    risk: 'low',
+    volume: 2,
+    result: 'expired',
+    pnl: 78,
+    details: {
+      time: '09:15 EST',
+      waitTime: 3.2,
+      premium: 0.39,
+      otmPercent: 1.8,
+      delta: 0.22,
+      gamma: 0.03,
+      theta: -0.15,
+      vega: 0.09,
+      ivRank: 65,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x5678...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '3',
+    date: '6/3',
+    type: 'put',
+    strike: '528P',
+    risk: 'moderate',
+    volume: 3,
+    result: 'stopped',
+    pnl: -120,
+    details: {
+      time: '10:15 EST',
+      waitTime: 1.5,
+      premium: 0.40,
+      otmPercent: 3.2,
+      delta: -0.18,
+      gamma: 0.03,
+      theta: 0.22,
+      vega: 0.14,
+      ivRank: 82,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x9abc...',
+      optimalExit: false
+    }
+  },
+  // Adding more sample data to reach 30 rows
+  ...Array.from({ length: 27 }, (_, i) => ({
+    id: (i + 4).toString(),
+    date: `6/${i + 4}`,
+    type: (['put', 'call', 'both'][i % 3]) as 'put' | 'call' | 'both',
+    strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
+    risk: (['low', 'moderate', 'high'][i % 3]) as 'low' | 'moderate' | 'high',
+    volume: i % 3 + 1,
+    result: (['expired', 'stopped', 'exercised'][i % 3]) as 'expired' | 'stopped' | 'exercised',
+    pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
+    details: {
+      time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
+      waitTime: 1 + i % 5,
+      premium: 0.3 + i % 10 * 0.05,
+      otmPercent: 1 + i % 8,
+      delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
+      gamma: 0.01 + i % 5 * 0.01,
+      theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
+      vega: 0.08 + i % 5 * 0.02,
+      ivRank: 60 + i % 30,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
+      optimalExit: i % 3 !== 1
+    }
+  }))
+];

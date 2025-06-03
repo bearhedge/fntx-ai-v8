@@ -19,19 +19,6 @@ export const WithdrawalHistory: React.FC<WithdrawalHistoryProps> = ({ withdrawal
     withdrawal.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Completed':
-        return 'text-green-600 bg-green-50';
-      case 'Pending':
-        return 'text-yellow-600 bg-yellow-50';
-      case 'Failed':
-        return 'text-red-600 bg-red-50';
-      default:
-        return 'text-gray-600 bg-gray-50';
-    }
-  };
-
   const handleExport = () => {
     console.log('Exporting withdrawal history...');
   };
@@ -45,10 +32,10 @@ export const WithdrawalHistory: React.FC<WithdrawalHistoryProps> = ({ withdrawal
             placeholder="Search withdrawals..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 font-normal"
           />
         </div>
-        <Button variant="outline" onClick={handleExport} className="gap-2">
+        <Button variant="outline" onClick={handleExport} className="gap-2 font-normal">
           <Download className="w-4 h-4" />
           Export CSV
         </Button>
@@ -58,23 +45,23 @@ export const WithdrawalHistory: React.FC<WithdrawalHistoryProps> = ({ withdrawal
         <Table>
           <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableHead className="w-24">Date</TableHead>
-              <TableHead className="w-32 text-right">Amount</TableHead>
-              <TableHead>Destination</TableHead>
-              <TableHead className="w-24 text-center">Status</TableHead>
-              <TableHead className="w-20 text-center">Actions</TableHead>
+              <TableHead className="w-24 font-normal">Date</TableHead>
+              <TableHead className="w-32 text-right font-normal">Amount</TableHead>
+              <TableHead className="font-normal">Destination</TableHead>
+              <TableHead className="w-24 text-center font-normal">Status</TableHead>
+              <TableHead className="w-20 text-center font-normal">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredWithdrawals.map((withdrawal, index) => (
               <TableRow key={withdrawal.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}>
-                <TableCell className="font-mono text-sm">{withdrawal.date}</TableCell>
-                <TableCell className="text-right font-mono font-medium">
+                <TableCell className="font-mono text-sm font-normal">{withdrawal.date}</TableCell>
+                <TableCell className="text-right font-mono font-normal">
                   ${withdrawal.amount.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-sm">{withdrawal.destination}</TableCell>
+                <TableCell className="text-sm font-normal">{withdrawal.destination}</TableCell>
                 <TableCell className="text-center">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(withdrawal.status)}`}>
+                  <span className="px-2 py-1 rounded-full text-xs font-normal bg-gray-100 text-gray-900">
                     {withdrawal.status}
                   </span>
                 </TableCell>
@@ -96,7 +83,7 @@ export const WithdrawalHistory: React.FC<WithdrawalHistoryProps> = ({ withdrawal
 
       {filteredWithdrawals.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          <p>No withdrawals found</p>
+          <p className="font-normal">No withdrawals found</p>
         </div>
       )}
     </div>

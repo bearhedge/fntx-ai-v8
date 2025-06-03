@@ -56,11 +56,11 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Make Withdrawal</h3>
+      <h3 className="text-lg font-medium text-gray-900 mb-4">Make Withdrawal</h3>
       
       <div className="space-y-4">
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-2 block">
+          <label className="text-sm font-normal text-gray-700 mb-2 block">
             Withdrawal Amount
           </label>
           <div className="relative">
@@ -70,7 +70,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({
               value={amount}
               onChange={(e) => handleAmountChange(e.target.value)}
               placeholder="0.00"
-              className="pl-8 text-right"
+              className="pl-8 text-right font-normal"
               step="0.01"
               min="0"
               max={availableBalance}
@@ -80,18 +80,18 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setPercentage(25)}>25%</Button>
-          <Button variant="outline" size="sm" onClick={() => setPercentage(50)}>50%</Button>
-          <Button variant="outline" size="sm" onClick={() => setPercentage(75)}>75%</Button>
-          <Button variant="outline" size="sm" onClick={() => setPercentage(100)}>Max</Button>
+          <Button variant="outline" size="sm" onClick={() => setPercentage(25)} className="font-normal">25%</Button>
+          <Button variant="outline" size="sm" onClick={() => setPercentage(50)} className="font-normal">50%</Button>
+          <Button variant="outline" size="sm" onClick={() => setPercentage(75)} className="font-normal">75%</Button>
+          <Button variant="outline" size="sm" onClick={() => setPercentage(100)} className="font-normal">Max</Button>
         </div>
 
-        <p className="text-sm text-gray-600">
-          Available balance: <span className="font-mono font-medium">${availableBalance.toLocaleString()}</span>
+        <p className="text-sm text-gray-600 font-normal">
+          Available balance: <span className="font-mono font-normal">${availableBalance.toLocaleString()}</span>
         </p>
 
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-2 block">
+          <label className="text-sm font-normal text-gray-700 mb-2 block">
             Destination
           </label>
           <Select value={selectedDestination} onValueChange={setSelectedDestination}>
@@ -102,8 +102,8 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({
               {destinations.map((dest) => (
                 <SelectItem key={dest.id} value={dest.id}>
                   <div className="flex items-center gap-2">
-                    <span>{dest.name}</span>
-                    <span className="text-gray-500 text-sm">({dest.details})</span>
+                    <span className="font-normal">{dest.name}</span>
+                    <span className="text-gray-500 text-sm font-normal">({dest.details})</span>
                   </div>
                 </SelectItem>
               ))}
@@ -112,14 +112,14 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({
         </div>
 
         {error && (
-          <p className="text-sm text-red-600">{error}</p>
+          <p className="text-sm text-gray-900 font-normal">{error}</p>
         )}
 
         <div className="flex gap-3 pt-4">
-          <Button onClick={handleSubmit} className="flex-1">
+          <Button onClick={handleSubmit} className="flex-1 font-normal">
             Continue
           </Button>
-          <Button variant="outline" onClick={onCancel} className="flex-1">
+          <Button variant="outline" onClick={onCancel} className="flex-1 font-normal">
             Cancel
           </Button>
         </div>
