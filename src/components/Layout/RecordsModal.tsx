@@ -511,9 +511,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                   </Pagination>
                 </div>
 
-                <div className="text-center text-sm text-gray-500 mt-2 my-[5px] mx-0 px-0 py-[8px]">
-                  Showing {Math.min(recordsPerPage, filteredAndSortedRecords.length)} of {filteredAndSortedRecords.length} records
-                </div>
+                
               </div>}
 
             {activeTab === 'withdrawals' && <WithdrawalTab availableBalance={2500} withdrawalHistory={sampleWithdrawals} availabilityBreakdown={availabilityBreakdown} />}
