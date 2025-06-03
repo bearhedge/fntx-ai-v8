@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { WithdrawalForm } from './WithdrawalForm';
 import { WithdrawalHistory } from './WithdrawalHistory';
+import { FundBreakdown } from './FundBreakdown';
 import { WithdrawalRecord, WithdrawalDestination, AvailabilityBreakdown } from '@/types/trading';
 
 interface WithdrawalTabProps {
@@ -66,7 +67,7 @@ export const WithdrawalTab: React.FC<WithdrawalTabProps> = ({
       <div className="px-1">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-medium text-gray-900">Withdrawal History</h3>
-          <Button variant="outline" onClick={() => setActiveView('dashboard')} className="font-normal">
+          <Button variant="outline" onClick={() => setActiveView('dashboard')} className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
             Back to Dashboard
           </Button>
         </div>
@@ -80,76 +81,63 @@ export const WithdrawalTab: React.FC<WithdrawalTabProps> = ({
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="text-sm text-gray-600 mb-1 font-normal">Available for Withdrawal</div>
+          <div className="text-sm text-gray-600 mb-1">Available for Withdrawal</div>
           <div className="text-2xl font-medium text-gray-900">${availableBalance.toLocaleString()}</div>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="text-sm text-gray-600 mb-1 font-normal">Pending Release</div>
+          <div className="text-sm text-gray-600 mb-1">Pending Release</div>
           <div className="text-2xl font-medium text-gray-900">${pendingAmount.toLocaleString()}</div>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="text-sm text-gray-600 mb-1 font-normal">Total Withdrawn (YTD)</div>
+          <div className="text-sm text-gray-600 mb-1">Total Withdrawn (YTD)</div>
           <div className="text-2xl font-medium text-gray-900">${totalWithdrawnYTD.toLocaleString()}</div>
+        </div>
+      </div>
+
+      {/* AI Cash Flow Suggestion */}
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="flex items-start gap-3">
+          <div className="w-2 h-2 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+          <div>
+            <div className="text-sm font-medium text-gray-900 mb-1">AI Cash Flow Analysis</div>
+            <p className="text-sm text-gray-700">
+              Based on your current open positions and typical holding period, you could potentially withdraw an additional <span className="font-medium">$1,200</span> by next week without impacting margin requirements.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Action Buttons */}
       <div className="flex gap-4">
-        <Button onClick={() => setActiveView('form')} size="lg" className="flex-1 font-normal">
+        <Button onClick={() => setActiveView('form')} size="lg" className="flex-1 bg-gray-900 hover:bg-gray-800 text-white">
           Make Withdrawal
         </Button>
-        <Button variant="outline" onClick={() => setActiveView('history')} size="lg" className="flex-1 font-normal">
+        <Button variant="outline" onClick={() => setActiveView('history')} size="lg" className="flex-1 bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
           Withdrawal History
         </Button>
       </div>
 
-      {/* Availability Breakdown */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h4 className="font-medium text-gray-900 mb-4">Fund Availability Breakdown</h4>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600 font-normal">Total Portfolio Value</span>
-            <span className="font-mono font-normal">${availabilityBreakdown.total.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600 font-normal">Available for Withdrawal</span>
-            <span className="font-mono font-normal text-gray-900">${availabilityBreakdown.available.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600 font-normal">Locked in Positions</span>
-            <span className="font-mono font-normal text-gray-900">(${availabilityBreakdown.locked.toLocaleString()})</span>
-          </div>
-          {availabilityBreakdown.pendingRelease.map((pending, index) => (
-            <div key={index} className="flex justify-between items-center pl-4 border-l-2 border-gray-200">
-              <span className="text-gray-600 text-sm font-normal">
-                Pending Release ({pending.reason})
-              </span>
-              <span className="font-mono font-normal text-gray-900">
-                ${pending.amount.toLocaleString()} on {pending.releaseDate}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Enhanced Fund Breakdown */}
+      <FundBreakdown breakdown={availabilityBreakdown} />
 
       {/* Recent Withdrawals Preview */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h4 className="font-medium text-gray-900">Recent Withdrawals</h4>
-          <Button variant="ghost" onClick={() => setActiveView('history')} className="text-sm font-normal">
+          <Button variant="ghost" onClick={() => setActiveView('history')} className="text-sm text-gray-600 hover:text-gray-900">
             View All →
           </Button>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {withdrawalHistory.slice(0, 3).map((withdrawal) => (
             <div key={withdrawal.id} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
               <div>
-                <div className="text-sm font-normal">${withdrawal.amount.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 font-normal">{withdrawal.date}</div>
+                <div className="text-sm text-gray-900">${withdrawal.amount.toLocaleString()}</div>
+                <div className="text-xs text-gray-500">{withdrawal.date}</div>
               </div>
               <div className="text-right">
-                <div className="text-sm font-normal">{withdrawal.destination}</div>
-                <div className="text-xs text-gray-900 font-normal">
+                <div className="text-sm text-gray-700">{withdrawal.destination}</div>
+                <div className="text-xs text-gray-900">
                   {withdrawal.status}
                 </div>
               </div>

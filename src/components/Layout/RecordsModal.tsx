@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, HelpCircle } from 'lucide-react';
+import { X, ChevronDown, ExternalLink, Brain, ChevronUp, Download, Search, HelpCircle, Calendar as CalendarIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
@@ -46,47 +49,47 @@ interface RecordsModalProps {
   onClose: () => void;
 }
 
-// Updated performance metrics with new names and definitions
+// Updated performance metrics with detailed definitions
 const performanceMetrics = [{
   label: "Distributions to Paid-in (DPI)",
   value: "1.27x",
   calculation: "22,860 ÷ 18,000",
   definition: "Cash returned divided by invested capital."
 }, {
-  label: "Total Value to Paid-in (TVPI)",
-  value: "1.74x",
-  calculation: "31,250 ÷ 18,000",
-  definition: "DPI plus RVPI; total value relative to invested capital."
-}, {
   label: "Residual Value to Paid-in (RVPI)",
   value: "0.47x",
   calculation: "8,390 ÷ 18,000",
   definition: "Remaining investment value divided by invested capital."
 }, {
-  label: "Internal Rate of Return (IRR)",
-  value: "13.4%",
-  calculation: "Annualized return",
-  definition: "Annualized investment return rate considering timing."
+  label: "Total Value to Paid-in (TVPI)",
+  value: "1.74x",
+  calculation: "31,250 ÷ 18,000",
+  definition: "DPI plus RVPI; total value relative to invested capital."
 }, {
   label: "Multiple on Invested Capital (MOIC)",
   value: "1.58x",
   calculation: "28,440 ÷ 18,000",
   definition: "Total return multiple on invested funds."
 }, {
-  label: "Loss Ratio",
-  value: "5.3%",
-  calculation: "7 ÷ 131 trades",
-  definition: "Losses divided by earned premiums (insurance metric)."
+  label: "Net Asset Value (NAV)",
+  value: "HKD 18,820",
+  calculation: "18,820",
+  definition: "Current market value of fund's assets minus liabilities."
+}, {
+  label: "Internal Rate of Return (IRR)",
+  value: "13.4%",
+  calculation: "Annualized return",
+  definition: "Annualized investment return rate considering timing."
 }, {
   label: "Principle",
   value: "HKD 18,000",
   calculation: "Capital Deployed",
   definition: "Original invested amount or loan balance."
 }, {
-  label: "Net Asset Value (NAV)",
-  value: "HKD 18,820",
-  calculation: "18,820",
-  definition: "Current market value of fund's assets minus liabilities."
+  label: "Loss Ratio",
+  value: "5.3%",
+  calculation: "7 ÷ 131 trades",
+  definition: "Losses divided by earned premiums (insurance metric)."
 }, {
   label: "Time to Liquidity",
   value: "2.3 days",
@@ -106,42 +109,49 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState('3M');
   const [flippedCard, setFlippedCard] = useState<string | null>(null);
+  const [customDateRange, setCustomDateRange] = useState<{from?: Date, to?: Date}>({});
+  const [isCustomDateOpen, setIsCustomDateOpen] = useState(false);
   const recordsPerPage = 50;
 
   // Sample withdrawal data
-  const sampleWithdrawals: WithdrawalRecord[] = [{
-    id: '1',
-    date: '6/2/2025',
-    amount: 350,
-    status: 'Pending',
-    destination: 'Bank Account (****1234)',
-    transactionId: 'TXN001',
-    fees: 5
-  }, {
-    id: '2',
-    date: '5/28/2025',
-    amount: 500,
-    status: 'Completed',
-    destination: 'Bank Account (****1234)',
-    transactionId: 'TXN002',
-    fees: 5
-  }, {
-    id: '3',
-    date: '5/15/2025',
-    amount: 1200,
-    status: 'Completed',
-    destination: 'Crypto Wallet (0x1234...)',
-    transactionId: 'TXN003',
-    fees: 15
-  }, {
-    id: '4',
-    date: '4/30/2025',
-    amount: 800,
-    status: 'Completed',
-    destination: 'Bank Account (****1234)',
-    transactionId: 'TXN004',
-    fees: 5
-  }];
+  const sampleWithdrawals: WithdrawalRecord[] = [
+    {
+      id: '1',
+      date: '6/2/2025',
+      amount: 350,
+      status: 'Pending',
+      destination: 'Bank Account (****1234)',
+      transactionId: 'TXN001',
+      fees: 5
+    },
+    {
+      id: '2',
+      date: '5/28/2025',
+      amount: 500,
+      status: 'Completed',
+      destination: 'Bank Account (****1234)',
+      transactionId: 'TXN002',
+      fees: 5
+    },
+    {
+      id: '3',
+      date: '5/15/2025',
+      amount: 1200,
+      status: 'Completed',
+      destination: 'Crypto Wallet (0x1234...)',
+      transactionId: 'TXN003',
+      fees: 15
+    },
+    {
+      id: '4',
+      date: '4/30/2025',
+      amount: 800,
+      status: 'Completed',
+      destination: 'Bank Account (****1234)',
+      transactionId: 'TXN004',
+      fees: 5
+    }
+  ];
 
   const availabilityBreakdown: AvailabilityBreakdown = {
     total: 18820,
@@ -219,6 +229,24 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     console.log('Exporting CSV...');
   };
 
+  const handleTimeframeChange = (timeframe: string) => {
+    if (timeframe === 'Custom Date') {
+      setIsCustomDateOpen(true);
+    } else {
+      setSelectedTimeframe(timeframe);
+      setCustomDateRange({});
+    }
+  };
+
+  const formatCustomDateRange = () => {
+    if (customDateRange.from && customDateRange.to) {
+      return `${format(customDateRange.from, "MMM dd")} - ${format(customDateRange.to, "MMM dd, yyyy")}`;
+    } else if (customDateRange.from) {
+      return `From ${format(customDateRange.from, "MMM dd, yyyy")}`;
+    }
+    return "Custom Date";
+  };
+
   return (
     <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
@@ -241,17 +269,45 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
                   <div className="flex gap-2">
-                    {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL', 'Custom Date'].map(timeframe => (
+                    {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
                       <Button
                         key={timeframe}
                         variant={selectedTimeframe === timeframe ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setSelectedTimeframe(timeframe)}
-                        className="h-8 px-3 text-xs"
+                        onClick={() => handleTimeframeChange(timeframe)}
+                        className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                       >
                         {timeframe}
                       </Button>
                     ))}
+                    <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={customDateRange.from ? "default" : "outline"}
+                          size="sm"
+                          className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                        >
+                          <CalendarIcon className="w-3 h-3 mr-1" />
+                          {formatCustomDateRange()}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="end">
+                        <Calendar
+                          mode="range"
+                          selected={{ from: customDateRange.from, to: customDateRange.to }}
+                          onSelect={(range) => {
+                            setCustomDateRange(range || {});
+                            if (range?.from && range?.to) {
+                              setSelectedTimeframe('Custom Date');
+                              setIsCustomDateOpen(false);
+                            }
+                          }}
+                          disabled={(date) => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
+                          initialFocus
+                          className="pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                 </div>
                 
@@ -266,8 +322,10 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm text-gray-600">{metric.label}</span>
                           <Tooltip>
-                            <TooltipTrigger onClick={(e) => e.stopPropagation()}>
-                              <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                            <TooltipTrigger asChild>
+                              <button onClick={(e) => e.stopPropagation()} className="p-1">
+                                <HelpCircle className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                              </button>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-xs bg-gray-800 text-white border-gray-700">
                               <p className="text-sm">{metric.definition}</p>
@@ -341,7 +399,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                   <Table>
                     <TableHeader className="bg-gray-50">
                       <TableRow>
-                        <TableHead className="w-20">Date</TableHead>
+                        <TableHead className="w-24">Date</TableHead>
                         <TableHead className="w-16 text-center">Type</TableHead>
                         <TableHead className="w-20 text-right">Strike</TableHead>
                         <TableHead className="w-20 text-center">Risk</TableHead>
@@ -355,41 +413,41 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       {currentRecords.map((record, index) => (
                         <React.Fragment key={record.id}>
                           <TableRow 
-                            className={`cursor-pointer hover:bg-gray-50 h-10 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
+                            className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
                             onClick={() => handleRowClick(record.id)}
                           >
-                            <TableCell className="text-sm py-2">{record.date}</TableCell>
-                            <TableCell className="text-center text-sm py-2">{record.type}</TableCell>
-                            <TableCell className="text-right text-sm py-2">{record.strike}</TableCell>
-                            <TableCell className="text-center text-sm py-2">{record.risk}</TableCell>
-                            <TableCell className="text-center text-sm py-2">{record.volume}</TableCell>
-                            <TableCell className="text-center text-lg py-2">{getResultIcon(record.result)}</TableCell>
-                            <TableCell className="text-right text-sm py-2">
+                            <TableCell className="text-sm py-1">{record.date}</TableCell>
+                            <TableCell className="text-center text-sm py-1">{record.type}</TableCell>
+                            <TableCell className="text-right text-sm py-1">{record.strike}</TableCell>
+                            <TableCell className="text-center text-sm py-1">{record.risk}</TableCell>
+                            <TableCell className="text-center text-sm py-1">{record.volume}</TableCell>
+                            <TableCell className="text-center text-sm py-1">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
+                            <TableCell className="text-right text-sm py-1">
                               {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
                             </TableCell>
-                            <TableCell className="text-center py-2">
+                            <TableCell className="text-center py-1">
                               <div className="flex items-center justify-center gap-2">
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="w-8 h-8 p-0"
+                                  className="w-6 h-6 p-0"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     console.log('Blockchain link clicked');
                                   }}
                                 >
-                                  <ExternalLink className="w-4 h-4" />
+                                  <ExternalLink className="w-3 h-3" />
                                 </Button>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="w-8 h-8 p-0"
+                                  className="w-6 h-6 p-0"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     console.log('AI explanation clicked');
                                   }}
                                 >
-                                  <Brain className="w-4 h-4" />
+                                  <Brain className="w-3 h-3" />
                                 </Button>
                               </div>
                             </TableCell>
