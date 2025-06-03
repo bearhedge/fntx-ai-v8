@@ -83,7 +83,6 @@ const performanceMetrics = [
     label: "NAV",
     fullLabel: "Net Asset Value (NAV)",
     value: "HKD 1,000,020",
-    calculation: "Assets minus liabilities",
     definition: "Total value of all assets held minus any liabilities."
   },
   {
@@ -99,18 +98,18 @@ const performanceMetrics = [
     definition: "The original capital invested, excluding gains or losses."
   },
   {
-    label: "Loss Ratio",
-    fullLabel: "Loss Ratio",
-    value: "0.0%",
-    calculation: "0 ÷ 1,000,000",
-    definition: "The percentage of capital lost relative to total risked."
+    label: "Exercise Ratio",
+    fullLabel: "Exercise Ratio",
+    value: "2.0%",
+    calculation: "2 ÷ 100",
+    definition: "Percent of trades where options were exercised."
   },
   {
     label: "Time to Liquidity",
     fullLabel: "Time to Liquidity",
     value: "3.4 hours",
-    calculation: "Average duration",
-    definition: "How long it's expected to take before investments can be cashed out."
+    calculation: "Average duration formula",
+    definition: "How long it's expected to take before a transaction can be cashed out."
   },
   {
     label: "Sharpe Ratio",
@@ -120,18 +119,18 @@ const performanceMetrics = [
     definition: "Risk-adjusted return; how much return per unit of volatility."
   },
   {
-    label: "Exercise Ratio",
-    fullLabel: "Exercise Ratio",
-    value: "2.0%",
-    calculation: "Exercised Options ÷ Total Trades",
-    definition: "Percent of trades where options were exercised."
+    label: "Take-profit Ratio",
+    fullLabel: "Take-profit Ratio",
+    value: "10.0%",
+    calculation: "TP Hits ÷ Total Trades",
+    definition: "Percent of trades that hit the take profit level."
   },
   {
-    label: "Gross IRR",
-    fullLabel: "Gross IRR",
-    value: "21.2%",
-    calculation: "Before fees and expenses",
-    definition: "Annualized return before deducting fees, carry, or expenses."
+    label: "Stop-loss Ratio",
+    fullLabel: "Stop-loss Ratio",
+    value: "10.0%",
+    calculation: "SL Hits ÷ Total Trades",
+    definition: "Percent of trades that hit the stop loss level."
   }
 ];
 
