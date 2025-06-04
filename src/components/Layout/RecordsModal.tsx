@@ -272,10 +272,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       {performanceMetrics.map((metric, index) => (
                         <div 
                           key={metric.label} 
-                          className="bg-gray-200 rounded-lg p-4 flex flex-col justify-center items-center text-center min-h-[80px] hover:bg-gray-300 transition-colors duration-200"
+                          className="bg-gray-200 rounded-lg p-4 flex flex-col text-center min-h-[120px] hover:bg-gray-300 transition-colors duration-200"
                         >
-                          <div className="text-sm font-medium text-gray-700 mb-1">{metric.label}</div>
-                          <div className="text-lg font-semibold text-gray-900">{metric.value}</div>
+                          <div className="text-sm font-normal text-gray-700 mb-2 pt-2">{metric.label}</div>
+                          <div className="flex-1 flex items-center justify-center">
+                            <div className="text-xl font-bold text-gray-900">{metric.value}</div>
+                          </div>
                         </div>
                       ))}
                     </div>
