@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
-
 interface RecordDetails {
   time: string;
   waitTime: number;
@@ -31,7 +30,6 @@ interface RecordDetails {
   blockchainTxId: string;
   optimalExit: boolean;
 }
-
 interface Record {
   id: string;
   date: string;
@@ -43,97 +41,82 @@ interface Record {
   pnl: number;
   details: RecordDetails;
 }
-
 interface RecordsModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 // Updated performance metrics with new metrics and refined definitions
-const performanceMetrics = [
-  {
-    label: "DPI",
-    fullLabel: "Distributions to Paid-in (DPI)",
-    value: "0.05x",
-    calculation: "5000 ÷ 1,000,000",
-    definition: "Measures how much cash has been returned compared to what has been invested."
-  },
-  {
-    label: "RVPI",
-    fullLabel: "Residual Value to Paid-in (RVPI)",
-    value: "0.95x",
-    calculation: "999,5000 ÷ 1,000,000",
-    definition: "Shows the current unrealized value of remaining principal relative to invested capital."
-  },
-  {
-    label: "TVPI",
-    fullLabel: "Total Value to Paid-in (TVPI)",
-    value: "1.00x",
-    calculation: "1,000,000 ÷ 1,000,000",
-    definition: "Combines DPI and RVPI to show total value vs. principal."
-  },
-  {
-    label: "MOIC",
-    fullLabel: "Multiple on Invested Capital (MOIC)",
-    value: "1.00x",
-    calculation: "1,000,000 ÷ 1,000,000",
-    definition: "Total value generated per $1 invested, before accounting for time."
-  },
-  {
-    label: "NAV",
-    fullLabel: "Net Asset Value (NAV)",
-    value: "HKD 1,000,020",
-    definition: "Total value of all assets held minus any liabilities."
-  },
-  {
-    label: "IRR",
-    fullLabel: "Internal Rate of Return (IRR)",
-    value: "0.4%",
-    definition: "Annualized return adjusted for time."
-  },
-  {
-    label: "Principal",
-    fullLabel: "Principal",
-    value: "HKD 1,000,000",
-    definition: "The original capital invested, excluding gains or losses."
-  },
-  {
-    label: "Exercise Ratio",
-    fullLabel: "Exercise Ratio",
-    value: "2.0%",
-    calculation: "2 ÷ 100",
-    definition: "Percent of trades where options were exercised."
-  },
-  {
-    label: "Time to Liquidity",
-    fullLabel: "Time to Liquidity",
-    value: "3.4 hours",
-    calculation: "Average duration formula",
-    definition: "How long it's expected to take before a transaction can be cashed out."
-  },
-  {
-    label: "Sharpe Ratio",
-    fullLabel: "Sharpe Ratio",
-    value: "1.00",
-    calculation: "Average Excess Return ÷ Standard Deviation",
-    definition: "Risk-adjusted return; how much return per unit of volatility."
-  },
-  {
-    label: "Take-profit Ratio",
-    fullLabel: "Take-profit Ratio",
-    value: "10.0%",
-    calculation: "TP Hits ÷ Total Trades",
-    definition: "Percent of trades that hit the take profit level."
-  },
-  {
-    label: "Stop-loss Ratio",
-    fullLabel: "Stop-loss Ratio",
-    value: "10.0%",
-    calculation: "SL Hits ÷ Total Trades",
-    definition: "Percent of trades that hit the stop loss level."
-  }
-];
-
+const performanceMetrics = [{
+  label: "DPI",
+  fullLabel: "Distributions to Paid-in (DPI)",
+  value: "0.05x",
+  calculation: "5000 ÷ 1,000,000",
+  definition: "Measures how much cash has been returned compared to what has been invested."
+}, {
+  label: "RVPI",
+  fullLabel: "Residual Value to Paid-in (RVPI)",
+  value: "0.95x",
+  calculation: "999,5000 ÷ 1,000,000",
+  definition: "Shows the current unrealized value of remaining principal relative to invested capital."
+}, {
+  label: "TVPI",
+  fullLabel: "Total Value to Paid-in (TVPI)",
+  value: "1.00x",
+  calculation: "1,000,000 ÷ 1,000,000",
+  definition: "Combines DPI and RVPI to show total value vs. principal."
+}, {
+  label: "MOIC",
+  fullLabel: "Multiple on Invested Capital (MOIC)",
+  value: "1.00x",
+  calculation: "1,000,000 ÷ 1,000,000",
+  definition: "Total value generated per $1 invested, before accounting for time."
+}, {
+  label: "NAV",
+  fullLabel: "Net Asset Value (NAV)",
+  value: "HKD 1,000,020",
+  definition: "Total value of all assets held minus any liabilities."
+}, {
+  label: "IRR",
+  fullLabel: "Internal Rate of Return (IRR)",
+  value: "0.4%",
+  definition: "Annualized return adjusted for time."
+}, {
+  label: "Principal",
+  fullLabel: "Principal",
+  value: "HKD 1,000,000",
+  definition: "The original capital invested, excluding gains or losses."
+}, {
+  label: "Exercise Ratio",
+  fullLabel: "Exercise Ratio",
+  value: "2.0%",
+  calculation: "2 ÷ 100",
+  definition: "Percent of trades where options were exercised."
+}, {
+  label: "Time to Liquidity",
+  fullLabel: "Time to Liquidity",
+  value: "3.4 hours",
+  calculation: "Average duration formula",
+  definition: "How long it's expected to take before a transaction can be cashed out."
+}, {
+  label: "Sharpe Ratio",
+  fullLabel: "Sharpe Ratio",
+  value: "1.00",
+  calculation: "Average Excess Return ÷ Standard Deviation",
+  definition: "Risk-adjusted return; how much return per unit of volatility."
+}, {
+  label: "Take-profit Ratio",
+  fullLabel: "Take-profit Ratio",
+  value: "10.0%",
+  calculation: "TP Hits ÷ Total Trades",
+  definition: "Percent of trades that hit the take profit level."
+}, {
+  label: "Stop-loss Ratio",
+  fullLabel: "Stop-loss Ratio",
+  value: "10.0%",
+  calculation: "SL Hits ÷ Total Trades",
+  definition: "Percent of trades that hit the stop loss level."
+}];
 export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
   onClose
@@ -146,50 +129,47 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState('3M');
   const [flippedCard, setFlippedCard] = useState<string | null>(null);
-  const [customDateRange, setCustomDateRange] = useState<{from?: Date, to?: Date}>({});
+  const [customDateRange, setCustomDateRange] = useState<{
+    from?: Date;
+    to?: Date;
+  }>({});
   const [isCustomDateOpen, setIsCustomDateOpen] = useState(false);
   const recordsPerPage = 50;
 
   // Sample withdrawal data
-  const sampleWithdrawals: WithdrawalRecord[] = [
-    {
-      id: '1',
-      date: '6/2/2025',
-      amount: 350,
-      status: 'Pending',
-      destination: 'Bank Account (****1234)',
-      transactionId: 'TXN001',
-      fees: 5
-    },
-    {
-      id: '2',
-      date: '5/28/2025',
-      amount: 500,
-      status: 'Completed',
-      destination: 'Bank Account (****1234)',
-      transactionId: 'TXN002',
-      fees: 5
-    },
-    {
-      id: '3',
-      date: '5/15/2025',
-      amount: 1200,
-      status: 'Completed',
-      destination: 'Crypto Wallet (0x1234...)',
-      transactionId: 'TXN003',
-      fees: 15
-    },
-    {
-      id: '4',
-      date: '4/30/2025',
-      amount: 800,
-      status: 'Completed',
-      destination: 'Bank Account (****1234)',
-      transactionId: 'TXN004',
-      fees: 5
-    }
-  ];
-
+  const sampleWithdrawals: WithdrawalRecord[] = [{
+    id: '1',
+    date: '6/2/2025',
+    amount: 350,
+    status: 'Pending',
+    destination: 'Bank Account (****1234)',
+    transactionId: 'TXN001',
+    fees: 5
+  }, {
+    id: '2',
+    date: '5/28/2025',
+    amount: 500,
+    status: 'Completed',
+    destination: 'Bank Account (****1234)',
+    transactionId: 'TXN002',
+    fees: 5
+  }, {
+    id: '3',
+    date: '5/15/2025',
+    amount: 1200,
+    status: 'Completed',
+    destination: 'Crypto Wallet (0x1234...)',
+    transactionId: 'TXN003',
+    fees: 15
+  }, {
+    id: '4',
+    date: '4/30/2025',
+    amount: 800,
+    status: 'Completed',
+    destination: 'Bank Account (****1234)',
+    transactionId: 'TXN004',
+    fees: 5
+  }];
   const availabilityBreakdown: AvailabilityBreakdown = {
     total: 18820,
     available: 2500,
@@ -200,18 +180,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       reason: 'Options expiry'
     }]
   };
-
   const filteredAndSortedRecords = useMemo(() => {
     let filtered = sampleData;
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(record => 
-        record.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        record.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        record.strike.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        record.risk.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      filtered = filtered.filter(record => record.date.toLowerCase().includes(searchTerm.toLowerCase()) || record.type.toLowerCase().includes(searchTerm.toLowerCase()) || record.strike.toLowerCase().includes(searchTerm.toLowerCase()) || record.risk.toLowerCase().includes(searchTerm.toLowerCase()));
     }
 
     // Apply type filter
@@ -227,22 +201,20 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         case 'pnl':
           return b.pnl - a.pnl;
         case 'risk':
-          const riskOrder = { 'low': 1, 'moderate': 2, 'high': 3 };
+          const riskOrder = {
+            'low': 1,
+            'moderate': 2,
+            'high': 3
+          };
           return riskOrder[b.risk] - riskOrder[a.risk];
         default:
           return 0;
       }
     });
-
     return filtered;
   }, [searchTerm, filterType, sortBy]);
-
   const totalPages = Math.ceil(filteredAndSortedRecords.length / recordsPerPage);
-  const currentRecords = filteredAndSortedRecords.slice(
-    (currentPage - 1) * recordsPerPage,
-    currentPage * recordsPerPage
-  );
-
+  const currentRecords = filteredAndSortedRecords.slice((currentPage - 1) * recordsPerPage, currentPage * recordsPerPage);
   const getResultIcon = (result: string) => {
     switch (result) {
       case 'expired':
@@ -253,19 +225,15 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         return '?';
     }
   };
-
   const handleRowClick = (recordId: string) => {
     setExpandedRow(expandedRow === recordId ? null : recordId);
   };
-
   const handleCardClick = (metricLabel: string) => {
     setFlippedCard(flippedCard === metricLabel ? null : metricLabel);
   };
-
   const handleExport = () => {
     console.log('Exporting CSV...');
   };
-
   const handleTimeframeChange = (timeframe: string) => {
     if (timeframe === 'Custom Date') {
       setIsCustomDateOpen(true);
@@ -274,7 +242,6 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       setCustomDateRange({});
     }
   };
-
   const formatCustomDateRange = () => {
     if (customDateRange.from && customDateRange.to) {
       return `${format(customDateRange.from, "MMM dd")} - ${format(customDateRange.to, "MMM dd, yyyy")}`;
@@ -283,9 +250,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     }
     return "Custom Date";
   };
-
-  return (
-    <TooltipProvider>
+  return <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
           <DialogHeader className="bg-gray-50 p-6 flex-shrink-0">
@@ -304,61 +269,41 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
           <div className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
               <div className="px-6 pb-6">
-                {activeTab === 'performance' && (
-                  <div className="space-y-6">
+                {activeTab === 'performance' && <div className="space-y-6">
                     {/* Performance Metrics Section */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between py-[5px]">
                       <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
                       <div className="flex gap-2">
-                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
-                          <Button
-                            key={timeframe}
-                            variant={selectedTimeframe === timeframe ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handleTimeframeChange(timeframe)}
-                            className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                          >
+                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
                             {timeframe}
-                          </Button>
-                        ))}
+                          </Button>)}
                         <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
                           <PopoverTrigger asChild>
-                            <Button
-                              variant={customDateRange.from ? "default" : "outline"}
-                              size="sm"
-                              className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                            >
+                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
                               <CalendarIcon className="w-3 h-3 mr-1" />
                               {formatCustomDateRange()}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="end">
-                            <Calendar
-                              mode="range"
-                              selected={{ from: customDateRange.from, to: customDateRange.to }}
-                              onSelect={(range) => {
-                                setCustomDateRange(range || {});
-                                if (range?.from && range?.to) {
-                                  setSelectedTimeframe('Custom Date');
-                                  setIsCustomDateOpen(false);
-                                }
-                              }}
-                              disabled={(date) => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
-                              initialFocus
-                            />
+                            <Calendar mode="range" selected={{
+                          from: customDateRange.from,
+                          to: customDateRange.to
+                        }} onSelect={range => {
+                          setCustomDateRange(range || {});
+                          if (range?.from && range?.to) {
+                            setSelectedTimeframe('Custom Date');
+                            setIsCustomDateOpen(false);
+                          }
+                        }} disabled={date => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))} initialFocus />
                           </PopoverContent>
                         </Popover>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-4 gap-4">
-                      {performanceMetrics.map((metric, index) => (
-                        <div 
-                          key={metric.label} 
-                          className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative w-full h-40"
-                          style={{ aspectRatio: '1/1' }}
-                          onClick={() => handleCardClick(metric.label)}
-                        >
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative w-full h-40" style={{
+                    aspectRatio: '1/1'
+                  }} onClick={() => handleCardClick(metric.label)}>
                           {/* Front Side */}
                           <div className={`absolute inset-0 p-4 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
                             <div className="text-lg font-medium text-gray-900 mb-2">{metric.label}</div>
@@ -373,14 +318,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                               <div className="text-xs text-gray-500 text-center">{metric.calculation}</div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
-                  </div>
-                )}
+                  </div>}
 
-                {activeTab === 'history' && (
-                  <div className="space-y-4">
+                {activeTab === 'history' && <div className="space-y-4">
                     {/* Controls */}
                     <div className="flex items-center gap-4">
                       <Select value={filterType} onValueChange={setFilterType}>
@@ -408,12 +350,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
                       <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <Input
-                          placeholder="Search records..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="pl-10"
-                        />
+                        <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
                       </div>
 
                       <Button variant="outline" onClick={handleExport} className="gap-2">
@@ -438,12 +375,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {currentRecords.map((record, index) => (
-                            <React.Fragment key={record.id}>
-                              <TableRow 
-                                className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
-                                onClick={() => handleRowClick(record.id)}
-                              >
+                          {currentRecords.map((record, index) => <React.Fragment key={record.id}>
+                              <TableRow className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`} onClick={() => handleRowClick(record.id)}>
                                 <TableCell className="text-sm py-1 font-normal">{record.date}</TableCell>
                                 <TableCell className="text-center text-sm py-1 font-normal">{record.type}</TableCell>
                                 <TableCell className="text-right text-sm py-1 font-normal">{record.strike}</TableCell>
@@ -455,26 +388,16 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                 </TableCell>
                                 <TableCell className="text-center py-1">
                                   <div className="flex items-center justify-center gap-2">
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="w-6 h-6 p-0"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        console.log('Blockchain link clicked');
-                                      }}
-                                    >
+                                    <Button variant="ghost" size="sm" className="w-6 h-6 p-0" onClick={e => {
+                                e.stopPropagation();
+                                console.log('Blockchain link clicked');
+                              }}>
                                       <ExternalLink className="w-3 h-3" />
                                     </Button>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="w-6 h-6 p-0"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        console.log('AI explanation clicked');
-                                      }}
-                                    >
+                                    <Button variant="ghost" size="sm" className="w-6 h-6 p-0" onClick={e => {
+                                e.stopPropagation();
+                                console.log('AI explanation clicked');
+                              }}>
                                       <Brain className="w-3 h-3" />
                                     </Button>
                                   </div>
@@ -482,8 +405,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                               </TableRow>
                               
                               {/* Expanded Row */}
-                              {expandedRow === record.id && (
-                                <TableRow className="bg-gray-50">
+                              {expandedRow === record.id && <TableRow className="bg-gray-50">
                                   <TableCell colSpan={8} className="p-6">
                                     <div className="grid grid-cols-2 gap-6">
                                       <div className="space-y-4">
@@ -573,10 +495,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                       </div>
                                     </div>
                                   </TableCell>
-                                </TableRow>
-                              )}
-                            </React.Fragment>
-                          ))}
+                                </TableRow>}
+                            </React.Fragment>)}
                         </TableBody>
                       </Table>
                     </div>
@@ -586,49 +506,31 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       <Pagination className="py-0">
                         <PaginationContent>
                           <PaginationItem>
-                            <PaginationPrevious 
-                              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                              className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                            />
+                            <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
                           </PaginationItem>
                           
-                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                            const pageNum = i + 1;
-                            return (
-                              <PaginationItem key={pageNum}>
-                                <PaginationLink
-                                  onClick={() => setCurrentPage(pageNum)}
-                                  isActive={currentPage === pageNum}
-                                  className="cursor-pointer"
-                                >
+                          {Array.from({
+                        length: Math.min(5, totalPages)
+                      }, (_, i) => {
+                        const pageNum = i + 1;
+                        return <PaginationItem key={pageNum}>
+                                <PaginationLink onClick={() => setCurrentPage(pageNum)} isActive={currentPage === pageNum} className="cursor-pointer">
                                   {pageNum}
                                 </PaginationLink>
-                              </PaginationItem>
-                            );
-                          })}
+                              </PaginationItem>;
+                      })}
                           
                           <PaginationItem>
-                            <PaginationNext 
-                              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                            />
+                            <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
                           </PaginationItem>
                         </PaginationContent>
                       </Pagination>
                     </div>
-                  </div>
-                )}
+                  </div>}
 
-                {activeTab === 'withdrawals' && (
-                  <WithdrawalTab 
-                    availableBalance={2500}
-                    withdrawalHistory={sampleWithdrawals}
-                    availabilityBreakdown={availabilityBreakdown}
-                  />
-                )}
+                {activeTab === 'withdrawals' && <WithdrawalTab availableBalance={2500} withdrawalHistory={sampleWithdrawals} availabilityBreakdown={availabilityBreakdown} />}
 
-                {activeTab === 'analytics' && (
-                  <div className="text-center py-12">
+                {activeTab === 'analytics' && <div className="text-center py-12">
                     <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
                     <p className="text-gray-600 mb-4">
                       Detailed analytics and insights coming soon.
@@ -639,117 +541,112 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                         performance attribution, and AI-generated trading insights.
                       </p>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
             </ScrollArea>
           </div>
         </DialogContent>
       </Dialog>
-    </TooltipProvider>
-  );
+    </TooltipProvider>;
 };
-
-const sampleData: Record[] = [
-  {
-    id: '1',
-    date: '6/1/2025',
-    type: 'put',
-    strike: '530P',
-    risk: 'moderate',
-    volume: 1,
-    result: 'expired',
-    pnl: 55,
-    details: {
-      time: '14:32 EST',
-      waitTime: 2.1,
-      premium: 0.55,
-      otmPercent: 2.5,
-      delta: -0.13,
-      gamma: 0.02,
-      theta: 0.19,
-      vega: 0.11,
-      ivRank: 78,
-      stopLossRatio: 3,
-      takeProfitRatio: 0.5,
-      blockchainTxId: '0x1234...',
-      optimalExit: true
-    }
-  },
-  {
-    id: '2',
-    date: '6/2/2025',
-    type: 'call',
-    strike: '534C',
-    risk: 'low',
-    volume: 2,
-    result: 'expired',
-    pnl: 78,
-    details: {
-      time: '09:15 EST',
-      waitTime: 3.2,
-      premium: 0.39,
-      otmPercent: 1.8,
-      delta: 0.22,
-      gamma: 0.03,
-      theta: -0.15,
-      vega: 0.09,
-      ivRank: 65,
-      stopLossRatio: 3,
-      takeProfitRatio: 0.5,
-      blockchainTxId: '0x5678...',
-      optimalExit: true
-    }
-  },
-  {
-    id: '3',
-    date: '6/3/2025',
-    type: 'put',
-    strike: '528P',
-    risk: 'moderate',
-    volume: 3,
-    result: 'exercised',
-    pnl: -120,
-    details: {
-      time: '10:15 EST',
-      waitTime: 1.5,
-      premium: 0.40,
-      otmPercent: 3.2,
-      delta: -0.18,
-      gamma: 0.03,
-      theta: 0.22,
-      vega: 0.14,
-      ivRank: 82,
-      stopLossRatio: 3,
-      takeProfitRatio: 0.5,
-      blockchainTxId: '0x9abc...',
-      optimalExit: false
-    }
-  },
-  // Adding more sample data to reach sufficient records for pagination
-  ...Array.from({ length: 97 }, (_, i) => ({
-    id: (i + 4).toString(),
-    date: `6/${i + 4}/2025`,
-    type: (['put', 'call', 'both'][i % 3]) as 'put' | 'call' | 'both',
-    strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
-    risk: (['low', 'moderate', 'high'][i % 3]) as 'low' | 'moderate' | 'high',
-    volume: i % 3 + 1,
-    result: (['expired', 'exercised'][i % 2]) as 'expired' | 'exercised',
-    pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
-    details: {
-      time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
-      waitTime: 1 + i % 5,
-      premium: 0.3 + i % 10 * 0.05,
-      otmPercent: 1 + i % 8,
-      delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
-      gamma: 0.01 + i % 5 * 0.01,
-      theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
-      vega: 0.08 + i % 5 * 0.02,
-      ivRank: 60 + i % 30,
-      stopLossRatio: 3,
-      takeProfitRatio: 0.5,
-      blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
-      optimalExit: i % 3 !== 1
-    }
-  }))
-];
+const sampleData: Record[] = [{
+  id: '1',
+  date: '6/1/2025',
+  type: 'put',
+  strike: '530P',
+  risk: 'moderate',
+  volume: 1,
+  result: 'expired',
+  pnl: 55,
+  details: {
+    time: '14:32 EST',
+    waitTime: 2.1,
+    premium: 0.55,
+    otmPercent: 2.5,
+    delta: -0.13,
+    gamma: 0.02,
+    theta: 0.19,
+    vega: 0.11,
+    ivRank: 78,
+    stopLossRatio: 3,
+    takeProfitRatio: 0.5,
+    blockchainTxId: '0x1234...',
+    optimalExit: true
+  }
+}, {
+  id: '2',
+  date: '6/2/2025',
+  type: 'call',
+  strike: '534C',
+  risk: 'low',
+  volume: 2,
+  result: 'expired',
+  pnl: 78,
+  details: {
+    time: '09:15 EST',
+    waitTime: 3.2,
+    premium: 0.39,
+    otmPercent: 1.8,
+    delta: 0.22,
+    gamma: 0.03,
+    theta: -0.15,
+    vega: 0.09,
+    ivRank: 65,
+    stopLossRatio: 3,
+    takeProfitRatio: 0.5,
+    blockchainTxId: '0x5678...',
+    optimalExit: true
+  }
+}, {
+  id: '3',
+  date: '6/3/2025',
+  type: 'put',
+  strike: '528P',
+  risk: 'moderate',
+  volume: 3,
+  result: 'exercised',
+  pnl: -120,
+  details: {
+    time: '10:15 EST',
+    waitTime: 1.5,
+    premium: 0.40,
+    otmPercent: 3.2,
+    delta: -0.18,
+    gamma: 0.03,
+    theta: 0.22,
+    vega: 0.14,
+    ivRank: 82,
+    stopLossRatio: 3,
+    takeProfitRatio: 0.5,
+    blockchainTxId: '0x9abc...',
+    optimalExit: false
+  }
+},
+// Adding more sample data to reach sufficient records for pagination
+...Array.from({
+  length: 97
+}, (_, i) => ({
+  id: (i + 4).toString(),
+  date: `6/${i + 4}/2025`,
+  type: ['put', 'call', 'both'][i % 3] as 'put' | 'call' | 'both',
+  strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
+  risk: ['low', 'moderate', 'high'][i % 3] as 'low' | 'moderate' | 'high',
+  volume: i % 3 + 1,
+  result: ['expired', 'exercised'][i % 2] as 'expired' | 'exercised',
+  pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
+  details: {
+    time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
+    waitTime: 1 + i % 5,
+    premium: 0.3 + i % 10 * 0.05,
+    otmPercent: 1 + i % 8,
+    delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
+    gamma: 0.01 + i % 5 * 0.01,
+    theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
+    vega: 0.08 + i % 5 * 0.02,
+    ivRank: 60 + i % 30,
+    stopLossRatio: 3,
+    takeProfitRatio: 0.5,
+    blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
+    optimalExit: i % 3 !== 1
+  }
+}))];
