@@ -267,12 +267,17 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       </div>
                     </div>
                     
-                    {/* Performance Metrics Grid - 3 columns x 4 rows */}
-                    <div className="grid grid-cols-3 gap-6 max-w-4xl">
-                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center h-32 hover:bg-gray-600 hover:text-white transition-all duration-200 cursor-pointer">
-                          <div className="text-lg font-semibold text-gray-800 hover:text-white mb-2">{metric.label}</div>
-                          <div className="text-lg font-normal text-gray-800 hover:text-white">{metric.value}</div>
-                        </div>)}
+                    {/* Performance Metrics Grid - 3 columns x 4 rows with proper spacing */}
+                    <div className="grid grid-cols-3 gap-4 w-full max-w-6xl">
+                      {performanceMetrics.map((metric, index) => (
+                        <div 
+                          key={metric.label} 
+                          className="bg-gray-200 rounded-lg p-4 flex flex-col justify-center items-center text-center min-h-[80px] hover:bg-gray-300 transition-colors duration-200"
+                        >
+                          <div className="text-sm font-medium text-gray-700 mb-1">{metric.label}</div>
+                          <div className="text-lg font-semibold text-gray-900">{metric.value}</div>
+                        </div>
+                      ))}
                     </div>
                   </div>}
 
