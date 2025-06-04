@@ -253,13 +253,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
   return <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
-          <DialogHeader className="bg-gray-50 p-6 flex-shrink-0">
+          <DialogHeader className="p-6 flex-shrink-0 bg-gray-300">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-xl font-medium text-gray-900">RECORDS</DialogTitle>
+              <DialogTitle className="text-xl font-medium text-black">RECORDS</DialogTitle>
             </div>
-            <p className="text-sm text-gray-600 mt-2">
-              Complete trading history with detailed metrics, outcomes, and withdrawal management.
-            </p>
+            
           </DialogHeader>
 
           <div className="flex-shrink-0 px-6">
