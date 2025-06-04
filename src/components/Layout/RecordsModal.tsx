@@ -274,12 +274,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     <div className="flex items-center justify-between py-[5px]">
                       <h3 className="text-xl font-medium text-gray-900">Performance Metrics</h3>
                       <div className="flex gap-2">
-                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 px-3 text-white hover:bg-white-300 text-xs bg-zinc-500 hover:bg-gray-200">
+                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 text-white hover:bg-white-300 text-xs bg-zinc-500 hover:bg-zinc-500 px-[20px]">
                             {timeframe}
                           </Button>)}
                         <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
                           <PopoverTrigger asChild>
-                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
+                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 border-gray-200 text-white px-[20px] bg-zinc-600 hover:bg-zinc-500 text-xs">
                               <CalendarIcon className="w-3 h-3 mr-1" />
                               {formatCustomDateRange()}
                             </Button>
