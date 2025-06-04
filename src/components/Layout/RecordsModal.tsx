@@ -318,7 +318,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                         <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
                       </div>
 
-                      <Button variant="outline" onClick={handleExport} className="gap-2">
+                      <Button variant="outline" onClick={handleExport} className="gap-2 text-inherit font-normal">
                         <Download className="w-4 h-4" />
                         Export CSV
                       </Button>
@@ -329,14 +329,14 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       <Table>
                         <TableHeader className="bg-gray-50">
                           <TableRow>
-                            <TableHead className="w-24">Date</TableHead>
-                            <TableHead className="w-16 text-center">Type</TableHead>
-                            <TableHead className="w-20 text-center">Strike</TableHead>
-                            <TableHead className="w-20 text-center">Risk</TableHead>
-                            <TableHead className="w-16 text-center">Volume</TableHead>
-                            <TableHead className="w-16 text-center">Result</TableHead>
-                            <TableHead className="w-24 text-center">PnL (HKD)</TableHead>
-                            <TableHead className="w-24 text-center">Actions</TableHead>
+                            <TableHead className="w-24 bg-gray-200">Date</TableHead>
+                            <TableHead className="w-16 text-center bg-gray-200">Type</TableHead>
+                            <TableHead className="w-20 text-center bg-gray-200">Strike</TableHead>
+                            <TableHead className="w-20 text-center bg-gray-200">Risk</TableHead>
+                            <TableHead className="w-16 text-center bg-gray-200">Volume</TableHead>
+                            <TableHead className="w-16 text-center bg-gray-200">Result</TableHead>
+                            <TableHead className="w-24 text-center bg-gray-200">PnL (HKD)</TableHead>
+                            <TableHead className="w-24 text-center bg-gray-200">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
