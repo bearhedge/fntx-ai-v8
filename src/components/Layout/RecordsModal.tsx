@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
-
 interface RecordDetails {
   time: string;
   waitTime: number;
@@ -52,7 +51,7 @@ const performanceMetrics = [{
   label: "DPI",
   value: "0.05x"
 }, {
-  label: "RVPI", 
+  label: "RVPI",
   value: "0.95x"
 }, {
   label: "TVPI",
@@ -85,7 +84,6 @@ const performanceMetrics = [{
   label: "Stop-loss Ratio",
   value: "40%"
 }];
-
 export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
   onClose
@@ -224,7 +222,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
           <DialogHeader className="p-6 flex-shrink-0 bg-gray-300">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-xl font-medium text-black">RECORDS</DialogTitle>
+              <DialogTitle className="text-xl text-black font-semibold">RECORDS</DialogTitle>
             </div>
             
           </DialogHeader>
@@ -269,17 +267,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     
                     {/* Performance Metrics Grid - 3 columns x 4 rows with proper spacing */}
                     <div className="grid grid-cols-3 gap-4 w-full max-w-6xl">
-                      {performanceMetrics.map((metric, index) => (
-                        <div 
-                          key={metric.label} 
-                          className="bg-gray-200 rounded-lg p-4 flex flex-col text-center min-h-[120px] hover:bg-gray-300 transition-colors duration-200"
-                        >
-                          <div className="text-sm font-normal text-gray-700 mb-2 pt-2">{metric.label}</div>
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-200 rounded-lg p-4 flex flex-col text-center min-h-[120px] hover:bg-gray-300 transition-colors duration-200">
+                          <div className="text-sm font-larg text-gray-700 mb-2 pt-2">{metric.label}</div>
                           <div className="flex-1 flex items-center justify-center">
                             <div className="text-xl font-bold text-gray-900">{metric.value}</div>
                           </div>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </div>}
 
