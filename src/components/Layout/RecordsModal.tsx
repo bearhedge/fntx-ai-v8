@@ -272,7 +272,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 {activeTab === 'performance' && <div className="space-y-6">
                     {/* Performance Metrics Section */}
                     <div className="flex items-center justify-between py-[5px]">
-                      <h3 className="text-xl font-medium text-gray-900">Performance Metrics</h3>
+                      <h3 className="text-gray-900 text-xl font-extralight">
+                  </h3>
                       <div className="flex gap-2">
                         {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 text-white hover:bg-white-300 text-xs bg-zinc-500 hover:bg-zinc-500 px-[20px]">
                             {timeframe}
