@@ -560,6 +560,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       </Dialog>
     </TooltipProvider>;
 };
+
 const sampleData: Record[] = [
   {
     id: '1',
