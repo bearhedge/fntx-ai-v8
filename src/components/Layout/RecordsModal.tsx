@@ -255,7 +255,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
           <DialogHeader className="bg-gray-50 p-6 flex-shrink-0">
             <div className="flex items-center justify-between">
-              <DialogTitle className="text-xl font-medium text-gray-900">Records</DialogTitle>
+              <DialogTitle className="text-xl font-medium text-gray-900">RECORDS</DialogTitle>
             </div>
             <p className="text-sm text-gray-600 mt-2">
               Complete trading history with detailed metrics, outcomes, and withdrawal management.
@@ -279,7 +279,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                           </Button>)}
                         <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
                           <PopoverTrigger asChild>
-                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 border-gray-200 text-white px-[20px] bg-zinc-600 hover:bg-zinc-500 text-xs">
+                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 border-gray-200 text-white px-[20px] text-xs bg-zinc-500 hover:bg-zinc-500">
                               <CalendarIcon className="w-3 h-3 mr-1" />
                               {formatCustomDateRange()}
                             </Button>
