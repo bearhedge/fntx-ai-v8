@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
+
 interface RecordDetails {
   time: string;
   waitTime: number;
@@ -272,7 +273,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 {activeTab === 'performance' && <div className="space-y-6">
                     {/* Performance Metrics Section */}
                     <div className="flex items-center justify-between py-[5px]">
-                      <h3 className="text-lg font-medium text-gray-900">Performance Metrics</h3>
+                      <h3 className="text-xl font-medium text-gray-900">Performance Metrics</h3>
                       <div className="flex gap-2">
                         {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
                             {timeframe}
@@ -300,22 +301,20 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-4 gap-4">
-                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer relative w-full h-40" style={{
-                    aspectRatio: '1/1'
-                  }} onClick={() => handleCardClick(metric.label)}>
+                    <div className="grid grid-cols-4 gap-6">
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-100 border border-gray-200 rounded-lg p-3 hover:bg-gray-700 hover:text-white transition-all duration-200 cursor-pointer relative w-full h-32" onClick={() => handleCardClick(metric.label)}>
                           {/* Front Side */}
-                          <div className={`absolute inset-0 p-4 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
-                            <div className="text-lg font-medium text-gray-900 mb-2">{metric.label}</div>
-                            <div className="text-lg font-medium text-gray-900">{metric.value}</div>
+                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
+                            <div className="text-lg font-normal text-gray-600 hover:text-white mb-2" style={{ marginTop: '-0.5cm' }}>{metric.label}</div>
+                            <div className="text-lg font-normal text-gray-600 hover:text-white">{metric.value}</div>
                           </div>
                           
                           {/* Back Side */}
-                          <div className={`absolute inset-0 p-4 transition-opacity duration-300 flex flex-col justify-between ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
-                            <div className="text-sm font-medium text-gray-900 text-center">{metric.fullLabel}</div>
+                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-between ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
+                            <div className="text-sm font-medium text-gray-600 hover:text-white text-center">{metric.fullLabel}</div>
                             <div className="flex-1 flex flex-col justify-center">
-                              <div className="text-sm text-gray-700 text-center mb-2">{metric.definition}</div>
-                              <div className="text-xs text-gray-500 text-center">{metric.calculation}</div>
+                              <div className="text-sm text-gray-600 hover:text-white text-center mb-2">{metric.definition}</div>
+                              {metric.calculation && <div className="text-xs text-gray-500 hover:text-white text-center">{metric.calculation}</div>}
                             </div>
                           </div>
                         </div>)}
