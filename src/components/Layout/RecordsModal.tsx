@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
+
 interface RecordDetails {
   time: string;
   waitTime: number;
@@ -46,77 +47,45 @@ interface RecordsModalProps {
   onClose: () => void;
 }
 
-// Updated performance metrics with new metrics and refined definitions
+// Updated performance metrics to match the image layout
 const performanceMetrics = [{
   label: "DPI",
-  fullLabel: "Distributions to Paid-in (DPI)",
-  value: "0.05x",
-  calculation: "5000 ÷ 1,000,000",
-  definition: "Measures how much cash has been returned compared to what has been invested."
+  value: "0.05x"
 }, {
-  label: "RVPI",
-  fullLabel: "Residual Value to Paid-in (RVPI)",
-  value: "0.95x",
-  calculation: "999,5000 ÷ 1,000,000",
-  definition: "Shows the current unrealized value of remaining principal relative to invested capital."
+  label: "RVPI", 
+  value: "0.95x"
 }, {
   label: "TVPI",
-  fullLabel: "Total Value to Paid-in (TVPI)",
-  value: "1.00x",
-  calculation: "1,000,000 ÷ 1,000,000",
-  definition: "Combines DPI and RVPI to show total value vs. principal."
+  value: "1.00x"
 }, {
   label: "MOIC",
-  fullLabel: "Multiple on Invested Capital (MOIC)",
-  value: "1.00x",
-  calculation: "1,000,000 ÷ 1,000,000",
-  definition: "Total value generated per $1 invested, before accounting for time."
-}, {
-  label: "NAV",
-  fullLabel: "Net Asset Value (NAV)",
-  value: "HKD 1,000,020",
-  definition: "Total value of all assets held minus any liabilities."
+  value: "1.00x"
 }, {
   label: "IRR",
-  fullLabel: "Internal Rate of Return (IRR)",
-  value: "0.4%",
-  definition: "Annualized return adjusted for time."
+  value: "0.40%"
+}, {
+  label: "NAV",
+  value: "HKD 1,000,000"
 }, {
   label: "Principal",
-  fullLabel: "Principal",
-  value: "HKD 1,000,000",
-  definition: "The original capital invested, excluding gains or losses."
+  value: "HKD 1,000,000"
 }, {
   label: "Exercise Ratio",
-  fullLabel: "Exercise Ratio",
-  value: "2.0%",
-  calculation: "2 ÷ 100",
-  definition: "Percent of trades where options were exercised."
+  value: "8.00%"
 }, {
   label: "Time to Liquidity",
-  fullLabel: "Time to Liquidity",
-  value: "3.4 hours",
-  calculation: "Average duration formula",
-  definition: "How long it's expected to take before a transaction can be cashed out."
+  value: "3.4 hours"
 }, {
   label: "Sharpe Ratio",
-  fullLabel: "Sharpe Ratio",
-  value: "1.00",
-  calculation: "Average Excess Return ÷ Standard Deviation",
-  definition: "Risk-adjusted return; how much return per unit of volatility."
+  value: "1.00"
 }, {
   label: "Take-profit Ratio",
-  fullLabel: "Take-profit Ratio",
-  value: "10.0%",
-  calculation: "TP Hits ÷ Total Trades",
-  definition: "Percent of trades that hit the take profit level."
+  value: "10%"
 }, {
   label: "Stop-loss Ratio",
-  fullLabel: "Stop-loss Ratio",
-  value: "10.0%",
-  calculation: "SL Hits ÷ Total Trades",
-  definition: "Percent of trades that hit the stop loss level."
+  value: "40%"
 }];
+
 export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
   onClose
@@ -270,8 +239,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                 {activeTab === 'performance' && <div className="space-y-6">
                     {/* Performance Metrics Section */}
                     <div className="flex items-center justify-between py-[5px]">
-                      <h3 className="text-gray-900 text-xl font-extralight">
-                  </h3>
+                      <h3 className="text-gray-900 text-xl font-extralight"></h3>
                       <div className="flex gap-2">
                         {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 text-white hover:bg-white-300 text-xs bg-zinc-500 hover:bg-zinc-500 px-[20px]">
                             {timeframe}
@@ -299,24 +267,11 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-4 gap-6">
-                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-100 border border-gray-200 rounded-lg p-3 hover:bg-gray-700 hover:text-white transition-all duration-200 cursor-pointer relative w-full h-32" onClick={() => handleCardClick(metric.label)}>
-                          {/* Front Side */}
-                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
-                            <div className="text-lg font-normal text-gray-600 hover:text-white mb-2" style={{
-                        marginTop: '-0.5cm'
-                      }}>{metric.label}</div>
-                            <div className="text-lg font-normal text-gray-600 hover:text-white">{metric.value}</div>
-                          </div>
-                          
-                          {/* Back Side */}
-                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-between ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
-                            <div className="text-sm font-medium text-gray-600 hover:text-white text-center">{metric.fullLabel}</div>
-                            <div className="flex-1 flex flex-col justify-center">
-                              <div className="text-sm text-gray-600 hover:text-white text-center mb-2">{metric.definition}</div>
-                              {metric.calculation && <div className="text-xs text-gray-500 hover:text-white text-center">{metric.calculation}</div>}
-                            </div>
-                          </div>
+                    {/* Performance Metrics Grid - 3 columns x 4 rows */}
+                    <div className="grid grid-cols-3 gap-6 max-w-4xl">
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-200 rounded-xl p-6 flex flex-col items-center justify-center text-center h-32 hover:bg-gray-600 hover:text-white transition-all duration-200 cursor-pointer">
+                          <div className="text-lg font-semibold text-gray-800 hover:text-white mb-2">{metric.label}</div>
+                          <div className="text-lg font-normal text-gray-800 hover:text-white">{metric.value}</div>
                         </div>)}
                     </div>
                   </div>}
