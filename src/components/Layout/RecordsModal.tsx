@@ -251,8 +251,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     }
     return "Custom Date";
   };
-  return (
-    <TooltipProvider>
+  return <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
           <DialogHeader className="bg-gray-50 p-6 flex-shrink-0">
@@ -271,100 +270,56 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
           <div className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
               <div className="px-6 pb-6">
-                {activeTab === 'performance' && (
-                  <div className="space-y-6">
+                {activeTab === 'performance' && <div className="space-y-6">
                     {/* Performance Metrics Section */}
                     <div className="flex items-center justify-between py-[5px]">
                       <h3 className="text-xl font-medium text-gray-900">Performance Metrics</h3>
                       <div className="flex gap-2">
-                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => (
-                          <Button
-                            key={timeframe}
-                            variant={selectedTimeframe === timeframe ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handleTimeframeChange(timeframe)}
-                            className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                          >
+                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
                             {timeframe}
-                          </Button>
-                        ))}
+                          </Button>)}
                         <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
                           <PopoverTrigger asChild>
-                            <Button
-                              variant={customDateRange.from ? "default" : "outline"}
-                              size="sm"
-                              className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                            >
+                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 px-3 text-xs bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
                               <CalendarIcon className="w-3 h-3 mr-1" />
                               {formatCustomDateRange()}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="end">
-                            <Calendar
-                              mode="range"
-                              selected={{
-                                from: customDateRange.from,
-                                to: customDateRange.to
-                              }}
-                              onSelect={(range) => {
-                                setCustomDateRange(range || {});
-                                if (range?.from && range?.to) {
-                                  setSelectedTimeframe('Custom Date');
-                                  setIsCustomDateOpen(false);
-                                }
-                              }}
-                              disabled={(date) =>
-                                date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-                              }
-                              initialFocus
-                            />
+                            <Calendar mode="range" selected={{
+                          from: customDateRange.from,
+                          to: customDateRange.to
+                        }} onSelect={range => {
+                          setCustomDateRange(range || {});
+                          if (range?.from && range?.to) {
+                            setSelectedTimeframe('Custom Date');
+                            setIsCustomDateOpen(false);
+                          }
+                        }} disabled={date => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))} initialFocus />
                           </PopoverContent>
                         </Popover>
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-4 gap-6">
-                      {performanceMetrics.map((metric, index) => (
-                        <div
-                          key={metric.label}
-                          className="bg-gray-100 border border-gray-200 rounded-lg p-3 hover:bg-gray-700 transition-all duration-200 cursor-pointer relative w-32 h-32 group"
-                          onClick={() => handleCardClick(metric.label)}
-                        >
+                    <div className="grid grid-cols-4 gap-8">
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-100 border border-gray-200 rounded-lg p-3 hover:bg-gray-700 transition-all duration-200 cursor-pointer relative w-28 h-28 group" onClick={() => handleCardClick(metric.label)}>
                           {/* Front Side */}
-                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${
-                            flippedCard === metric.label ? 'opacity-0' : 'opacity-100'
-                          }`}>
-                            <div className="text-lg font-normal text-gray-600 group-hover:text-white mb-2" style={{ marginTop: '-0.5cm' }}>
-                              {metric.label}
-                            </div>
-                            <div className="text-lg font-normal text-gray-600 group-hover:text-white">
-                              {metric.value}
-                            </div>
+                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
+                            <div className="text-lg font-normal text-gray-600 group-hover:text-white mb-2" style={{ marginTop: '-0.5cm' }}>{metric.label}</div>
+                            <div className="text-lg font-normal text-gray-600 group-hover:text-white">{metric.value}</div>
                           </div>
                           
                           {/* Back Side */}
-                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-between ${
-                            flippedCard === metric.label ? 'opacity-100' : 'opacity-0'
-                          }`}>
-                            <div className="text-sm font-medium text-gray-600 group-hover:text-white text-center">
-                              {metric.fullLabel}
-                            </div>
+                          <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-between ${flippedCard === metric.label ? 'opacity-100' : 'opacity-0'}`}>
+                            <div className="text-sm font-medium text-gray-600 group-hover:text-white text-center">{metric.fullLabel}</div>
                             <div className="flex-1 flex flex-col justify-center">
-                              <div className="text-sm text-gray-600 group-hover:text-white text-center mb-2">
-                                {metric.definition}
-                              </div>
-                              {metric.calculation && (
-                                <div className="text-xs text-gray-500 group-hover:text-white text-center">
-                                  {metric.calculation}
-                                </div>
-                              )}
+                              <div className="text-sm text-gray-600 group-hover:text-white text-center mb-2">{metric.definition}</div>
+                              {metric.calculation && <div className="text-xs text-gray-500 group-hover:text-white text-center">{metric.calculation}</div>}
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
-                  </div>
-                )}
+                  </div>}
 
                 {activeTab === 'history' && <div className="space-y-4">
                     {/* Controls */}
@@ -591,11 +546,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
           </div>
         </DialogContent>
       </Dialog>
-    </TooltipProvider>
-  );
+    </TooltipProvider>;
 };
-
-// Sample data
 const sampleData: Record[] = [{
   id: '1',
   date: '6/1/2025',
