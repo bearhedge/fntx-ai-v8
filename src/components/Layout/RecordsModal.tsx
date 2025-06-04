@@ -31,17 +31,19 @@ interface RecordDetails {
   blockchainTxId: string;
   optimalExit: boolean;
 }
+
 interface Record {
   id: string;
   date: string;
-  type: 'put' | 'call' | 'both';
+  type: 'Put' | 'Call' | 'Both';
   strike: string;
-  risk: 'low' | 'moderate' | 'high';
+  risk: 'Low' | 'Moderate' | 'High';
   volume: number;
-  result: 'expired' | 'exercised';
+  result: 'Expired' | 'Exercised';
   pnl: number;
   details: RecordDetails;
 }
+
 interface RecordsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -52,7 +54,7 @@ const performanceMetrics = [{
   label: "DPI",
   value: "0.05x"
 }, {
-  label: "RVPI",
+  label: "RVPI", 
   value: "0.95x"
 }, {
   label: "TVPI",
@@ -97,6 +99,7 @@ const performanceMetrics = [{
   label: "Win Rate",
   value: "40%"
 }];
+
 export const RecordsModal: React.FC<RecordsModalProps> = ({
   isOpen,
   onClose
@@ -150,6 +153,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     transactionId: 'TXN004',
     fees: 5
   }];
+
   const availabilityBreakdown: AvailabilityBreakdown = {
     total: 18820,
     available: 2500,
@@ -160,17 +164,23 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       reason: 'Options expiry'
     }]
   };
+
   const filteredAndSortedRecords = useMemo(() => {
     let filtered = sampleData;
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(record => record.date.toLowerCase().includes(searchTerm.toLowerCase()) || record.type.toLowerCase().includes(searchTerm.toLowerCase()) || record.strike.toLowerCase().includes(searchTerm.toLowerCase()) || record.risk.toLowerCase().includes(searchTerm.toLowerCase()));
+      filtered = filtered.filter(record => 
+        record.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.strike.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.risk.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     // Apply type filter
     if (filterType !== 'all') {
-      filtered = filtered.filter(record => record.type === filterType);
+      filtered = filtered.filter(record => record.type.toLowerCase() === filterType);
     }
 
     // Apply sorting
@@ -181,39 +191,45 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         case 'pnl':
           return b.pnl - a.pnl;
         case 'risk':
-          const riskOrder = {
-            'low': 1,
-            'moderate': 2,
-            'high': 3
-          };
+          const riskOrder = { 'Low': 1, 'Moderate': 2, 'High': 3 };
           return riskOrder[b.risk] - riskOrder[a.risk];
         default:
           return 0;
       }
     });
+
     return filtered;
   }, [searchTerm, filterType, sortBy]);
+
   const totalPages = Math.ceil(filteredAndSortedRecords.length / recordsPerPage);
-  const currentRecords = filteredAndSortedRecords.slice((currentPage - 1) * recordsPerPage, currentPage * recordsPerPage);
+  const currentRecords = filteredAndSortedRecords.slice(
+    (currentPage - 1) * recordsPerPage,
+    currentPage * recordsPerPage
+  );
+
   const getResultIcon = (result: string) => {
     switch (result) {
-      case 'expired':
+      case 'Expired':
         return '✓';
-      case 'exercised':
+      case 'Exercised':
         return '!';
       default:
         return '?';
     }
   };
+
   const handleRowClick = (recordId: string) => {
     setExpandedRow(expandedRow === recordId ? null : recordId);
   };
+
   const handleCardClick = (metricLabel: string) => {
     setFlippedCard(flippedCard === metricLabel ? null : metricLabel);
   };
+
   const handleExport = () => {
     console.log('Exporting CSV...');
   };
+
   const handleTimeframeChange = (timeframe: string) => {
     if (timeframe === 'Custom Date') {
       setIsCustomDateOpen(true);
@@ -222,6 +238,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       setCustomDateRange({});
     }
   };
+
   const formatCustomDateRange = () => {
     if (customDateRange.from && customDateRange.to) {
       return `${format(customDateRange.from, "MMM dd")} - ${format(customDateRange.to, "MMM dd, yyyy")}`;
@@ -230,14 +247,15 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     }
     return "Custom Date";
   };
-  return <TooltipProvider>
+
+  return (
+    <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
           <DialogHeader className="p-6 flex-shrink-0 bg-gray-300">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-xl text-black font-semibold">RECORDS</DialogTitle>
             </div>
-            
           </DialogHeader>
 
           <div className="flex-shrink-0 px-6">
@@ -247,32 +265,53 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
           <div className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
               <div className="px-6 pb-6">
-                {activeTab === 'performance' && <div className="space-y-6">
+                {activeTab === 'performance' && (
+                  <div className="space-y-6">
                     {/* Performance Metrics Section */}
                     <div className="flex items-center justify-between py-[5px]">
                       <h3 className="text-gray-900 text-xl font-extralight"></h3>
                       <div className="flex gap-2">
-                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 text-white hover:bg-white-300 text-xs bg-zinc-500 hover:bg-zinc-500 px-[20px]">
+                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map((timeframe) => (
+                          <Button
+                            key={timeframe}
+                            variant={selectedTimeframe === timeframe ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handleTimeframeChange(timeframe)}
+                            className="h-8 text-white hover:bg-white-300 text-xs bg-zinc-500 hover:bg-zinc-500 px-[20px]"
+                          >
                             {timeframe}
-                          </Button>)}
+                          </Button>
+                        ))}
                         <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
                           <PopoverTrigger asChild>
-                            <Button variant={customDateRange.from ? "default" : "outline"} size="sm" className="h-8 border-gray-200 text-white px-[20px] text-xs bg-zinc-500 hover:bg-zinc-500">
+                            <Button
+                              variant={customDateRange.from ? "default" : "outline"}
+                              size="sm"
+                              className="h-8 border-gray-200 text-white px-[20px] text-xs bg-zinc-500 hover:bg-zinc-500"
+                            >
                               <CalendarIcon className="w-3 h-3 mr-1" />
                               {formatCustomDateRange()}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="end">
-                            <Calendar mode="range" selected={{
-                          from: customDateRange.from,
-                          to: customDateRange.to
-                        }} onSelect={range => {
-                          setCustomDateRange(range || {});
-                          if (range?.from && range?.to) {
-                            setSelectedTimeframe('Custom Date');
-                            setIsCustomDateOpen(false);
-                          }
-                        }} disabled={date => date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))} initialFocus />
+                            <Calendar
+                              mode="range"
+                              selected={{
+                                from: customDateRange.from,
+                                to: customDateRange.to
+                              }}
+                              onSelect={(range) => {
+                                setCustomDateRange(range || {});
+                                if (range?.from && range?.to) {
+                                  setSelectedTimeframe('Custom Date');
+                                  setIsCustomDateOpen(false);
+                                }
+                              }}
+                              disabled={(date) =>
+                                date > new Date() || date < new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+                              }
+                              initialFocus
+                            />
                           </PopoverContent>
                         </Popover>
                       </div>
@@ -280,16 +319,20 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     
                     {/* Performance Metrics Grid - 4 columns x 4 rows with narrower boxes */}
                     <div className="grid grid-cols-4 gap-3 w-full">
-                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-200 rounded-lg p-3 flex flex-col text-center min-h-[100px] hover:bg-gray-300 transition-colors duration-200">
+                      {performanceMetrics.map((metric, index) => (
+                        <div key={metric.label} className="bg-gray-200 rounded-lg p-3 flex flex-col text-center min-h-[100px] hover:bg-gray-300 transition-colors duration-200">
                           <div className="text-xs font-normal text-gray-700 mb-2 pt-1">{metric.label}</div>
                           <div className="flex-1 flex items-center justify-center">
                             <div className="text-lg font-bold text-gray-900">{metric.value}</div>
                           </div>
-                        </div>)}
+                        </div>
+                      ))}
                     </div>
-                  </div>}
+                  </div>
+                )}
 
-                {activeTab === 'history' && <div className="space-y-4">
+                {activeTab === 'history' && (
+                  <div className="space-y-4">
                     {/* Controls */}
                     <div className="flex items-center gap-4">
                       <Select value={filterType} onValueChange={setFilterType}>
@@ -298,9 +341,9 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="all">All Types</SelectItem>
-                          <SelectItem value="put">put</SelectItem>
-                          <SelectItem value="call">call</SelectItem>
-                          <SelectItem value="both">both</SelectItem>
+                          <SelectItem value="put">Put</SelectItem>
+                          <SelectItem value="call">Call</SelectItem>
+                          <SelectItem value="both">Both</SelectItem>
                         </SelectContent>
                       </Select>
 
@@ -317,7 +360,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
                       <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
+                        <Input
+                          placeholder="Search records..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="pl-10"
+                        />
                       </div>
 
                       <Button variant="outline" onClick={handleExport} className="gap-2">
@@ -342,29 +390,45 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {currentRecords.map((record, index) => <React.Fragment key={record.id}>
-                              <TableRow className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`} onClick={() => handleRowClick(record.id)}>
+                          {currentRecords.map((record, index) => (
+                            <React.Fragment key={record.id}>
+                              <TableRow
+                                className={`cursor-pointer hover:bg-gray-50 h-8 ${
+                                  index % 2 === 0 ? 'bg-white' : 'bg-gray-25'
+                                }`}
+                                onClick={() => handleRowClick(record.id)}
+                              >
                                 <TableCell className="text-sm py-1 font-normal">{record.date}</TableCell>
                                 <TableCell className="text-center text-sm py-1 font-normal">{record.type}</TableCell>
                                 <TableCell className="text-right text-sm py-1 font-normal">{record.strike}</TableCell>
                                 <TableCell className="text-center text-sm py-1 font-normal">{record.risk}</TableCell>
                                 <TableCell className="text-center text-sm py-1 font-normal">{record.volume}</TableCell>
-                                <TableCell className="text-center text-sm py-1 font-normal">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{record.result}</TableCell>
                                 <TableCell className="text-right text-sm py-1 font-normal">
                                   {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
                                 </TableCell>
                                 <TableCell className="text-center py-1">
                                   <div className="flex items-center justify-center gap-2">
-                                    <Button variant="ghost" size="sm" className="w-6 h-6 p-0" onClick={e => {
-                                e.stopPropagation();
-                                console.log('Blockchain link clicked');
-                              }}>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="w-6 h-6 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Blockchain link clicked');
+                                      }}
+                                    >
                                       <ExternalLink className="w-3 h-3" />
                                     </Button>
-                                    <Button variant="ghost" size="sm" className="w-6 h-6 p-0" onClick={e => {
-                                e.stopPropagation();
-                                console.log('AI explanation clicked');
-                              }}>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="w-6 h-6 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('AI explanation clicked');
+                                      }}
+                                    >
                                       <Brain className="w-3 h-3" />
                                     </Button>
                                   </div>
@@ -372,7 +436,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                               </TableRow>
                               
                               {/* Expanded Row */}
-                              {expandedRow === record.id && <TableRow className="bg-gray-50">
+                              {expandedRow === record.id && (
+                                <TableRow className="bg-gray-50">
                                   <TableCell colSpan={8} className="p-6">
                                     <div className="grid grid-cols-2 gap-6">
                                       <div className="space-y-4">
@@ -462,8 +527,10 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                       </div>
                                     </div>
                                   </TableCell>
-                                </TableRow>}
-                            </React.Fragment>)}
+                                </TableRow>
+                              )}
+                            </React.Fragment>
+                          ))}
                         </TableBody>
                       </Table>
                     </div>
@@ -473,31 +540,49 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       <Pagination className="py-0">
                         <PaginationContent>
                           <PaginationItem>
-                            <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                            <PaginationPrevious
+                              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                              className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                            />
                           </PaginationItem>
                           
-                          {Array.from({
-                        length: Math.min(5, totalPages)
-                      }, (_, i) => {
-                        const pageNum = i + 1;
-                        return <PaginationItem key={pageNum}>
-                                <PaginationLink onClick={() => setCurrentPage(pageNum)} isActive={currentPage === pageNum} className="cursor-pointer">
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            const pageNum = i + 1;
+                            return (
+                              <PaginationItem key={pageNum}>
+                                <PaginationLink
+                                  onClick={() => setCurrentPage(pageNum)}
+                                  isActive={currentPage === pageNum}
+                                  className="cursor-pointer"
+                                >
                                   {pageNum}
                                 </PaginationLink>
-                              </PaginationItem>;
-                      })}
+                              </PaginationItem>
+                            );
+                          })}
                           
                           <PaginationItem>
-                            <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                            <PaginationNext
+                              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                            />
                           </PaginationItem>
                         </PaginationContent>
                       </Pagination>
                     </div>
-                  </div>}
+                  </div>
+                )}
 
-                {activeTab === 'withdrawals' && <WithdrawalTab availableBalance={2500} withdrawalHistory={sampleWithdrawals} availabilityBreakdown={availabilityBreakdown} />}
+                {activeTab === 'withdrawals' && (
+                  <WithdrawalTab
+                    availableBalance={2500}
+                    withdrawalHistory={sampleWithdrawals}
+                    availabilityBreakdown={availabilityBreakdown}
+                  />
+                )}
 
-                {activeTab === 'analytics' && <div className="text-center py-12">
+                {activeTab === 'analytics' && (
+                  <div className="text-center py-12">
                     <h3 className="text-lg font-medium text-gray-900 mb-2">Advanced Analytics</h3>
                     <p className="text-gray-600 mb-4">
                       Detailed analytics and insights coming soon.
@@ -508,112 +593,1267 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                         performance attribution, and AI-generated trading insights.
                       </p>
                     </div>
-                  </div>}
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </div>
         </DialogContent>
       </Dialog>
-    </TooltipProvider>;
+    </TooltipProvider>
+  );
 };
-const sampleData: Record[] = [{
-  id: '1',
-  date: '6/1/2025',
-  type: 'put',
-  strike: '530P',
-  risk: 'moderate',
-  volume: 1,
-  result: 'expired',
-  pnl: 55,
-  details: {
-    time: '14:32 EST',
-    waitTime: 2.1,
-    premium: 0.55,
-    otmPercent: 2.5,
-    delta: -0.13,
-    gamma: 0.02,
-    theta: 0.19,
-    vega: 0.11,
-    ivRank: 78,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x1234...',
-    optimalExit: true
+
+const sampleData: Record[] = [
+  // Page 1 records (first 50)
+  {
+    id: '1',
+    date: '6/30/2025',
+    type: 'Put',
+    strike: '557P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -320,
+    details: {
+      time: '14:32 EST',
+      waitTime: 2.1,
+      premium: 0.55,
+      otmPercent: 2.5,
+      delta: -0.13,
+      gamma: 0.02,
+      theta: 0.19,
+      vega: 0.11,
+      ivRank: 78,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1234...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '2',
+    date: '6/27/2025',
+    type: 'Both',
+    strike: '556C / 556P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 310,
+    details: {
+      time: '09:15 EST',
+      waitTime: 3.2,
+      premium: 0.39,
+      otmPercent: 1.8,
+      delta: 0.22,
+      gamma: 0.03,
+      theta: -0.15,
+      vega: 0.09,
+      ivRank: 65,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x5678...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '3',
+    date: '6/26/2025',
+    type: 'Call',
+    strike: '555C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -300,
+    details: {
+      time: '10:15 EST',
+      waitTime: 1.5,
+      premium: 0.40,
+      otmPercent: 3.2,
+      delta: -0.18,
+      gamma: 0.03,
+      theta: 0.22,
+      vega: 0.14,
+      ivRank: 82,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x9abc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '4',
+    date: '6/25/2025',
+    type: 'Put',
+    strike: '554P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 290,
+    details: {
+      time: '11:30 EST',
+      waitTime: 2.8,
+      premium: 0.45,
+      otmPercent: 2.1,
+      delta: -0.15,
+      gamma: 0.02,
+      theta: 0.18,
+      vega: 0.12,
+      ivRank: 75,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xdef0...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '5',
+    date: '6/24/2025',
+    type: 'Both',
+    strike: '553C / 553P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -280,
+    details: {
+      time: '13:45 EST',
+      waitTime: 1.9,
+      premium: 0.52,
+      otmPercent: 2.8,
+      delta: 0.20,
+      gamma: 0.03,
+      theta: -0.16,
+      vega: 0.10,
+      ivRank: 80,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1fed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '6',
+    date: '6/23/2025',
+    type: 'Call',
+    strike: '552C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 270,
+    details: {
+      time: '15:20 EST',
+      waitTime: 3.5,
+      premium: 0.35,
+      otmPercent: 1.5,
+      delta: 0.25,
+      gamma: 0.04,
+      theta: -0.18,
+      vega: 0.08,
+      ivRank: 68,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x2abc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '7',
+    date: '6/20/2025',
+    type: 'Put',
+    strike: '551P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -260,
+    details: {
+      time: '09:45 EST',
+      waitTime: 2.3,
+      premium: 0.48,
+      otmPercent: 2.4,
+      delta: -0.16,
+      gamma: 0.02,
+      theta: 0.20,
+      vega: 0.13,
+      ivRank: 77,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x3def...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '8',
+    date: '6/19/2025',
+    type: 'Both',
+    strike: '550C / 550P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 250,
+    details: {
+      time: '11:15 EST',
+      waitTime: 4.1,
+      premium: 0.38,
+      otmPercent: 1.7,
+      delta: 0.18,
+      gamma: 0.03,
+      theta: -0.14,
+      vega: 0.09,
+      ivRank: 72,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x4fed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '9',
+    date: '6/18/2025',
+    type: 'Call',
+    strike: '549C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -240,
+    details: {
+      time: '14:50 EST',
+      waitTime: 2.7,
+      premium: 0.42,
+      otmPercent: 2.9,
+      delta: 0.23,
+      gamma: 0.04,
+      theta: -0.17,
+      vega: 0.11,
+      ivRank: 85,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x5abc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '10',
+    date: '6/17/2025',
+    type: 'Put',
+    strike: '548P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 230,
+    details: {
+      time: '10:25 EST',
+      waitTime: 3.0,
+      premium: 0.46,
+      otmPercent: 2.2,
+      delta: -0.14,
+      gamma: 0.02,
+      theta: 0.19,
+      vega: 0.12,
+      ivRank: 73,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x6def...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '11',
+    date: '6/16/2025',
+    type: 'Both',
+    strike: '547C / 547P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -220,
+    details: {
+      time: '12:40 EST',
+      waitTime: 1.8,
+      premium: 0.50,
+      otmPercent: 3.1,
+      delta: 0.21,
+      gamma: 0.03,
+      theta: -0.15,
+      vega: 0.10,
+      ivRank: 88,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x7fed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '12',
+    date: '6/13/2025',
+    type: 'Call',
+    strike: '546C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 210,
+    details: {
+      time: '16:10 EST',
+      waitTime: 3.6,
+      premium: 0.33,
+      otmPercent: 1.4,
+      delta: 0.26,
+      gamma: 0.04,
+      theta: -0.19,
+      vega: 0.07,
+      ivRank: 66,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x8abc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '13',
+    date: '6/12/2025',
+    type: 'Put',
+    strike: '545P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -200,
+    details: {
+      time: '09:30 EST',
+      waitTime: 2.4,
+      premium: 0.47,
+      otmPercent: 2.6,
+      delta: -0.17,
+      gamma: 0.02,
+      theta: 0.21,
+      vega: 0.14,
+      ivRank: 79,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x9def...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '14',
+    date: '6/11/2025',
+    type: 'Both',
+    strike: '544C / 544P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 190,
+    details: {
+      time: '11:55 EST',
+      waitTime: 4.2,
+      premium: 0.36,
+      otmPercent: 1.6,
+      delta: 0.19,
+      gamma: 0.03,
+      theta: -0.13,
+      vega: 0.09,
+      ivRank: 70,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xafed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '15',
+    date: '6/10/2025',
+    type: 'Call',
+    strike: '543C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -180,
+    details: {
+      time: '13:25 EST',
+      waitTime: 2.6,
+      premium: 0.44,
+      otmPercent: 3.0,
+      delta: 0.24,
+      gamma: 0.04,
+      theta: -0.18,
+      vega: 0.11,
+      ivRank: 86,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xbabc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '16',
+    date: '6/9/2025',
+    type: 'Put',
+    strike: '542P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 170,
+    details: {
+      time: '15:05 EST',
+      waitTime: 3.1,
+      premium: 0.41,
+      otmPercent: 2.0,
+      delta: -0.15,
+      gamma: 0.02,
+      theta: 0.17,
+      vega: 0.12,
+      ivRank: 74,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xcdef...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '17',
+    date: '6/6/2025',
+    type: 'Both',
+    strike: '541C / 541P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -160,
+    details: {
+      time: '10:20 EST',
+      waitTime: 1.7,
+      premium: 0.53,
+      otmPercent: 3.3,
+      delta: 0.22,
+      gamma: 0.03,
+      theta: -0.16,
+      vega: 0.10,
+      ivRank: 90,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xdfed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '18',
+    date: '6/5/2025',
+    type: 'Call',
+    strike: '540C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 150,
+    details: {
+      time: '12:35 EST',
+      waitTime: 3.7,
+      premium: 0.31,
+      otmPercent: 1.3,
+      delta: 0.27,
+      gamma: 0.04,
+      theta: -0.20,
+      vega: 0.06,
+      ivRank: 64,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xeabc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '19',
+    date: '6/4/2025',
+    type: 'Put',
+    strike: '539P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -140,
+    details: {
+      time: '14:15 EST',
+      waitTime: 2.5,
+      premium: 0.49,
+      otmPercent: 2.7,
+      delta: -0.18,
+      gamma: 0.02,
+      theta: 0.22,
+      vega: 0.15,
+      ivRank: 81,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0xfdef...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '20',
+    date: '6/3/2025',
+    type: 'Both',
+    strike: '538C / 538P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 130,
+    details: {
+      time: '16:45 EST',
+      waitTime: 4.3,
+      premium: 0.34,
+      otmPercent: 1.5,
+      delta: 0.20,
+      gamma: 0.03,
+      theta: -0.12,
+      vega: 0.08,
+      ivRank: 69,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x10fed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '21',
+    date: '6/2/2025',
+    type: 'Call',
+    strike: '537C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -120,
+    details: {
+      time: '09:50 EST',
+      waitTime: 2.8,
+      premium: 0.43,
+      otmPercent: 3.2,
+      delta: 0.25,
+      gamma: 0.04,
+      theta: -0.19,
+      vega: 0.12,
+      ivRank: 87,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x11abc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '22',
+    date: '5/30/2025',
+    type: 'Put',
+    strike: '536P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 110,
+    details: {
+      time: '11:40 EST',
+      waitTime: 3.2,
+      premium: 0.40,
+      otmPercent: 1.9,
+      delta: -0.16,
+      gamma: 0.02,
+      theta: 0.18,
+      vega: 0.13,
+      ivRank: 76,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x12def...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '23',
+    date: '5/29/2025',
+    type: 'Both',
+    strike: '535C / 535P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -100,
+    details: {
+      time: '13:10 EST',
+      waitTime: 1.6,
+      premium: 0.54,
+      otmPercent: 3.4,
+      delta: 0.23,
+      gamma: 0.03,
+      theta: -0.17,
+      vega: 0.11,
+      ivRank: 92,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x13fed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '24',
+    date: '5/28/2025',
+    type: 'Call',
+    strike: '534C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 90,
+    details: {
+      time: '15:30 EST',
+      waitTime: 3.8,
+      premium: 0.29,
+      otmPercent: 1.2,
+      delta: 0.28,
+      gamma: 0.04,
+      theta: -0.21,
+      vega: 0.05,
+      ivRank: 62,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x14abc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '25',
+    date: '5/27/2025',
+    type: 'Put',
+    strike: '533P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -80,
+    details: {
+      time: '10:05 EST',
+      waitTime: 2.6,
+      premium: 0.51,
+      otmPercent: 2.8,
+      delta: -0.19,
+      gamma: 0.02,
+      theta: 0.23,
+      vega: 0.16,
+      ivRank: 83,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x15def...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '26',
+    date: '5/23/2025',
+    type: 'Both',
+    strike: '532C / 532P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 70,
+    details: {
+      time: '12:25 EST',
+      waitTime: 4.4,
+      premium: 0.32,
+      otmPercent: 1.4,
+      delta: 0.21,
+      gamma: 0.03,
+      theta: -0.11,
+      vega: 0.07,
+      ivRank: 67,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x16fed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '27',
+    date: '5/22/2025',
+    type: 'Call',
+    strike: '531C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -60,
+    details: {
+      time: '14:55 EST',
+      waitTime: 2.9,
+      premium: 0.45,
+      otmPercent: 3.3,
+      delta: 0.26,
+      gamma: 0.04,
+      theta: -0.20,
+      vega: 0.13,
+      ivRank: 89,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x17abc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '28',
+    date: '5/21/2025',
+    type: 'Put',
+    strike: '530P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 50,
+    details: {
+      time: '16:20 EST',
+      waitTime: 3.3,
+      premium: 0.38,
+      otmPercent: 1.8,
+      delta: -0.17,
+      gamma: 0.02,
+      theta: 0.19,
+      vega: 0.14,
+      ivRank: 78,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x18def...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '29',
+    date: '5/20/2025',
+    type: 'Put',
+    strike: '528P',
+    risk: 'Moderate',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -120,
+    details: {
+      time: '09:40 EST',
+      waitTime: 1.5,
+      premium: 0.56,
+      otmPercent: 3.5,
+      delta: -0.20,
+      gamma: 0.02,
+      theta: 0.24,
+      vega: 0.12,
+      ivRank: 94,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x19fed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '30',
+    date: '5/19/2025',
+    type: 'Call',
+    strike: '534C',
+    risk: 'Low',
+    volume: 2,
+    result: 'Expired',
+    pnl: 78,
+    details: {
+      time: '11:15 EST',
+      waitTime: 3.9,
+      premium: 0.27,
+      otmPercent: 1.1,
+      delta: 0.29,
+      gamma: 0.04,
+      theta: -0.22,
+      vega: 0.04,
+      ivRank: 60,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1aabc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '31',
+    date: '5/16/2025',
+    type: 'Put',
+    strike: '530P',
+    risk: 'Moderate',
+    volume: 1,
+    result: 'Expired',
+    pnl: 55,
+    details: {
+      time: '13:35 EST',
+      waitTime: 2.7,
+      premium: 0.52,
+      otmPercent: 2.9,
+      delta: -0.21,
+      gamma: 0.02,
+      theta: 0.25,
+      vega: 0.17,
+      ivRank: 85,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1bdef...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '32',
+    date: '5/15/2025',
+    type: 'Call',
+    strike: '558C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 330,
+    details: {
+      time: '15:50 EST',
+      waitTime: 4.5,
+      premium: 0.30,
+      otmPercent: 1.3,
+      delta: 0.22,
+      gamma: 0.03,
+      theta: -0.10,
+      vega: 0.06,
+      ivRank: 65,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1cfed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '33',
+    date: '5/14/2025',
+    type: 'Both',
+    strike: '559C / 559P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -340,
+    details: {
+      time: '10:10 EST',
+      waitTime: 3.0,
+      premium: 0.47,
+      otmPercent: 3.4,
+      delta: 0.27,
+      gamma: 0.04,
+      theta: -0.21,
+      vega: 0.14,
+      ivRank: 91,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1dabc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '34',
+    date: '5/13/2025',
+    type: 'Put',
+    strike: '560P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 350,
+    details: {
+      time: '12:45 EST',
+      waitTime: 3.4,
+      premium: 0.36,
+      otmPercent: 1.7,
+      delta: -0.18,
+      gamma: 0.02,
+      theta: 0.20,
+      vega: 0.15,
+      ivRank: 80,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1edef...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '35',
+    date: '5/12/2025',
+    type: 'Call',
+    strike: '561C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -360,
+    details: {
+      time: '14:30 EST',
+      waitTime: 1.4,
+      premium: 0.58,
+      otmPercent: 3.6,
+      delta: -0.22,
+      gamma: 0.02,
+      theta: 0.26,
+      vega: 0.13,
+      ivRank: 96,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1ffed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '36',
+    date: '5/9/2025',
+    type: 'Both',
+    strike: '562C / 562P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 370,
+    details: {
+      time: '16:05 EST',
+      waitTime: 4.0,
+      premium: 0.25,
+      otmPercent: 1.0,
+      delta: 0.30,
+      gamma: 0.04,
+      theta: -0.23,
+      vega: 0.03,
+      ivRank: 58,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x20abc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '37',
+    date: '5/8/2025',
+    type: 'Put',
+    strike: '563P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -380,
+    details: {
+      time: '09:25 EST',
+      waitTime: 2.8,
+      premium: 0.53,
+      otmPercent: 3.0,
+      delta: -0.23,
+      gamma: 0.02,
+      theta: 0.27,
+      vega: 0.18,
+      ivRank: 87,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x21def...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '38',
+    date: '5/7/2025',
+    type: 'Call',
+    strike: '564C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 390,
+    details: {
+      time: '11:50 EST',
+      waitTime: 4.6,
+      premium: 0.28,
+      otmPercent: 1.2,
+      delta: 0.23,
+      gamma: 0.03,
+      theta: -0.09,
+      vega: 0.05,
+      ivRank: 63,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x22fed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '39',
+    date: '5/6/2025',
+    type: 'Both',
+    strike: '565C / 565P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -400,
+    details: {
+      time: '13:20 EST',
+      waitTime: 3.1,
+      premium: 0.48,
+      otmPercent: 3.5,
+      delta: 0.28,
+      gamma: 0.04,
+      theta: -0.22,
+      vega: 0.15,
+      ivRank: 93,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x23abc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '40',
+    date: '5/2/2025',
+    type: 'Put',
+    strike: '566P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 410,
+    details: {
+      time: '15:35 EST',
+      waitTime: 3.5,
+      premium: 0.35,
+      otmPercent: 1.6,
+      delta: -0.19,
+      gamma: 0.02,
+      theta: 0.21,
+      vega: 0.16,
+      ivRank: 82,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x24def...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '41',
+    date: '5/1/2025',
+    type: 'Call',
+    strike: '567C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -420,
+    details: {
+      time: '10:15 EST',
+      waitTime: 1.3,
+      premium: 0.59,
+      otmPercent: 3.7,
+      delta: -0.24,
+      gamma: 0.02,
+      theta: 0.28,
+      vega: 0.14,
+      ivRank: 98,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x25fed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '42',
+    date: '4/30/2025',
+    type: 'Both',
+    strike: '568C / 568P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 430,
+    details: {
+      time: '12:00 EST',
+      waitTime: 4.1,
+      premium: 0.24,
+      otmPercent: 0.9,
+      delta: 0.31,
+      gamma: 0.04,
+      theta: -0.24,
+      vega: 0.02,
+      ivRank: 56,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x26abc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '43',
+    date: '4/29/2025',
+    type: 'Put',
+    strike: '569P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -440,
+    details: {
+      time: '14:25 EST',
+      waitTime: 2.9,
+      premium: 0.54,
+      otmPercent: 3.1,
+      delta: -0.25,
+      gamma: 0.02,
+      theta: 0.29,
+      vega: 0.19,
+      ivRank: 89,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x27def...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '44',
+    date: '4/28/2025',
+    type: 'Call',
+    strike: '570C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 450,
+    details: {
+      time: '16:40 EST',
+      waitTime: 4.7,
+      premium: 0.26,
+      otmPercent: 1.1,
+      delta: 0.24,
+      gamma: 0.03,
+      theta: -0.08,
+      vega: 0.04,
+      ivRank: 61,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x28fed...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '45',
+    date: '4/25/2025',
+    type: 'Both',
+    strike: '571C / 571P',
+    risk: 'High',
+    volume: 3,
+    result: 'Exercised',
+    pnl: -460,
+    details: {
+      time: '09:35 EST',
+      waitTime: 3.2,
+      premium: 0.49,
+      otmPercent: 3.6,
+      delta: 0.29,
+      gamma: 0.04,
+      theta: -0.23,
+      vega: 0.16,
+      ivRank: 95,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x29abc...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '46',
+    date: '4/24/2025',
+    type: 'Put',
+    strike: '572P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Expired',
+    pnl: 470,
+    details: {
+      time: '11:05 EST',
+      waitTime: 3.6,
+      premium: 0.33,
+      otmPercent: 1.5,
+      delta: -0.20,
+      gamma: 0.02,
+      theta: 0.22,
+      vega: 0.17,
+      ivRank: 84,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x2adef...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '47',
+    date: '4/23/2025',
+    type: 'Call',
+    strike: '573C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Exercised',
+    pnl: -480,
+    details: {
+      time: '13:45 EST',
+      waitTime: 1.2,
+      premium: 0.60,
+      otmPercent: 3.8,
+      delta: -0.26,
+      gamma: 0.02,
+      theta: 0.30,
+      vega: 0.15,
+      ivRank: 100,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x2bfed...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '48',
+    date: '4/22/2025',
+    type: 'Both',
+    strike: '574C / 574P',
+    risk: 'High',
+    volume: 3,
+    result: 'Expired',
+    pnl: 490,
+    details: {
+      time: '15:15 EST',
+      waitTime: 4.2,
+      premium: 0.22,
+      otmPercent: 0.8,
+      delta: 0.32,
+      gamma: 0.04,
+      theta: -0.25,
+      vega: 0.01,
+      ivRank: 54,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x2cabc...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '49',
+    date: '4/17/2025',
+    type: 'Put',
+    strike: '575P',
+    risk: 'Low',
+    volume: 1,
+    result: 'Exercised',
+    pnl: -500,
+    details: {
+      time: '10:30 EST',
+      waitTime: 3.0,
+      premium: 0.55,
+      otmPercent: 3.2,
+      delta: -0.27,
+      gamma: 0.02,
+      theta: 0.31,
+      vega: 0.20,
+      ivRank: 91,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x2ddef...',
+      optimalExit: false
+    }
+  },
+  {
+    id: '50',
+    date: '4/16/2025',
+    type: 'Call',
+    strike: '576C',
+    risk: 'Moderate',
+    volume: 2,
+    result: 'Expired',
+    pnl: 510,
+    details: {
+      time: '12:55 EST',
+      waitTime: 4.8,
+      premium: 0.24,
+      otmPercent: 1.0,
+      delta: 0.25,
+      gamma: 0.03,
+      theta: -0.07,
+      vega: 0.03,
+      ivRank: 59,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x2efed...',
+      optimalExit: true
+    }
   }
-}, {
-  id: '2',
-  date: '6/2/2025',
-  type: 'call',
-  strike: '534C',
-  risk: 'low',
-  volume: 2,
-  result: 'expired',
-  pnl: 78,
-  details: {
-    time: '09:15 EST',
-    waitTime: 3.2,
-    premium: 0.39,
-    otmPercent: 1.8,
-    delta: 0.22,
-    gamma: 0.03,
-    theta: -0.15,
-    vega: 0.09,
-    ivRank: 65,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x5678...',
-    optimalExit: true
-  }
-}, {
-  id: '3',
-  date: '6/3/2025',
-  type: 'put',
-  strike: '528P',
-  risk: 'moderate',
-  volume: 3,
-  result: 'exercised',
-  pnl: -120,
-  details: {
-    time: '10:15 EST',
-    waitTime: 1.5,
-    premium: 0.40,
-    otmPercent: 3.2,
-    delta: -0.18,
-    gamma: 0.03,
-    theta: 0.22,
-    vega: 0.14,
-    ivRank: 82,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x9abc...',
-    optimalExit: false
-  }
-},
-// Adding more sample data to reach sufficient records for pagination
-...Array.from({
-  length: 97
-}, (_, i) => ({
-  id: (i + 4).toString(),
-  date: `6/${i + 4}/2025`,
-  type: ['put', 'call', 'both'][i % 3] as 'put' | 'call' | 'both',
-  strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
-  risk: ['low', 'moderate', 'high'][i % 3] as 'low' | 'moderate' | 'high',
-  volume: i % 3 + 1,
-  result: ['expired', 'exercised'][i % 2] as 'expired' | 'exercised',
-  pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
-  details: {
-    time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
-    waitTime: 1 + i % 5,
-    premium: 0.3 + i % 10 * 0.05,
-    otmPercent: 1 + i % 8,
-    delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
-    gamma: 0.01 + i % 5 * 0.01,
-    theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
-    vega: 0.08 + i % 5 * 0.02,
-    ivRank: 60 + i % 30,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
-    optimalExit: i % 3 !== 1
-  }
-}))];
+];
