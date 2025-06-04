@@ -302,7 +302,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     </div>
                     
                     <div className="grid grid-cols-4 gap-8">
-                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-100 border border-gray-200 rounded-lg p-3 hover:bg-gray-700 transition-all duration-200 cursor-pointer relative w-28 h-28 group" onClick={() => handleCardClick(metric.label)}>
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-100 border border-gray-200 rounded-lg p-3 hover:bg-gray-700 transition-all duration-200 cursor-pointer relative w-50 h-50 group" onClick={() => handleCardClick(metric.label)}>
                           {/* Front Side */}
                           <div className={`absolute inset-0 p-3 transition-opacity duration-300 flex flex-col justify-center items-center text-center ${flippedCard === metric.label ? 'opacity-0' : 'opacity-100'}`}>
                             <div className="text-lg font-normal text-gray-600 group-hover:text-white mb-2" style={{ marginTop: '-0.5cm' }}>{metric.label}</div>
