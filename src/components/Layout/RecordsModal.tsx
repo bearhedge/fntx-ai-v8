@@ -510,7 +510,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                           <div className="space-y-2 text-sm">
                                             <div className="flex justify-between">
                                               <span className="text-gray-600">Result:</span>
-                                              <span>{record.result === 'expired' ? 'Expired' : 'Exercised'}</span>
+                                              <span>{record.result === 'Expired' ? 'Expired' : 'Exercised'}</span>
                                             </div>
                                             <div className="flex justify-between">
                                               <span className="text-gray-600">PnL:</span>
@@ -1563,7 +1563,7 @@ const sampleData: Record[] = [
     strike: '565C / 565P',
     risk: 'High',
     volume: 3,
-    result: 'Exercised',
+    result: 'Expired',
     pnl: -400,
     details: {
       time: '13:20 EST',
