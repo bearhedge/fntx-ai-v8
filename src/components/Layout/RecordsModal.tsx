@@ -165,7 +165,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(record => record.date.toLowerCase().includes(searchTerm.toLowerCase()) || record.type.toLowerCase().includes(searchTerm.toLowerCase()) || record.strike.toLowerCase().includes(searchTerm.toLowerCase()) || record.risk.toLowerCase().includes(searchTerm.toLowerCase()));
+      filtered = filtered.filter(record => 
+        record.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.strike.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        record.risk.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     // Apply type filter
@@ -181,16 +186,13 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
         case 'pnl':
           return b.pnl - a.pnl;
         case 'risk':
-          const riskOrder = {
-            'low': 1,
-            'moderate': 2,
-            'high': 3
-          };
+          const riskOrder = { 'low': 1, 'moderate': 2, 'high': 3 };
           return riskOrder[b.risk] - riskOrder[a.risk];
         default:
           return 0;
       }
     });
+
     return filtered;
   }, [searchTerm, filterType, sortBy]);
   const totalPages = Math.ceil(filteredAndSortedRecords.length / recordsPerPage);
@@ -230,6 +232,22 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
     }
     return "Custom Date";
   };
+  const formatType = (type: string) => {
+    return type.charAt(0).toUpperCase() + type.slice(1);
+  };
+
+  const formatRisk = (risk: string) => {
+    return risk.charAt(0).toUpperCase() + risk.slice(1);
+  };
+
+  const formatStrike = (strike: string, type: string) => {
+    if (type === 'both') {
+      // Replace any forward slashes with spaced forward slashes
+      return strike.replace(/\//g, ' / ');
+    }
+    return strike;
+  };
+
   return <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-7xl h-[95vh] flex flex-col bg-white p-0">
@@ -317,7 +335,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
 
                       <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <Input placeholder="Search records..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
+                        <Input
+                          placeholder="Search records..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="pl-10"
+                        />
                       </div>
 
                       <Button variant="outline" onClick={handleExport} className="gap-2">
@@ -342,29 +365,48 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {currentRecords.map((record, index) => <React.Fragment key={record.id}>
-                              <TableRow className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`} onClick={() => handleRowClick(record.id)}>
+                          {currentRecords.map((record, index) => (
+                            <React.Fragment key={record.id}>
+                              <TableRow 
+                                className={`cursor-pointer hover:bg-gray-50 h-8 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}
+                                onClick={() => handleRowClick(record.id)}
+                              >
                                 <TableCell className="text-sm py-1 font-normal">{record.date}</TableCell>
-                                <TableCell className="text-center text-sm py-1 font-normal">{record.type}</TableCell>
-                                <TableCell className="text-right text-sm py-1 font-normal">{record.strike}</TableCell>
-                                <TableCell className="text-center text-sm py-1 font-normal">{record.risk}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{formatType(record.type)}</TableCell>
+                                <TableCell className="text-right text-sm py-1 font-normal">{formatStrike(record.strike, record.type)}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">{formatRisk(record.risk)}</TableCell>
                                 <TableCell className="text-center text-sm py-1 font-normal">{record.volume}</TableCell>
-                                <TableCell className="text-center text-sm py-1 font-normal">{record.result === 'expired' ? 'Expired' : 'Exercised'}</TableCell>
+                                <TableCell className="text-center text-sm py-1 font-normal">
+                                  {record.result === 'expired' ? 'Expired' : 'Exercised'}
+                                </TableCell>
                                 <TableCell className="text-right text-sm py-1 font-normal">
-                                  {record.pnl >= 0 ? `${Math.abs(record.pnl).toLocaleString()}` : `(${Math.abs(record.pnl).toLocaleString()})`}
+                                  {record.pnl >= 0 
+                                    ? `${Math.abs(record.pnl).toLocaleString()}` 
+                                    : `(${Math.abs(record.pnl).toLocaleString()})`
+                                  }
                                 </TableCell>
                                 <TableCell className="text-center py-1">
                                   <div className="flex items-center justify-center gap-2">
-                                    <Button variant="ghost" size="sm" className="w-6 h-6 p-0" onClick={e => {
-                                e.stopPropagation();
-                                console.log('Blockchain link clicked');
-                              }}>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="w-6 h-6 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('Blockchain link clicked');
+                                      }}
+                                    >
                                       <ExternalLink className="w-3 h-3" />
                                     </Button>
-                                    <Button variant="ghost" size="sm" className="w-6 h-6 p-0" onClick={e => {
-                                e.stopPropagation();
-                                console.log('AI explanation clicked');
-                              }}>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="w-6 h-6 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log('AI explanation clicked');
+                                      }}
+                                    >
                                       <Brain className="w-3 h-3" />
                                     </Button>
                                   </div>
@@ -372,7 +414,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                               </TableRow>
                               
                               {/* Expanded Row */}
-                              {expandedRow === record.id && <TableRow className="bg-gray-50">
+                              {expandedRow === record.id && (
+                                <TableRow className="bg-gray-50">
                                   <TableCell colSpan={8} className="p-6">
                                     <div className="grid grid-cols-2 gap-6">
                                       <div className="space-y-4">
@@ -462,7 +505,8 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                                       </div>
                                     </div>
                                   </TableCell>
-                                </TableRow>}
+                                </TableRow>
+                              )}
                             </React.Fragment>)}
                         </TableBody>
                       </Table>
@@ -516,104 +560,106 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
       </Dialog>
     </TooltipProvider>;
 };
-const sampleData: Record[] = [{
-  id: '1',
-  date: '6/1/2025',
-  type: 'put',
-  strike: '530P',
-  risk: 'moderate',
-  volume: 1,
-  result: 'expired',
-  pnl: 55,
-  details: {
-    time: '14:32 EST',
-    waitTime: 2.1,
-    premium: 0.55,
-    otmPercent: 2.5,
-    delta: -0.13,
-    gamma: 0.02,
-    theta: 0.19,
-    vega: 0.11,
-    ivRank: 78,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x1234...',
-    optimalExit: true
-  }
-}, {
-  id: '2',
-  date: '6/2/2025',
-  type: 'call',
-  strike: '534C',
-  risk: 'low',
-  volume: 2,
-  result: 'expired',
-  pnl: 78,
-  details: {
-    time: '09:15 EST',
-    waitTime: 3.2,
-    premium: 0.39,
-    otmPercent: 1.8,
-    delta: 0.22,
-    gamma: 0.03,
-    theta: -0.15,
-    vega: 0.09,
-    ivRank: 65,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x5678...',
-    optimalExit: true
-  }
-}, {
-  id: '3',
-  date: '6/3/2025',
-  type: 'put',
-  strike: '528P',
-  risk: 'moderate',
-  volume: 3,
-  result: 'exercised',
-  pnl: -120,
-  details: {
-    time: '10:15 EST',
-    waitTime: 1.5,
-    premium: 0.40,
-    otmPercent: 3.2,
-    delta: -0.18,
-    gamma: 0.03,
-    theta: 0.22,
-    vega: 0.14,
-    ivRank: 82,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: '0x9abc...',
-    optimalExit: false
-  }
-},
-// Adding more sample data to reach sufficient records for pagination
-...Array.from({
-  length: 97
-}, (_, i) => ({
-  id: (i + 4).toString(),
-  date: `6/${i + 4}/2025`,
-  type: ['put', 'call', 'both'][i % 3] as 'put' | 'call' | 'both',
-  strike: `${530 + i}${['P', 'C', 'C/P'][i % 3]}`,
-  risk: ['low', 'moderate', 'high'][i % 3] as 'low' | 'moderate' | 'high',
-  volume: i % 3 + 1,
-  result: ['expired', 'exercised'][i % 2] as 'expired' | 'exercised',
-  pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
-  details: {
-    time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
-    waitTime: 1 + i % 5,
-    premium: 0.3 + i % 10 * 0.05,
-    otmPercent: 1 + i % 8,
-    delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
-    gamma: 0.01 + i % 5 * 0.01,
-    theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
-    vega: 0.08 + i % 5 * 0.02,
-    ivRank: 60 + i % 30,
-    stopLossRatio: 3,
-    takeProfitRatio: 0.5,
-    blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
-    optimalExit: i % 3 !== 1
-  }
-}))];
+const sampleData: Record[] = [
+  {
+    id: '1',
+    date: '6/1/2025',
+    type: 'put',
+    strike: '530P',
+    risk: 'moderate',
+    volume: 1,
+    result: 'expired',
+    pnl: 55,
+    details: {
+      time: '14:32 EST',
+      waitTime: 2.1,
+      premium: 0.55,
+      otmPercent: 2.5,
+      delta: -0.13,
+      gamma: 0.02,
+      theta: 0.19,
+      vega: 0.11,
+      ivRank: 78,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x1234...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '2',
+    date: '6/2/2025',
+    type: 'call',
+    strike: '534C',
+    risk: 'low',
+    volume: 2,
+    result: 'expired',
+    pnl: 78,
+    details: {
+      time: '09:15 EST',
+      waitTime: 3.2,
+      premium: 0.39,
+      otmPercent: 1.8,
+      delta: 0.22,
+      gamma: 0.03,
+      theta: -0.15,
+      vega: 0.09,
+      ivRank: 65,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x5678...',
+      optimalExit: true
+    }
+  },
+  {
+    id: '3',
+    date: '6/3/2025',
+    type: 'put',
+    strike: '528P',
+    risk: 'moderate',
+    volume: 3,
+    result: 'exercised',
+    pnl: -120,
+    details: {
+      time: '10:15 EST',
+      waitTime: 1.5,
+      premium: 0.40,
+      otmPercent: 3.2,
+      delta: -0.18,
+      gamma: 0.03,
+      theta: 0.22,
+      vega: 0.14,
+      ivRank: 82,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: '0x9abc...',
+      optimalExit: false
+    }
+  },
+  // Adding more sample data to reach sufficient records for pagination
+  ...Array.from({ length: 97 }, (_, i) => ({
+    id: (i + 4).toString(),
+    date: `6/${i + 4}/2025`,
+    type: ['put', 'call', 'both'][i % 3] as 'put' | 'call' | 'both',
+    strike: `${530 + i}${['P', 'C', 'C / P'][i % 3]}`,
+    risk: ['low', 'moderate', 'high'][i % 3] as 'low' | 'moderate' | 'high',
+    volume: i % 3 + 1,
+    result: ['expired', 'exercised'][i % 2] as 'expired' | 'exercised',
+    pnl: (i % 2 === 0 ? 1 : -1) * (50 + i * 10),
+    details: {
+      time: `${9 + i % 8}:${15 + i % 4 * 15} EST`,
+      waitTime: 1 + i % 5,
+      premium: 0.3 + i % 10 * 0.05,
+      otmPercent: 1 + i % 8,
+      delta: (i % 2 === 0 ? -1 : 1) * (0.1 + i % 5 * 0.02),
+      gamma: 0.01 + i % 5 * 0.01,
+      theta: (i % 2 === 0 ? 1 : -1) * (0.1 + i % 5 * 0.02),
+      vega: 0.08 + i % 5 * 0.02,
+      ivRank: 60 + i % 30,
+      stopLossRatio: 3,
+      takeProfitRatio: 0.5,
+      blockchainTxId: `0x${Math.random().toString(16).substr(2, 8)}...`,
+      optimalExit: i % 3 !== 1
+    }
+  }))
+];
