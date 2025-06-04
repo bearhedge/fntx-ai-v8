@@ -274,7 +274,7 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                     <div className="flex items-center justify-between py-[5px]">
                       <h3 className="text-xl font-medium text-gray-900">Performance Metrics</h3>
                       <div className="flex gap-2">
-                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 px-3 bg-white border-gray-200 text-gray-700 hover:bg-gray-300 text-xs">
+                        {['1W', '1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(timeframe => <Button key={timeframe} variant={selectedTimeframe === timeframe ? "default" : "outline"} size="sm" onClick={() => handleTimeframeChange(timeframe)} className="h-8 px-3 bg-white border-gray-50 text-gray-700 hover:bg-gray-50 text-xs">
                             {timeframe}
                           </Button>)}
                         <Popover open={isCustomDateOpen} onOpenChange={setIsCustomDateOpen}>
