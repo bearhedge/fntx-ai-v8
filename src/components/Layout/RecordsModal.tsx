@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { TabNavigation } from './TabNavigation';
 import { WithdrawalTab } from './WithdrawalTab';
 import { WithdrawalRecord, AvailabilityBreakdown } from '@/types/trading';
+
 interface RecordDetails {
   time: string;
   waitTime: number;
@@ -46,7 +47,7 @@ interface RecordsModalProps {
   onClose: () => void;
 }
 
-// Updated performance metrics to match the image layout
+// Updated performance metrics to include the 4 new ratios - now 16 total for 4x4 grid
 const performanceMetrics = [{
   label: "DPI",
   value: "0.05x"
@@ -82,6 +83,18 @@ const performanceMetrics = [{
   value: "10%"
 }, {
   label: "Stop-loss Ratio",
+  value: "40%"
+}, {
+  label: "Stop-loss Multiple",
+  value: "3.00x"
+}, {
+  label: "Take-profit Multiple",
+  value: "0.15x"
+}, {
+  label: "Maximum Drawdown",
+  value: "5%"
+}, {
+  label: "Win Rate",
   value: "40%"
 }];
 export const RecordsModal: React.FC<RecordsModalProps> = ({
@@ -265,12 +278,12 @@ export const RecordsModal: React.FC<RecordsModalProps> = ({
                       </div>
                     </div>
                     
-                    {/* Performance Metrics Grid - 3 columns x 4 rows with proper spacing */}
-                    <div className="grid grid-cols-3 gap-4 w-full max-w-6xl">
-                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-200 rounded-lg p-4 flex flex-col text-center min-h-[120px] hover:bg-gray-300 transition-colors duration-200">
-                          <div className="text-sm font-larg text-gray-700 mb-2 pt-2">{metric.label}</div>
+                    {/* Performance Metrics Grid - 4 columns x 4 rows with narrower boxes */}
+                    <div className="grid grid-cols-4 gap-3 w-full">
+                      {performanceMetrics.map((metric, index) => <div key={metric.label} className="bg-gray-200 rounded-lg p-3 flex flex-col text-center min-h-[100px] hover:bg-gray-300 transition-colors duration-200">
+                          <div className="text-xs font-normal text-gray-700 mb-2 pt-1">{metric.label}</div>
                           <div className="flex-1 flex items-center justify-center">
-                            <div className="text-xl font-bold text-gray-900">{metric.value}</div>
+                            <div className="text-lg font-bold text-gray-900">{metric.value}</div>
                           </div>
                         </div>)}
                     </div>
